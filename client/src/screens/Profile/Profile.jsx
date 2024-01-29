@@ -16,7 +16,6 @@ import { url } from "../../Global/URL";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader";
 import { getUserDetails, logout } from "../../Global/authUtils";
-import LogOutButton from "../../components/logOutButton";
 
 // importing data for ui
 import { places, bloodgroup } from "../newProfile/data";

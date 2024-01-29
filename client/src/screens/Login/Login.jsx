@@ -27,7 +27,7 @@ const Login = () => {
   return (
     <div className="flex-col items-center justify-center mx-auto">
       <div className="mt-10 p-6 bg-white rounded-md shadow-lg w-80 sm:w-96 mx-auto text-center" style={{marginTop: '18vh'}}>
-        <h2 className="text-4xl font-extrabold text-gray-800">Welcome to <span style={{ color: 'red' }}>Rakt</span> Sahay!</h2>
+        <h2 className="text-4xl font-extrabold text-gray-800">Welcome to MYAPP</h2>
         <Divider mt={10}/>
         <p className="text-lg text-gray-600 mt-2">
           Sign in to your account to continue.
