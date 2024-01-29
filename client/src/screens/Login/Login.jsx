@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import GoogleButton from "react-google-button";
-import { Center, Square, Circle, Box, Divider } from "@chakra-ui/react";
+import { Center, SimpleGrid, Box, VStack, Divider } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { url } from "../../Global/URL";
 import showToast from "../../Global/Toast";
 import { useToast } from "@chakra-ui/react";
+import { useTheme } from "@chakra-ui/react";
 
 const Login = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [isChecked, setIsChecked] = useState(false);
+  const { colors } = useTheme();
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -24,16 +26,61 @@ const Login = () => {
     }
   };
 
+  const hexToRgb = (hex) => {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `${r}, ${g}, ${b}`;
+  };
+
   return (
-    <div className="flex-col items-center justify-center mx-auto">
-      <div className="mt-10 p-6 bg-white rounded-md shadow-lg w-80 sm:w-96 mx-auto text-center" style={{marginTop: '18vh'}}>
-        <h2 className="text-4xl font-extrabold text-gray-800">Welcome to MYAPP</h2>
-        <Divider mt={10}/>
-        <p className="text-lg text-gray-600 mt-2">
-          Sign in to your account to continue.
-        </p>
-        <div style={{height: '50px'}}></div>
-        <GoogleButton onClick={googleAuth} style={{ borderRadius: '20px', backgroundColor: 'white', color: 'black', paddingRight: '10px', paddingLeft: '10px' }} className="mt-6 mx-auto" />
+    <SimpleGrid columns={[1, 2]} height={'100%'}>
+      <Box height='100%'>
+      <Center h={'100%'} >
+        <h1 style={{color: colors.brand.green, fontSize: '50px'}}>
+          Photo
+        </h1>
+        </Center>
+      </Box>
+      <Box height='100%'>
+        <Center h={'100%'} >
+          <Box bg={'dark.500'} h={'500px'} w={'350px'} p={5} style={{borderRadius: '15px', boxShadow: `inset 0 4px 25px rgba(${hexToRgb(colors.brand.cyan)}, 0.3)`}}>
+            <VStack>
+              <h3 style={{color: colors.brand.blue, fontSize: '22px', paddingTop: '20px'}}>
+                Sign in to Continue
+              </h3>
+              <Box height={'230px'} w={'100%'}>
+                <Center color={'brand.green'} h={'100%'}>
+                  Logo Here
+                </Center>
+              </Box>
+              <GoogleButton onClick={googleAuth} style={{ borderRadius: '18px', backgroundColor: 'white', color: 'black', paddingRight: '10px', paddingLeft: '10px' }} className="mt-6 mx-auto" />
+
+                <div className="flex items-center justify-center mt-4">
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}
+                    className="mr-2 cursor-pointer"
+                  />
+                  <p className="text-sm text-gray-500">
+                    I agree to the{' '}
+                    <span className="text-blue-500 cursor-pointer">Terms and Conditions</span>
+                  </p>
+                </div>
+            </VStack>
+          </Box>
+        </Center>
+      </Box>
+    </SimpleGrid>
+  );
+};
+
+export default Login;
+
+
+{/* <GoogleButton onClick={googleAuth} style={{ borderRadius: '20px', backgroundColor: 'white', color: 'black', paddingRight: '10px', paddingLeft: '10px' }} className="mt-6 mx-auto" />
         <div className="flex items-center justify-center mt-4">
           <input
             type="checkbox"
@@ -45,11 +92,4 @@ const Login = () => {
             I agree to the{' '}
             <span className="text-blue-500 cursor-pointer">Terms and Conditions</span>
           </p>
-        </div>
-        
-      </div>
-    </div>
-  );
-};
-
-export default Login;
+        </div> */}

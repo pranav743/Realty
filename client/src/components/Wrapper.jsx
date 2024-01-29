@@ -44,20 +44,22 @@ const Wrapper = ({ children }) => {
       ref={scrollManager}
       style={{
         width: "100%",
+        height: "100%",  // Set height explicitly
         minHeight:
-          location.pathname === "/login" ||
-          location.pathname === "/new-profile"
+          (location.pathname === "/login" ||
+            location.pathname === "/new-profile")
             ? "100vh"
-            : "calc(100vh - 82px)",
+            : "calc(100vh - 80px)",
         overflowY: "auto",
-        backgroundColor: "#eee",
+        background: "linear-gradient(220deg,#0c243c 0%, #06121f 54.26%, #020e1c 100%)",
         position: "relative",
-        padding: "10px",
-        maxHeight: "calc(100vh - 82px)",
+        padding: "0px",
+        maxHeight: "calc(100vh - 80px)",
       }}
     >
       {children}
     </div>
+
   );
 };
 
