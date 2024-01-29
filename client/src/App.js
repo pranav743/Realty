@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-
+import Error from "./components/Error";
 import Home from "./screens/Home/Home";
 import Login from "./screens/Login/Login";
 import NewProfile from "./screens/newProfile/newProfile";
@@ -22,6 +22,8 @@ function App() {
           <Route path={"/"} exact element={<Home />} />
           <Route path="/new-profile" exact element={<NewProfile />} />
           <Route path="/user-profile" exact element={<Profile />} />
+          <Route path={"/error"} exact element={<Error />} />
+
           <Route
             path="/redirection/:accessToken"
             element={<RedirectionPage />}
