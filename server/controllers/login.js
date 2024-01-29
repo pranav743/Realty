@@ -2,8 +2,6 @@ const { OAuth2Client } = require("google-auth-library");
 const dotenv = require("dotenv");
 dotenv.config();
 const findUser = require("../global/findUser");
-const Hospital = require("../models/hospital");
-const BloodBank = require("../models/bloodBank");
 const User = require("../models/users");
 
 const handleLoginRequest = async (req, res) => {
