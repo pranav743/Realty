@@ -13,7 +13,7 @@ const TestingBlock = () => {
         
           useEffect(()=>{
              const connectWallet=async()=>{
-                const contractAddress = "0xbb0be3A9f4612E5942cE28DD6a49d9E8B6708fB5";
+                const contractAddress = "0xF05c6E13411515B5960A2D79a16f56C2D4E0C3aD";
                 const contractAbi=abi.abi;
                 try{
                    const {ethereum}=window;
