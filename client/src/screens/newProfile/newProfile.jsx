@@ -4,9 +4,12 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { bloodgroup, places } from "./data";
 import { url } from "../../Global/URL";
+import { Center, SimpleGrid, Box, VStack, Divider } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@chakra-ui/react";
 
 const NewProfile = () => {
+  const {colors} = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
@@ -59,112 +62,137 @@ const NewProfile = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 items-center">
-      <h1 className="text-3xl p-2 font-bold text-center text-[#EA3A60]">
-        Complete your Profile
-      </h1>
-      <input
-        readOnly
-        className="p-3 rounded-xl border-solid border-[#EA3A60] border-b-2 text-xl w-3/4 max-w-md"
-        type="text"
-        name="name"
-        placeholder="Enter your full name..."
-        id=""
-        value={details.name}
-      />
-      <input
-        readOnly
-        className="p-3 rounded-xl border-solid border-[#EA3A60] border-b-2 text-xl w-3/4 max-w-md"
-        type="text"
-        name="email"
-        placeholder="Enter your email id..."
-        id=""
-        value={details.email}
-      />
-      <input
-        onChange={(e) => setNumber(e.target.value)}
-        className="p-3 rounded-xl border-solid border-[#EA3A60] border-b-2 text-xl w-3/4 max-w-md"
-        type="text"
-        name="contact_no"
-        placeholder="Enter your phone number..."
-        id=""
-        value={details.number}
-      />
-      <textarea
-        onChange={(e) => setAddress(e.target.value)}
-        className="p-3 rounded-xl border-b-2 border-solid border-[#EA3A60] outline-none text-xl w-3/4 max-w-md"
-        name="address"
-        id=""
-        cols="30"
-        rows="3"
-        placeholder="Enter your Address"
-        value={details.address}
-      />
-      <div className="location flex justify-around gap-2">
-        <select
-          onChange={(e) => setState(e.target.value)}
-          className="p-3 rounded-xl border-b-2 border-solid border-[#EA3A60] outline-none text-xl w-3/4 max-w-md"
-          name="state"
-          id=""
-        >
-          <option value="">State</option>
-          {places.map((place, index) => (
-            <option key={index} value={place.state}>
-              {place.state}
-            </option>
-          ))}
-        </select>
 
-        <select
-          className="p-3 rounded-xl border-b-2 border-solid border-[#EA3A60] outline-none text-xl w-3/4 max-w-md"
-          name="city"
-          id=""
-          onChange={(e) => setCity(e.target.value)}
-        >
-          <option value="">City</option>
-          {state !== "" &&
-            places
-              .find((entry) => entry.state === state)
-              .cities.map((city, index) => {
-                return (
-                  <option key={index} value={city}>
-                    {city}
-                  </option>
-                );
-              })}
-        </select>
-      </div>
-      <select
-        className="p-3 rounded-xl border-b-2 border-solid border-[#EA3A60] outline-none text-xl w-3/4 max-w-md"
-        name="bloodType"
-        id=""
-        onChange={(e) => setBloodGroup(e.target.value)}
-      >
-        <option value="">Blood Group</option>
-        {bloodgroup.map((group, index) => {
-          return (
-            <option key={index} value={group}>
-              {group}
-            </option>
-          );
-        })}
-      </select>
-      <input
-        onChange={(e) => setIdCardNumber(e.target.value)}
-        className="p-3 rounded-xl border-solid border-[#EA3A60] border-b-2 text-xl w-3/4 max-w-md"
-        type="text"
-        name="idCardNumber"
-        placeholder="Enter your ID Card Number..."
-        id=""
-        value={details.idCardNumber}
-      />
-      <button
-        onClick={createUser}
-        className="p-4 rounded-xl mt-8 w-full max-w-md bg-[#EA3A60] text-white text-xl font-bold"
-      >
-        Submit
-      </button>
-    </div>
+    <SimpleGrid columns={[1, 2]} height={'100%'}>
+      <Box height='100%'>
+        <Center h={'100%'} >
+        
+        </Center>
+      </Box>
+      <Box height='100%'>
+        <Center h={'100%'} >
+          <Box bg={'dark.500'} h={'500px'} w={'350px'} p={5} style={{ borderRadius: '15px' }}>
+            <VStack>
+              <h3 style={{ color: colors.brand.blue, fontSize: '22px', paddingTop: '20px' }}>
+                Sign in to Continue
+              </h3>
+              <Box height={'230px'} w={'100%'}>
+                <Center color={'brand.green'} h={'100%'}>
+                  Logo Here
+                </Center>
+              </Box>
+              
+            </VStack>
+          </Box>
+        </Center>
+      </Box>
+    </SimpleGrid>
+    // <div className="flex flex-col gap-4 items-center">
+    //   <h1 className="text-3xl p-2 font-bold text-center text-[#EA3A60]">
+    //     Complete your Profile
+    //   </h1>
+    //   <input
+    //     readOnly
+    //     className="p-3 rounded-xl border-solid border-[#EA3A60] border-b-2 text-xl w-3/4 max-w-md"
+    //     type="text"
+    //     name="name"
+    //     placeholder="Enter your full name..."
+    //     id=""
+    //     value={details.name}
+    //   />
+    //   <input
+    //     readOnly
+    //     className="p-3 rounded-xl border-solid border-[#EA3A60] border-b-2 text-xl w-3/4 max-w-md"
+    //     type="text"
+    //     name="email"
+    //     placeholder="Enter your email id..."
+    //     id=""
+    //     value={details.email}
+    //   />
+    //   <input
+    //     onChange={(e) => setNumber(e.target.value)}
+    //     className="p-3 rounded-xl border-solid border-[#EA3A60] border-b-2 text-xl w-3/4 max-w-md"
+    //     type="text"
+    //     name="contact_no"
+    //     placeholder="Enter your phone number..."
+    //     id=""
+    //     value={details.number}
+    //   />
+    //   <textarea
+    //     onChange={(e) => setAddress(e.target.value)}
+    //     className="p-3 rounded-xl border-b-2 border-solid border-[#EA3A60] outline-none text-xl w-3/4 max-w-md"
+    //     name="address"
+    //     id=""
+    //     cols="30"
+    //     rows="3"
+    //     placeholder="Enter your Address"
+    //     value={details.address}
+    //   />
+    //   <div className="location flex justify-around gap-2">
+    //     <select
+    //       onChange={(e) => setState(e.target.value)}
+    //       className="p-3 rounded-xl border-b-2 border-solid border-[#EA3A60] outline-none text-xl w-3/4 max-w-md"
+    //       name="state"
+    //       id=""
+    //     >
+    //       <option value="">State</option>
+    //       {places.map((place, index) => (
+    //         <option key={index} value={place.state}>
+    //           {place.state}
+    //         </option>
+    //       ))}
+    //     </select>
+
+    //     <select
+    //       className="p-3 rounded-xl border-b-2 border-solid border-[#EA3A60] outline-none text-xl w-3/4 max-w-md"
+    //       name="city"
+    //       id=""
+    //       onChange={(e) => setCity(e.target.value)}
+    //     >
+    //       <option value="">City</option>
+    //       {state !== "" &&
+    //         places
+    //           .find((entry) => entry.state === state)
+    //           .cities.map((city, index) => {
+    //             return (
+    //               <option key={index} value={city}>
+    //                 {city}
+    //               </option>
+    //             );
+    //           })}
+    //     </select>
+    //   </div>
+    //   <select
+    //     className="p-3 rounded-xl border-b-2 border-solid border-[#EA3A60] outline-none text-xl w-3/4 max-w-md"
+    //     name="bloodType"
+    //     id=""
+    //     onChange={(e) => setBloodGroup(e.target.value)}
+    //   >
+    //     <option value="">Blood Group</option>
+    //     {bloodgroup.map((group, index) => {
+    //       return (
+    //         <option key={index} value={group}>
+    //           {group}
+    //         </option>
+    //       );
+    //     })}
+    //   </select>
+    //   <input
+    //     onChange={(e) => setIdCardNumber(e.target.value)}
+    //     className="p-3 rounded-xl border-solid border-[#EA3A60] border-b-2 text-xl w-3/4 max-w-md"
+    //     type="text"
+    //     name="idCardNumber"
+    //     placeholder="Enter your ID Card Number..."
+    //     id=""
+    //     value={details.idCardNumber}
+    //   />
+    //   <button
+    //     onClick={createUser}
+    //     className="p-4 rounded-xl mt-8 w-full max-w-md bg-[#EA3A60] text-white text-xl font-bold"
+    //   >
+    //     Submit
+    //   </button>
+    // </div>
   );
 };
 
