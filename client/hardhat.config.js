@@ -1,6 +1,9 @@
+
+require("@nomiclabs/hardhat-ethers");
+
 /** @type import('hardhat/config').HardhatUserConfig */
 
-const PRIVATE_KEY="";
+const PRIVATE_KEY="7fd22d5f5ffab0365bd07fc026a87f923713ac87b1e8afa3ee1c9e4d6454ad5f";
 const RPC_URL="https://rpc.ankr.com/polygon_mumbai";
 
 module.exports = {
