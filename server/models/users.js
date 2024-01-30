@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const { Property } = require("../models/properties");
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -40,8 +42,11 @@ const userSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now()
-  }
+    default: Date.now(),
+  },
+  propertiesOwned: {
+    type: [Property],
+  },
 });
 
 const User = mongoose.model("User", userSchema);
