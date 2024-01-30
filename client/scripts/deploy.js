@@ -1,14 +1,16 @@
-const hre=require("hardhat");
+const hre = require("hardhat");
 
-async function main(){
-  const Tracking =await hre.ethers.getContractFactory("Test");
-  const contract =await Tracking.deploy();
+async function main() {
+  const Tracking = await hre.ethers.getContractFactory("Test");
+  const contract = await Tracking.deploy();
 
-  await contract.deployed();
-  console.log("ADDRESS OF CONTRACT:",contract.address)
+  // Wait for the contract deployment to be completed
+  await contract.waitForDeployment();
+
+  console.log("ADDRESS OF CONTRACT:", contract.target);
 }
 
-main().catch((error)=>{
+main().catch((error) => {
   console.error(error);
-  process.exitCode=1;
-})
+  process.exitCode = 1;
+});
