@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 
 const NavBar = () => {
   return (
-    <div className="h-[80px] text-white box-border p-2 px-8 flex justify-between items-center">
+    <div className="h-[80px] text-white box-border p-2 px-8 flex justify-between items-center top-0">
       <div className="left flex justify-start items-center">
         <ul className="flex justify-start items-center gap-5">
           <li className="text-2xl font-bold border-solid border-r-2 border-white pr-4">
@@ -17,7 +17,7 @@ const NavBar = () => {
         <FaSearch className="absolute top-3 right-3" />
         <input
           type="search"
-          className=" p-2 rounded-xl w-[300px] bg-[transparent] border-2 border-solid border-white"
+          className=" p-2 rounded-xl w-[300px] bg-[transparent] border-2 border-solid border-white max-sm:w-[40px]"
           placeholder="Search"
         />
       </div>
