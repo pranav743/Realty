@@ -17,11 +17,9 @@ import Loader from "../../components/Loader";
 const Home = () => {
   const [user, setUser] = useState(false);
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [layout, setLayout] = useState("grid");
 
   const { isError, isLoading, data } = useQuery({
-    queryKey: ["/properties/all"],
+    queryKey: ['/properties/all'],
     retryDelay: 10000,
     queryFn: async () => {
       const temp = await axios
@@ -32,10 +30,16 @@ const Home = () => {
     },
   });
 
-  const getData = () => {
-    if (localStorage.getItem("RSaccessToken")) {
-      setIsLoggedIn(true);
-      return true;
+  const getData = async () => {
+    try {
+      const data = await getUserDetails();
+      console.log(data);
+      setUser(data);
+    } catch (error) {
+      navigate("/login");
+    }
+    if (!localStorage.getItem("RSaccessToken")) {
+      navigate("/login");
     }
   };
   useEffect(() => {
@@ -43,10 +47,14 @@ const Home = () => {
   }, []);
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <Loader/>
+    )
   }
   if (isError) {
-    return <h1>Something Went Wrong :(</h1>;
+    return (
+      <h1>Something Wen't Wrong :(</h1>
+    )
   }
   return (
     <div>
