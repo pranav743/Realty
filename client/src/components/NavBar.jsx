@@ -1,6 +1,7 @@
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const location = useLocation();
@@ -32,9 +33,11 @@ const NavBar = () => {
       </div>
       <div className="right">
         <ul className="flex justify-start items-center gap-3">
-          <li className="rounded-xl font-bold border-2 border-solid border-white p-2">
-            Login
-          </li>
+          <Link to="/login">
+            <li className="rounded-xl font-bold border-2 border-solid border-white p-2">
+              Login
+            </li>
+          </Link>
           <li>Connect</li>
         </ul>
       </div>
