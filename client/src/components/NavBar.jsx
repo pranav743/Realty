@@ -1,9 +1,12 @@
 import React from "react";
 import { FaSearch } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
 const NavBar = () => {
+  const location = useLocation()
+
   return (
-    <div className="h-[80px] text-white box-border p-2 px-8 flex justify-between items-center">
+    <div className={`${location.pathname==='/login' || location.pathname==='/new-profile' ?'hidden':''} h-[80px] text-white box-border p-2 px-8 flex justify-between items-center`}>
       <div className="left flex justify-start items-center">
         <ul className="flex justify-start items-center gap-5">
           <li className="text-2xl font-bold border-solid border-r-2 border-white pr-4">

@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "User name is required"],
   },
+  dob: {
+    type: Date,
+    required: false
+  },
   profilePicture: {
     type: String,
     required: false,
