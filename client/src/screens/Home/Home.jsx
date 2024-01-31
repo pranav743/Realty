@@ -6,6 +6,7 @@ import { getUserDetails } from "../../Global/authUtils";
 import Promotion from "./Promotion";
 import HomeSubMenu from "./HomeSubMenu";
 import PropertyFilter from "./PropertyFilter";
+import AllLocations from "./AllLocations";
 
 const Home = () => {
   const [user, setUser] = useState(false);
@@ -31,6 +32,7 @@ const Home = () => {
       <Promotion />
       <HomeSubMenu />
       <PropertyFilter />
+      <AllLocations />
     </div>
   );
 };

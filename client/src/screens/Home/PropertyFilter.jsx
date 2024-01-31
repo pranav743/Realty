@@ -31,7 +31,7 @@ const PropertyFilter = () => {
   const [view, setView] = useState("grid");
 
   return (
-    <div className="p-4 text-white text-xl flex justify-between items-center">
+    <div className="p-4 text-white text-xl flex justify-between items-center sticky top-0 bg-black">
       <div className="flex justify-center items-center gap-3">
         <div className="filter-btn p-2 bg-gray-400 w-fit rounded-md">
           <IoFilter className="" />
