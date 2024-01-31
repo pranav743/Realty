@@ -118,6 +118,26 @@ const addUserProperty = async (userID, propertyID) => {
   }
 };
 
+const getPropertiesByIds = async (req, res) => {
+  try {
+    const propertyIds = req.body.propertyIds;
+
+    // Check if propertyIds is provided
+    if (!propertyIds || !Array.isArray(propertyIds) || propertyIds.length === 0) {
+      return res.status(400).json({ success: false, msg: "Invalid or empty propertyIds array" });
+    }
+
+    // Find properties with the provided IDs
+    const properties = await Property.find({ _id: { $in: propertyIds } });
+
+    return res.json({ success: true, properties });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, err: "Error" });
+  }
+};
+
+
 const mintProperty = async (req, res) => {
   try {
     const data = req.body;
@@ -167,4 +187,5 @@ module.exports = {
   getAllProperties,
   mintProperty,
   getUserProperties,
+  getPropertiesByIds
 };

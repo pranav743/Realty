@@ -18,6 +18,8 @@ router.post("/upload", userController.uploadPhoto);
 router.post("/find", property.findNearestProperties);
 router.post("/mint", property.mintProperty);
 router.post("/add-to-wishlist", userController.addToWishList);
+router.post("/get-properties-by-ids", property.getPropertiesByIds);
+
 
 
 module.exports = router;
