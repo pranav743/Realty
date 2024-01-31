@@ -64,10 +64,16 @@ const PropertyListing = () => {
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setFile(file);
+    // const file = e.target.files[0];
+    // setFile(file);
 
-    setFileArr([...fileArr, e.target.files[0]]);
+    // setFileArr([...fileArr, e.target.files[0]]);
+     const file = e.target.files[0];
+     const reader = new FileReader();
+     reader.readAsDataURL(file);
+     reader.onloadend = () => {
+       setImage(reader.result);
+     };
   };
 
   const handleSubmit = async (e) => {
