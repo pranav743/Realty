@@ -113,7 +113,7 @@ const Property = () => {
           latitude: data[0].location.coordinates[0],
         })
         .then((response) => response.data);
-      console.log(response);
+      // console.log(response);
       setNearby(response);
     } catch (error) {
       console.log(error);

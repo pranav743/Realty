@@ -15,7 +15,7 @@ const NearbyAmenities = ({ latitude, longitude }) => {
     return `${r}, ${g}, ${b}`;
   };
 
-  amenities && console.log(amenities);
+  // amenities && console.log(amenities);
 
   const getAmenities = async (latitude, longitude) => {
     const apiUrl = "https://places.googleapis.com/v1/places:searchNearby";
@@ -53,8 +53,8 @@ const NearbyAmenities = ({ latitude, longitude }) => {
       const response = await axios.post(apiUrl, requestData, { headers });
       const places = response.data;
       setAmenities(places);
-      console.log(places);
-      console.log(response);
+      // console.log(places);
+      // console.log(response);
     } catch (error) {
       console.error("Error fetching amenities:", error);
     }
@@ -64,9 +64,9 @@ const NearbyAmenities = ({ latitude, longitude }) => {
     getAmenities(latitude, longitude);
   }, [latitude, longitude]); // Make sure to include latitude and longitude as dependencies
 
-  useEffect(() => {
-    console.log(amenities);
-  }, [amenities]); // Log amenities whenever it changes
+  // useEffect(() => {
+  //   console.log(amenities);
+  // }, [amenities]); // Log amenities whenever it changes
 
   function calculateDistance(coord1, coord2) {
     const [lat1, lon1] = coord1;
