@@ -11,7 +11,7 @@ const deslugify = (slug) => {
 const findNearestProperties = async (req, res) => {
   try {
     const { latitude, longitude } = req.body;
-
+    console.log(req.body);
     const listOfProperties = await Property.find({
       location: {
         $near: {
@@ -22,7 +22,7 @@ const findNearestProperties = async (req, res) => {
           $maxDistance: 10000,
         },
       },
-    }).limit(10);
+    }).limit(4);
 
     return res.status(200).json({ success: true, data: listOfProperties });
   } catch (error) {
