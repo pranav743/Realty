@@ -10,7 +10,8 @@ import {
   Box,
   VStack,
   Divider,
-  Button, Select
+  Button,
+  Select,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@chakra-ui/react";
@@ -58,6 +59,15 @@ const NewProfile = () => {
     sub_id,
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setIdCardNumber(reader.result);
+    };
+  };
+
   const createUser = async () => {
     try {
       let Userdetails = {
@@ -73,7 +83,7 @@ const NewProfile = () => {
       console.log(Userdetails);
       const res = await axios.post(url + "/register-user", Userdetails);
       console.log(res.data);
-      navigate("/user-profile");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -90,8 +100,8 @@ const NewProfile = () => {
             bg={"dark.500"}
             h={"aotu"}
             w={"70%"}
-            maxW={'450px'}
-            minW={'350px'}
+            maxW={"450px"}
+            minW={"350px"}
             p={5}
             style={{ borderRadius: "15px" }}
           >
@@ -121,30 +131,49 @@ const NewProfile = () => {
                   mb={5}
                 />
                 <SimpleGrid columns={[1, 2]} height={"100%"} gap={3}>
-                {/* <FormLabel>State</FormLabel> */}
-                <Select placeholder='Select State' mb={5} onChange={(e) => setState(e.target.value)}>
-                  <option value="" className="text-black">State</option>
-                  {places.map((place, index) => (
-                    <option key={index} value={place.state} className="text-black">
-                      {place.state}
+                  {/* <FormLabel>State</FormLabel> */}
+                  <Select
+                    placeholder="Select State"
+                    mb={5}
+                    onChange={(e) => setState(e.target.value)}
+                  >
+                    <option value="" className="text-black">
+                      State
                     </option>
-                  ))}
-
-                </Select>
-                {/* <FormLabel>City</FormLabel> */}
-                <Select mb={5} placeholder='Select country' onChange={(e) => setCity(e.target.value)}>
-                  <option value="" className="text-black">City</option>
-                  {state !== "" &&
-                    places
-                      .find((entry) => entry.state === state)
-                      .cities.map((city, index) => {
-                        return (
-                          <option key={index} value={city} className="text-black">
-                            {city}
-                          </option>
-                        );
-                      })}
-                </Select>
+                    {places.map((place, index) => (
+                      <option
+                        key={index}
+                        value={place.state}
+                        className="text-black"
+                      >
+                        {place.state}
+                      </option>
+                    ))}
+                  </Select>
+                  {/* <FormLabel>City</FormLabel> */}
+                  <Select
+                    mb={5}
+                    placeholder="Select country"
+                    onChange={(e) => setCity(e.target.value)}
+                  >
+                    <option value="" className="text-black">
+                      City
+                    </option>
+                    {state !== "" &&
+                      places
+                        .find((entry) => entry.state === state)
+                        .cities.map((city, index) => {
+                          return (
+                            <option
+                              key={index}
+                              value={city}
+                              className="text-black"
+                            >
+                              {city}
+                            </option>
+                          );
+                        })}
+                  </Select>
                 </SimpleGrid>
                 <FormLabel>Enter Birthdate</FormLabel>
                 <Input
@@ -159,8 +188,25 @@ const NewProfile = () => {
                 <Input
                   placeholder="Address"
                   value={details.address}
-                  onChange={(e) => setNumber(e.target.value)}
+                  onChange={(e) => setAddress(e.target.value)}
                   type="text"
+                  mb={5}
+                />
+                <label
+                  htmlFor="aadhar-card"
+                  className="border rounded-md flex items-center justify-center gap-4 cursor-pointer"
+                >
+                  <span className="text-xl px-4 py-2 text-center">
+                    Upload Image
+                  </span>
+                </label>
+                <Input
+                  placeholder="Aadhar card"
+                  name="aadhar_image"
+                  onChange={handleImageChange}
+                  type="file"
+                  id="aadhar-card"
+                  hidden
                 />
               </FormControl>
               <Button onClick={createUser} bg={"brand.pink"} w={"100%"} mt={10}>

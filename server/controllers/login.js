@@ -4,6 +4,26 @@ dotenv.config();
 const findUser = require("../global/findUser");
 const User = require("../models/users");
 
+const { cloudinary } = require("../utils/cloudinary");
+
+async function handleRefreshLogin(refreshToken) {
+  try {
+    const redirectUrl = "http://localhost:5000/api/callback";
+    const oAuth2Client = new OAuth2Client(
+      process.env.CLIENT_ID,
+      process.env.CLIENT_SECRET,
+      redirectUrl
+    );
+    const newTokenResponse = await oAuth2Client.refreshToken(refreshToken);
+    const newAccessToken = newTokenResponse.tokens.id_token;
+
+    return newAccessToken;
+  } catch (err) {
+    console.log("Error in signing in with Google:", err);
+    return err;
+  }
+}
+
 const handleLoginRequest = async (req, res) => {
   try {
     const redirectUrl = process.env.SERVER_URL + "/api/callback";
@@ -54,11 +74,11 @@ const callbackCheck = async (req, res) => {
 
     // Set user credentials in OAuth2 client
     oAuth2Client.setCredentials(userCredentials);
-    
+
     const accessToken = userCredentials.id_token;
     const refreshToken = userCredentials.refresh_token;
 
-    console.log(accessToken);
+    // console.log(accessToken);
 
     // Verifying the ID token
     const ticket = await oAuth2Client.verifyIdToken({
@@ -67,13 +87,13 @@ const callbackCheck = async (req, res) => {
     });
     const payload = ticket.getPayload();
 
-    console.log(payload);
+    // console.log(payload);
 
     const sub_id = payload["sub"];
     const name = payload["name"];
     const email = payload["email"];
     const picture = payload["picture"];
-    console.log(name);
+    // console.log(name);
     const user = await findUser(email);
 
     if (!user) {
@@ -189,10 +209,25 @@ const getUserWithAccessToken = async (req, res) => {
   }
 };
 
+const getImageLink = async (file) => {
+  try {
+    const resp = await cloudinary.uploader.upload(file, {
+      upload_preset: "tsec",
+    });
+    console.log(resp);
+    return resp.url;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const registerUser = async (req, res) => {
   try {
     var data = req.body;
-    console.log(data);
+
+    const link = await getImageLink(data.idCardNumber);
+    data.idCardNumber = link;
+
     const user = new User(data);
     await user.save();
     return res

@@ -7,7 +7,7 @@ import {
   AccordionIcon,
   Box,
   Icon,
-  Button
+  Button,
 } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
@@ -236,17 +236,22 @@ const Profile = () => {
                 <AccordionIcon />
               </AccordionButton>
             </h2>
-            <AccordionPanel>
+            {/* <AccordionPanel>
               {data.donations.length > 0 ? (
                 <div></div>
               ) : (
                 <div>No Donations</div>
               )}
-            </AccordionPanel>
+            </AccordionPanel> */}
           </AccordionItem>
           {/* ... */}
         </Accordion>
-        <Button mt={4} colorScheme='red' width={'100%'} onClick={() => logout()}>
+        <Button
+          mt={4}
+          colorScheme="red"
+          width={"100%"}
+          onClick={() => logout()}
+        >
           Logout
         </Button>
       </div>
