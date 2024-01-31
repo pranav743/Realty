@@ -1,5 +1,9 @@
 const Property = require("../models/properties");
 
+const User = require("../models/users");
+
+const { cloudinary } = require("../utils/cloudinary");
+
 const deslugify = (slug) => {
   return slug.replace(/-/g, " ").replace(/(?:^|\s)\S/g, (a) => a.toUpperCase());
 };
@@ -13,7 +17,7 @@ const findNearestProperties = async (req, res) => {
         $near: {
           $geometry: {
             type: "Point",
-            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+            coordinates: [parseFloat(latitude), parseFloat(longitude)],
           },
           $maxDistance: 10000,
         },
@@ -90,7 +94,39 @@ const getAllProperties = async (req, res) => {
   }
 };
 
+const getImageLink = async (file) => {
+  try {
+    const resp = await cloudinary.uploader.upload(file, {
+      upload_preset: "tsec",
+    });
+    console.log(resp);
+    return resp.url;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const listProperty = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const link = await getImageLink(data.image);
+    data.image = link;
+
+    const property = await Property(data);
+
+    await property.save();
+    return res
+      .status(200)
+      .json({ success: true, msg: "Property Listed SuccessFully" });
+  } catch (error) {
+    console.log(`${error.message} (error)`.red);
+    return res.status(400).json({ success: false, msg: error.message });
+  }
+};
+
 module.exports = {
   findNearestProperties,
   getAllProperties,
+  listProperty,
 };
