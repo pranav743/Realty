@@ -56,6 +56,7 @@ const Dashboard = () => {
       <Table variant="simple">
         <Thead>
           <Tr className="text-xl">
+            <Th>Title</Th>
             <Th>City</Th>
             <Th>State</Th>
             <Th>Location</Th>
@@ -68,6 +69,7 @@ const Dashboard = () => {
           {properties.map((prop, index) => {
             return (
               <Tr>
+                <Td>{prop.title}</Td>
                 <Td>{prop.city}</Td>
                 <Td>{prop.state}</Td>
                 <Td className="flex flex-col gap-2">
