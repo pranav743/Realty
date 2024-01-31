@@ -17,6 +17,7 @@ import Loader from "../../components/Loader";
 const Home = () => {
   const [user, setUser] = useState(false);
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { isError, isLoading, data } = useQuery({
     queryKey: ["/properties/all"],
@@ -30,20 +31,14 @@ const Home = () => {
     },
   });
 
-  const getData = async () => {
-    try {
-      const data = await getUserDetails();
-      console.log(data);
-      setUser(data);
-    } catch (error) {
-      navigate("/login");
-    }
-    if (!localStorage.getItem("RSaccessToken")) {
-      navigate("/login");
+  const getData = () => {
+    if (localStorage.getItem("RSaccessToken")) {
+      setIsLoggedIn(true);
+      return true;
     }
   };
   useEffect(() => {
-    // getData();
+    getData();
   }, []);
 
   if (isLoading) {

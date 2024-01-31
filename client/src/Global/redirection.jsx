@@ -9,7 +9,7 @@ const RedirectionPage = () => {
 
     const {accessToken} = useParams();
     const navigate = useNavigate();
-
+    localStorage.setItem("RSaccessToken", accessToken);
     const getUser = async () => {
         try {
             const data = await axios.post(url + "/anyuser", {accessToken});
