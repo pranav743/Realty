@@ -21,7 +21,7 @@ const PropertyListing = () => {
   const [bedroom, setBedroom] = useState("");
   const [bathroom, setBathroom] = useState("");
   const [area, setArea] = useState("");
-  // const [image, setImage] = useState([]);
+  const [image, setImage] = useState([]);
   const [propertyID, setPropertyID] = useState("");
 
   const [user, setUser] = useState("");
@@ -68,12 +68,12 @@ const PropertyListing = () => {
     // setFile(file);
 
     // setFileArr([...fileArr, e.target.files[0]]);
-     const file = e.target.files[0];
-     const reader = new FileReader();
-     reader.readAsDataURL(file);
-     reader.onloadend = () => {
-       setImage(reader.result);
-     };
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
   };
 
   const handleSubmit = async (e) => {
