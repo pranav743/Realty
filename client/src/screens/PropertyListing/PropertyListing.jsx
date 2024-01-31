@@ -1,15 +1,16 @@
 import { VStack, Text, SimpleGrid, Box } from "@chakra-ui/layout";
 import { FormControl } from "@chakra-ui/form-control";
 import { FormLabel, Input, Textarea, Select, Button } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import axios from "axios";
-
 import { places } from "../newProfile/data";
-
 import { url } from "../../Global/URL";
+import { getUserDetails } from "../../Global/authUtils";
+import { useNavigate } from "react-router-dom";
 
 const PropertyListing = () => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -21,6 +22,25 @@ const PropertyListing = () => {
   const [bathroom, setBathroom] = useState("");
   const [area, setArea] = useState("");
   const [image, setImage] = useState("");
+
+  const [user, setUser] = useState("");
+
+  const getData = async () => {
+    try {
+      const data = await getUserDetails();
+      // console.log(data);
+      setUser(data);
+    } catch (error) {
+      navigate("/login");
+    }
+    if (!localStorage.getItem("RSaccessToken")) {
+      navigate("/login");
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const details = {
     title: title,
@@ -35,6 +55,7 @@ const PropertyListing = () => {
     bathrooms: bathroom,
     area: area,
     image: image,
+    user: user,
   };
 
   const handleImageChange = (e) => {

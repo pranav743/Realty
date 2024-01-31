@@ -15,9 +15,9 @@ const Loader = () => {
         wrapperStyle={{}}
         wrapperClass=""
       />
-      <p style={{ marginTop: '10px' }}>Please Wait</p>
+      <p style={{ marginTop: "10px", color: "white" }}>Please Wait</p>
     </div>
-  )
-}
+  );
+};
 
 export default Loader;
