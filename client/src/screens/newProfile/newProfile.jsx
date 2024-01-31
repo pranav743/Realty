@@ -10,7 +10,7 @@ import {
   Box,
   VStack,
   Divider,
-  Button,
+  Button, Select
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@chakra-ui/react";
@@ -88,8 +88,10 @@ const NewProfile = () => {
         <Center h={"100%"}>
           <Box
             bg={"dark.500"}
-            h={"550px"}
-            w={"350px"}
+            h={"aotu"}
+            w={"70%"}
+            maxW={'450px'}
+            minW={'350px'}
             p={5}
             style={{ borderRadius: "15px" }}
           >
@@ -100,46 +102,68 @@ const NewProfile = () => {
                 fontSize="2xl"
                 fontWeight="bold"
               >
-                Complete Your Profile
+                Welcome, {name}
               </Text>
-              {/* <Box height={"230px"} w={"100%"}>
-                <Center color={"brand.green"} h={"100%"}>
-                  Logo Here
-                </Center>
-              </Box> */}
               <FormControl isRequired color="white">
-                <FormLabel>Name</FormLabel>
-                <Input
-                  mb={5}
-                  placeholder="Enter your name"
-                  value={details.name}
-                />
                 <FormLabel>Mobile Number</FormLabel>
                 <Input
                   mb={5}
                   placeholder="Enter contact number"
                   value={details.contact_no}
                   onChange={(e) => setNumber(e.target.value)}
+                  type="tel"
                 />
                 <FormLabel>Email address</FormLabel>
                 <Input
                   type="email"
                   placeholder="Enter your Email ID"
                   value={details.email}
+                  mb={5}
                 />
-                <FormHelperText mb={5}>
-                  We'll never share your email.
-                </FormHelperText>
+                <SimpleGrid columns={[1, 2]} height={"100%"} gap={3}>
+                {/* <FormLabel>State</FormLabel> */}
+                <Select placeholder='Select State' mb={5} onChange={(e) => setState(e.target.value)}>
+                  <option value="" className="text-black">State</option>
+                  {places.map((place, index) => (
+                    <option key={index} value={place.state} className="text-black">
+                      {place.state}
+                    </option>
+                  ))}
+
+                </Select>
+                {/* <FormLabel>City</FormLabel> */}
+                <Select mb={5} placeholder='Select country' onChange={(e) => setCity(e.target.value)}>
+                  <option value="" className="text-black">City</option>
+                  {state !== "" &&
+                    places
+                      .find((entry) => entry.state === state)
+                      .cities.map((city, index) => {
+                        return (
+                          <option key={index} value={city} className="text-black">
+                            {city}
+                          </option>
+                        );
+                      })}
+                </Select>
+                </SimpleGrid>
                 <FormLabel>Enter Birthdate</FormLabel>
                 <Input
+                  mb={5}
                   placeholder="Select Date and Time"
                   size="md"
                   type="date"
                   value={details.dob}
-                  onChange={(e) => e.target.value}
+                  onChange={(e) => setBirthDate(e.target.value)}
+                />
+                <FormLabel>Address</FormLabel>
+                <Input
+                  placeholder="Address"
+                  value={details.address}
+                  onChange={(e) => setNumber(e.target.value)}
+                  type="text"
                 />
               </FormControl>
-              <Button bg={"brand.pink"} w={"100%"} mt={10}>
+              <Button onClick={createUser} bg={"brand.pink"} w={"100%"} mt={10}>
                 Continue
               </Button>
             </VStack>
