@@ -1,13 +1,16 @@
 import { useState } from "react";
 import React from "react";
 
-const HomeSubMenu = () => {
+const HomeSubMenu = ({ setPage }) => {
   const [tab, setTab] = useState("items");
   return (
     <div className="bg-black flex items-center jutify-start p-4">
       <ul className="text-gray-400 flex justify-start text-xl font-bold gap-5">
         <li
-          onClick={() => setTab("items")}
+          onClick={() => {
+            setTab("items");
+            setPage("items");
+          }}
           className={`p-2 rounded-xl cursor-pointer ${
             tab === "items" && "bg-gray-400 text-white"
           }`}
@@ -15,15 +18,21 @@ const HomeSubMenu = () => {
           Items
         </li>
         <li
-          onClick={() => setTab("analytics")}
+          onClick={() => {
+            setTab("post");
+            setPage("post");
+          }}
           className={`p-2 rounded-xl cursor-pointer ${
-            tab === "analytics" && "bg-gray-400 text-white"
+            tab === "post" && "bg-gray-400 text-white"
           }`}
         >
-          Analytics
+          Post Property
         </li>
         <li
-          onClick={() => setTab("activity")}
+          onClick={() => {
+            setTab("activity");
+            setPage("activity");
+          }}
           className={`p-2 rounded-xl cursor-pointer ${
             tab === "activity" && "bg-gray-400 text-white"
           }`}

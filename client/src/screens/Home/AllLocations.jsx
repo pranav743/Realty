@@ -14,6 +14,7 @@ const AllLocations = ({ data }) => {
               title={location.title}
               price={location.price}
               state={location.state}
+              image={location.image}
             />
           </Link>
         );
