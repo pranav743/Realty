@@ -73,6 +73,7 @@ const PropertyMinting = () => {
   const [area, setArea] = useState("");
   const [image, setImage] = useState([]);
   const [propertyID, setPropertyID] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [user, setUser] = useState("");
   const [file, setFile] = useState();
@@ -123,6 +124,7 @@ const PropertyMinting = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitted(true);
     console.log(details);
     try {
       const res = await axios.post(url + "/mint", details);
@@ -130,6 +132,7 @@ const PropertyMinting = () => {
     } catch (error) {
       console.log(error);
     }
+    setIsSubmitted(false);
   };
 
   return (
@@ -321,7 +324,7 @@ const PropertyMinting = () => {
           </div>
         )}
 
-        <Button bg={"brand.pink"} w={"100%"} my={5} onClick={handleSubmit}>
+        <Button isLoading={isSubmitted} bg={"brand.pink"} w={"100%"} my={5} onClick={handleSubmit}>
           Mint Property
         </Button>
       </FormControl>
