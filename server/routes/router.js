@@ -16,5 +16,7 @@ router.post("/register-user", controllerLogin.registerUser);
 router.post("/upload", userController.uploadPhoto);
 router.post("/find", property.findNearestProperties);
 router.post("/mint", property.mintProperty);
+router.post("/add-to-wishlist", userController.addToWishList);
+
 
 module.exports = router;
