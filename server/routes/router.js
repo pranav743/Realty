@@ -9,6 +9,7 @@ router.get("/login", controllerLogin.handleLoginRequest);
 router.get("/logout", controllerLogin.logoutUser);
 router.get("/properties/all", property.getAllProperties);
 router.get("/images", userController.getPhoto);
+router.get("/userProperties", property.getUserProperties);
 
 router.post("/anyuser", controllerLogin.getUserWithAccessToken);
 router.post("/register-user", controllerLogin.registerUser);
