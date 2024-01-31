@@ -45,6 +45,8 @@ const NewProfile = () => {
   const [idCardNumber, setIdCardNumber] = useState("");
   const [birthDate, setBirthDate] = useState("");
 
+  const [file, setFile] = useState();
+
   const details = {
     name: name,
     email: email,
@@ -61,9 +63,11 @@ const NewProfile = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    setFile(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
+      console.log(file);
       setIdCardNumber(reader.result);
     };
   };
@@ -194,10 +198,12 @@ const NewProfile = () => {
                 />
                 <label
                   htmlFor="aadhar-card"
-                  className="border rounded-md flex items-center justify-center gap-4 cursor-pointer"
+                  className={`border rounded-md flex items-center justify-center gap-4 cursor-pointer ${
+                    file ? "border-green-500" : "border-white"
+                  }`}
                 >
                   <span className="text-xl px-4 py-2 text-center">
-                    Upload Image
+                    {file ? "Change" : "Upload"} Image
                   </span>
                 </label>
                 <Input
@@ -208,8 +214,23 @@ const NewProfile = () => {
                   id="aadhar-card"
                   hidden
                 />
+                {file && (
+                  <div className="mt-2 p-2 text-lg text-center max-w-max self-center">
+                    {file && (
+                      <div className="flex gap-2 items-center text-xl">
+                        <img
+                          src="/images/tick.svg"
+                          alt=""
+                          srcset=""
+                          className="pt-1"
+                        />
+                        Image Uploaded
+                      </div>
+                    )}
+                  </div>
+                )}
               </FormControl>
-              <Button onClick={createUser} bg={"brand.pink"} w={"100%"} mt={10}>
+              <Button onClick={createUser} bg={"brand.pink"} w={"100%"} mt={5}>
                 Continue
               </Button>
             </VStack>
