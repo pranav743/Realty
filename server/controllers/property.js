@@ -144,8 +144,27 @@ const mintProperty = async (req, res) => {
   }
 };
 
+const getUserProperties = async (req, res) => {
+  try {
+    const { userID } = req.query;
+    const user = await User.findById(userID);
+    const properties = [];
+
+    for (let i = 0; i < user.propertiesOwned.length; i++) {
+      const property = await Property.findById(user.propertiesOwned[i]._id);
+      properties.push(property);
+    }
+
+    // console.log(properties);
+    return res.status(200).json({ success: true, properties: properties });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   findNearestProperties,
   getAllProperties,
   mintProperty,
+  getUserProperties,
 };

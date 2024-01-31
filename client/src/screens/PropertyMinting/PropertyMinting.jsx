@@ -1,62 +1,83 @@
 import { VStack, Text, SimpleGrid, Box } from "@chakra-ui/layout";
 import { FormControl } from "@chakra-ui/form-control";
-import { FormLabel, Input, Textarea, Select, Button } from "@chakra-ui/react";
+import {
+  FormLabel,
+  Input,
+  Textarea,
+  Select,
+  Button,
+  useToast,
+} from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 // import { ethers } from "ethers";
-// import abi from "../Realty.json";
 import axios from "axios";
 import { places } from "../newProfile/data";
 import { url } from "../../Global/URL";
 import { getUserDetails } from "../../Global/authUtils";
 import { useNavigate } from "react-router-dom";
 
+import showToast from "../../Global/Toast";
+
 const PropertyMinting = () => {
   //blockchain call starts
 
-  // const [signeer, setsigneer] = useState({
-  //   provider: null,
-  //   signer: null,
-  //   contract: null,
-  // });
+  const [signeer, setsigneer] = useState({
+    provider: null,
+    signer: null,
+    contract: null,
+  });
 
-  // useEffect(() => {
-  //   const connectWallet = async () => {
-  //     const contractAddress = "0xc0be1A1d46A7740d9F31F9EFD19d5E45CDb0c2F6";
-  //     const contractAbi = abi.abi;
-  //     try {
-  //       const { ethereum } = window;
-  //       if (ethereum) {
-  //         const account = await ethereum.request({
-  //           method: "eth_requestAccounts",
-  //         });
-  //       } else {
-  //         console.log("no metamask");
-  //       }
-  //       const provider = new ethers.providers.Web3Provider(ethereum);
-  //       const signer = provider.getSigner();
-  //       const contract = new ethers.Contract(
-  //         contractAddress,
-  //         contractAbi,
-  //         signer
-  //       );
-  //       setsigneer({ provider, signer, contract });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   connectWallet();
-  // }, []);
+  useEffect(() => {
+    const connectWallet = async () => {
+      const contractAddress = "0xc0be1A1d46A7740d9F31F9EFD19d5E45CDb0c2F6";
+      const contractAbi = abi.abi;
+      console.log(contractAbi);
+      try {
+        const { ethereum } = window;
+        if (ethereum) {
+          const account = await ethereum.request({
+            method: "eth_requestAccounts",
+          });
+        } else {
+          console.log("no metamask");
+        }
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractAbi,
+          signer
+        );
+        setsigneer({ provider, signer, contract });
+      } catch (error) {
+        console.log(error);
+      }
 
-  // const { contract } = state;
+      const { contract } = signeer;
 
-  // const MintProperty = async (tokenURI, propertyID) => {
-  //   try {
-  //     const MintedPropID = await contract.mintNFT(tokenURI, propertyID);
-  //     alert("PROPERTY MINTED", MintedPropID);
-  //   } catch (error) {
-  //     console.error("Error fetching batch details:", error);
-  //   }
-  // };
+      console.log("here is the signer",signeer)
+      console.log("contractaddress",contract);
+
+    };
+    connectWallet();
+  }, [signeer]);
+
+  const { contract } = signeer;
+  console.log("here is the signer",signeer)
+  console.log("contractaddress",contract);
+
+  const MintProperty = async (tokenURI, propertyID) => {
+    console.log("contractaddress",contract);
+    console.log("here is the signer",signeer)
+
+
+    try {
+      const MintedPropID = await contract.mintNFT(tokenURI, propertyID);
+      alert("PROPERTY MINTED", MintedPropID);
+    } catch (error) {
+      console.error("Error fetching batch details:", error);
+    }
+  };
 
   //blockchain call ends
 
@@ -77,6 +98,8 @@ const PropertyMinting = () => {
 
   const [user, setUser] = useState("");
   const [file, setFile] = useState();
+
+  const toast = useToast();
 
   const getData = async () => {
     try {
@@ -129,8 +152,11 @@ const PropertyMinting = () => {
     try {
       const res = await axios.post(url + "/mint", details);
       console.log(res.data);
+      showToast(toast, "success", "success", "Property Successfully Minted");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      showToast(toast, "error", "error", error.response.data.msg);
+      // console.log(error);
     }
     setIsSubmitted(false);
   };
@@ -324,7 +350,13 @@ const PropertyMinting = () => {
           </div>
         )}
 
-        <Button isLoading={isSubmitted} bg={"brand.pink"} w={"100%"} my={5} onClick={handleSubmit}>
+        <Button
+          isLoading={isSubmitted}
+          bg={"brand.pink"}
+          w={"100%"}
+          my={5}
+          onClick={handleSubmit}
+        >
           Mint Property
         </Button>
       </FormControl>

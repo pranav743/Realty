@@ -11,10 +11,10 @@ const uploadPhoto = async (req, res) => {
       upload_preset: "tsec",
     });
     console.log(resp);
-    res.json({ msg: "Success" });
+    return res.json({ msg: "Success" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ err: "Error" });
+    return res.status(500).json({ err: "Error" });
   }
 };
 const getPhoto = async (req, res) => {
@@ -91,4 +91,25 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { uploadPhoto, getPhoto };
+const addToWishList = async (req, res) => {
+  try {
+    const { user_id, property_id } = req.body;
+    const user = await User.findById(user_id);
+    if (!user) {
+      return res.status(400).json({ success: false, msg: "No such user exists" });
+    }
+    if (user.wishList.includes(property_id)) {
+      return res.json({ success: false, msg: "Already Added !" });
+    }
+    user.wishList.push(property_id);
+    await user.save();
+
+    return res.json({ success: true, msg: "Property added to wish list !" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, err: "Error" });
+  }
+};
+
+
+module.exports = { uploadPhoto, getPhoto, addToWishList };

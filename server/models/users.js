@@ -7,6 +7,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "User name is required"],
   },
+  role: {
+    type: String,
+    default: "USER"
+  },
+  wishList: [],
   dob: {
     type: Date,
     required: false,
