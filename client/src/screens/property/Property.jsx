@@ -17,6 +17,8 @@ import { GoogleMap, LoadScript, MarkerF, Marker } from "@react-google-maps/api";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Loader from "../../components/Loader";
+import { ethers } from "ethers";
+import abi from "../Realty.json";
 
 // importing other page components
 import LocationCards from "../Home/LocationCards";
@@ -60,8 +62,9 @@ const Property = () => {
 
   const { contract } = state;
 
-  const buyProperty = async (propertyID,price) => {
+  const getProperty = async (propertyID,price) => {
     try {
+      console.log("BUYING PROPERTY")
       const BuyDetails = await contract.buyProperty(propertyID,price);
       alert("PROPERTY BOUGHT");
     } catch (error) {
@@ -247,7 +250,7 @@ const Property = () => {
                   color={"#fff"}
                   bg={"brand.violet"}
                   style={{ borderRadius: "15px" }}
-                  onClick={buyProperty}
+                  onClick={()=>getProperty(Number(data[0].propertyID),Number(data[0].price))}
                 >
                   Buy
                 </Button>

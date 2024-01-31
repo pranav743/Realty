@@ -29,7 +29,7 @@ function App() {
           <Route path="/user-profile" exact element={<Profile />} />
           <Route path={"/upload"} exact element={<Upload />} />
           <Route path={"/mint-property"} exact element={<PropertyMinting />} />
-          <Route path={"/list-property"} exact element={<ListProperties />} />
+          <Route path={"/listed-properties"} exact element={<ListProperties />} />
           <Route path={"/error"} exact element={<Error />} />
           <Route path={"/admin/dashboard"} exact element={<Dashboard />} />
           <Route path={"/room/3D/:id"} exact element={<Room3D />} />
