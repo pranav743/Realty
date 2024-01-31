@@ -40,7 +40,7 @@ const Property = () => {
 
   useEffect(() => {
     const connectWallet = async () => {
-      const contractAddress = "0xc0be1A1d46A7740d9F31F9EFD19d5E45CDb0c2F6";
+      const contractAddress = "0x149D1B28ac0aD75149e3126B109Ee59E72bb7322";
       const contractAbi = abi.abi;
       try {
         const { ethereum } = window;
@@ -67,8 +67,10 @@ const Property = () => {
       console.log("BUYING PROPERTY")
       const BuyDetails = await contract.buyProperty(propertyID,price);
       alert("PROPERTY BOUGHT");
+      showToast(toast, 'Success', 'success', "Property Bought !");
     } catch (error) {
-      console.error("Error fetching batch details:", error);
+      console.error("Error fetching batch details:", error.reason);
+      showToast(toast, 'Error', 'error', error.reason);
     }
   };
 
@@ -250,7 +252,7 @@ const Property = () => {
                   color={"#fff"}
                   bg={"brand.violet"}
                   style={{ borderRadius: "15px" }}
-                  onClick={()=>getProperty(Number(data[0].propertyID),Number(data[0].price))}
+                  onClick={()=>getProperty(Number(data[0].propertyID),Number(data[0].price)*100)}
                 >
                   Buy
                 </Button>

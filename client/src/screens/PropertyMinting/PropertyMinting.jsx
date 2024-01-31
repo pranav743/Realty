@@ -45,7 +45,7 @@ const PropertyMinting = () => {
 
   useEffect(() => {
     const connectWallet = async () => {
-      const contractAddress = "0xbB63f7054DA6eAeD619f5EaFb0A6d3d22837c9A2";
+      const contractAddress = "0x149D1B28ac0aD75149e3126B109Ee59E72bb7322";
       const contractAbi = abi.abi;
       console.log(contractAbi);
       try {
