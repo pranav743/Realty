@@ -4,10 +4,80 @@ import { getUserDetails } from "../../Global/authUtils";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { url } from "../../Global/URL";
+import { ethers } from "ethers";
+import abi from "../Realty.json";
+
+
+
 
 import LocationCards from "../Home/LocationCards";
 
 const ListProperties = () => {
+
+   //BLOCKCHAIN CALL STARTS
+
+  //blockchain call starts
+
+  const [st, setst] = useState({
+    provider: null,
+    signer: null,
+    contract: null,
+  });
+
+  useEffect(() => {
+    const connectWallet = async () => {
+      const contractAddress = "0xbB63f7054DA6eAeD619f5EaFb0A6d3d22837c9A2";
+      const contractAbi = abi.abi;
+      console.log(contractAbi);
+      try {
+        const { ethereum } = window;
+        if (ethereum) {
+          const account = await ethereum.request({method: "eth_requestAccounts",});
+          console.log(account[0]);
+        } else {
+          console.log("no metamask");
+        }
+
+        const provider = new ethers.providers.Web3Provider(ethereum);
+
+        console.log(provider);
+
+        const signer = provider.getSigner();
+
+        console.log("signer",signer);
+
+        const contract = new ethers.Contract(contractAddress,contractAbi,signer);
+        
+        console.log("contract",contract);
+
+        setst({ provider, signer, contract });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const Loaderdata = async()=>{
+        const { contract } = st;
+        console.log("contract",st);    
+        try {
+          const response = await contract.allProperties();
+          settokenURIs(response);
+          alert(tokenURIs);
+        } catch (error) {
+          console.error("Error fetching batch details:", error);
+        }
+    }
+    connectWallet();
+  }, []);
+
+  
+  // const MintProperty = async () => {
+
+  // };
+
+  //blockchain call ends
+
+  //BLOCKCHAIN CALL ENDS
   const [user, setUser] = useState("");
   const [propertiesOwned, setPropertiesOwned] = useState([]);
 
