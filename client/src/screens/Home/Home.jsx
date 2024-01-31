@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { getUserDetails } from "../../Global/authUtils";
 
+// importing components
+import Promotion from "./Promotion";
+import HomeSubMenu from "./HomeSubMenu";
+import PropertyFilter from "./PropertyFilter";
+
 const Home = () => {
   const [user, setUser] = useState(false);
   const navigate = useNavigate();
@@ -12,17 +17,21 @@ const Home = () => {
       console.log(data);
       setUser(data);
     } catch (error) {
-      navigate('/login');
+      navigate("/login");
     }
-    if (!localStorage.getItem("RSaccessToken")){
-      navigate('/login');
+    if (!localStorage.getItem("RSaccessToken")) {
+      navigate("/login");
     }
-  }
+  };
   useEffect(() => {
     // getData();
   }, []);
   return (
-    <div>HOME</div>
+    <div>
+      <Promotion />
+      <HomeSubMenu />
+      <PropertyFilter />
+    </div>
   );
 };
 
