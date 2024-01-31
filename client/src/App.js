@@ -11,6 +11,7 @@ import Wrapper from "./components/Wrapper";
 import RedirectionPage from "./Global/redirection";
 import NavBar from "./components/NavBar";
 import Property from "./screens/property/Property";
+import Dashboard from "./screens/admin/dashboard";
 
 function App() {
   return (
@@ -25,7 +26,9 @@ function App() {
           <Route path="/user-profile" exact element={<Profile />} />
           <Route path={"/upload"} exact element={<Upload />} />
           <Route path={"/error"} exact element={<Error />} />
+          <Route path={"/admin/dashboard"} exact element={<Dashboard/>} />
 
+        
           <Route
             path="/redirection/:accessToken"
             element={<RedirectionPage />}

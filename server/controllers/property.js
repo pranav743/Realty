@@ -7,7 +7,7 @@ const deslugify = (slug) => {
 const findNearestProperties = async (req, res) => {
   try {
     const { latitude, longitude } = req.body;
-
+    console.log(req.body);
     const listOfProperties = await Property.find({
       location: {
         $near: {
@@ -90,7 +90,46 @@ const getAllProperties = async (req, res) => {
   }
 };
 
+const searchNearbyPlaces = async () => {
+  try {
+    const apiUrl = 'https://places.googleapis.com/v1/places:searchNearby';
+    const apiKey = 'AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU';
+
+    const requestData = {
+      includedTypes: ['airport','bus_stop', 'restaurant', 'doctor', 'hospital', 'school'],
+      maxResultCount: 10,
+      // rankPreference: "DISTANCE",
+      locationRestriction: {
+        circle: {
+          center: {
+            latitude: 19.0963747,
+            longitude: 72.9199405
+          },
+          radius: 500.0
+        }
+      }
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': "AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU",
+      'X-Goog-FieldMask': 'places.displayName'
+    };
+
+    const response = await axios.post(apiUrl, requestData, { headers });
+
+    // Handle the response from the Google Places API
+    const places = response.data;
+    console.log(places);
+    return places;
+  } catch (error) {
+    console.error(`${error.message} (error)`);
+    throw error;
+  }
+};
+
 module.exports = {
   findNearestProperties,
   getAllProperties,
+  searchNearbyPlaces
 };
