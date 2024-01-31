@@ -16,9 +16,11 @@ const NavBar = () => {
     >
       <div className="left flex justify-start items-center">
         <ul className="flex justify-start items-center gap-5">
-          <li className="text-2xl font-bold border-solid border-r-2 border-white pr-4">
-            Real-T
-          </li>
+          <Link to="/">
+            <li className="text-2xl font-bold border-solid border-r-2 border-white pr-4">
+              Real-T
+            </li>
+          </Link>
           <li>Buy</li>
           <li>Rent</li>
         </ul>
