@@ -13,6 +13,7 @@ import NavBar from "./components/NavBar";
 import Property from "./screens/property/Property";
 import Dashboard from "./screens/admin/dashboard";
 import PropertyListing from "./screens/PropertyListing/PropertyListing";
+import Room3D from "./components/room3D";
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
           <Route path={"/list-property"} exact element={<PropertyListing />} />
           <Route path={"/error"} exact element={<Error />} />
           <Route path={"/admin/dashboard"} exact element={<Dashboard/>} />
+          <Route path={"/room/3D/:id"} exact element={<Room3D />} />
+          
 
         
           <Route
