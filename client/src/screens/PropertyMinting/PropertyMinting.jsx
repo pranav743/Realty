@@ -9,7 +9,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-// import { ethers } from "ethers";
+import { ethers } from "ethers";
+import abi from "../Realty.json";
 import axios from "axios";
 import { places } from "../newProfile/data";
 import { url } from "../../Global/URL";
@@ -21,62 +22,60 @@ import showToast from "../../Global/Toast";
 const PropertyMinting = () => {
   //blockchain call starts
 
-  // const [signeer, setsigneer] = useState({
-  //   provider: null,
-  //   signer: null,
-  //   contract: null,
-  // });
+  const [st, setst] = useState({
+    provider: null,
+    signer: null,
+    contract: null,
+  });
 
-  // useEffect(() => {
-  //   const connectWallet = async () => {
-  //     const contractAddress = "0xc0be1A1d46A7740d9F31F9EFD19d5E45CDb0c2F6";
-  //     const contractAbi = abi.abi;
-  //     console.log(contractAbi);
-  //     try {
-  //       const { ethereum } = window;
-  //       if (ethereum) {
-  //         const account = await ethereum.request({
-  //           method: "eth_requestAccounts",
-  //         });
-  //       } else {
-  //         console.log("no metamask");
-  //       }
-  //       const provider = new ethers.providers.Web3Provider(ethereum);
-  //       const signer = provider.getSigner();
-  //       const contract = new ethers.Contract(
-  //         contractAddress,
-  //         contractAbi,
-  //         signer
-  //       );
-  //       setsigneer({ provider, signer, contract });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
+  useEffect(() => {
+    const connectWallet = async () => {
+      const contractAddress = "0xbB63f7054DA6eAeD619f5EaFb0A6d3d22837c9A2";
+      const contractAbi = abi.abi;
+      console.log(contractAbi);
+      try {
+        const { ethereum } = window;
+        if (ethereum) {
+          const account = await ethereum.request({method: "eth_requestAccounts",});
+        } else {
+          console.log("no metamask");
+        }
 
-  //     const { contract } = signeer;
+        const provider = new ethers.providers.Web3Provider(ethereum);
 
-  //     console.log("here is the signer",signeer)
-  //     console.log("contractaddress",contract);
+        console.log(provider);
 
-  //   };
-  //   connectWallet();
-  // }, [signeer]);
+        const signer = provider.getSigner();
 
-  // const { contract } = signeer;
-  // console.log("here is the signer",signeer)
-  // console.log("contractaddress",contract);
+        console.log("signer",signer);
 
-  // const MintProperty = async (tokenURI, propertyID) => {
-  //   console.log("contractaddress",contract);
-  //   console.log("here is the signer",signeer)
+        const contract = new ethers.Contract(contractAddress,contractAbi,signer);
+        
+        console.log("contract",contract);
 
-  //   try {
-  //     const MintedPropID = await contract.mintNFT(tokenURI, propertyID);
-  //     alert("PROPERTY MINTED", MintedPropID);
-  //   } catch (error) {
-  //     console.error("Error fetching batch details:", error);
-  //   }
-  // };
+        setst({ provider, signer, contract });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    connectWallet();
+  }, []);
+
+  
+  const MintProperty = async () => {
+    const { contract } = st;
+    console.log("contract",st);
+    
+
+    //addthetoken uri and the propertyid 
+    
+    try {
+      const MintedPropID = await contract.mintNFT("www.pranav.com",58);
+      alert("PROPERTY MINTED", MintedPropID);
+    } catch (error) {
+      console.error("Error fetching batch details:", error);
+    }
+  };
 
   //blockchain call ends
 
@@ -159,7 +158,8 @@ const PropertyMinting = () => {
     }
     setIsSubmitted(false);
   };
-
+ 
+  console.log(st);
   return (
     <VStack mx={200}>
       <Text
@@ -349,13 +349,7 @@ const PropertyMinting = () => {
           </div>
         )}
 
-        <Button
-          isLoading={isSubmitted}
-          bg={"brand.pink"}
-          w={"100%"}
-          my={5}
-          onClick={handleSubmit}
-        >
+        <Button isLoading={isSubmitted} bg={"brand.pink"} w={"100%"} my={5} onClick={()=>MintProperty()}>
           Mint Property
         </Button>
       </FormControl>

@@ -1,22 +1,23 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract Realty is ERC721URIStorage {
+contract Realty{
     
     uint256 public tokenIdCounter = 1;
 
-    mapping(uint256 => string) public tokenURIs; //mapping propertyid to tokenuri
-    mapping(uint256 => bool) public isListed;    // propertyid to true/false
-    mapping(address => uint256[]) public ownedProperties; // address to property.id 
-    mapping(uint=>address[]) public allowners; // past owners of the address
-    mapping(uint256=>bool) public isMinted;
-    
+    mapping(uint256 => string) public tokenURIs;             //mapping propertyid to tokenuri
+    mapping(uint256 => bool) public isListed;                // propertyid to true/false
+    mapping(address => uint256[]) public ownedProperties;   // address to property.id 
+    mapping(uint=>address[]) public allowners;             // past owners of the address
+    mapping(uint256=>bool) public isMinted;                //is minted
+    mapping(address=>uint256) public safemint;            //safemin (address to proid) 
+    mapping(uint256=>string) public setTokenURI;          // propid to uri
+    mapping(uint256=>address) public ownerof;            
+
     uint256[] public isListedArray;
     uint256[] public AllProperties;
     
-    constructor() ERC721("REALTY","RLT") {}
 
     function mintNFT(
         string memory tokenURI,
@@ -26,23 +27,22 @@ contract Realty is ERC721URIStorage {
         require(!isMinted[propertyID],"PROPERTY ALREADY MINTED");
         
         tokenIdCounter = tokenIdCounter + 1;
-        _safeMint(msg.sender, propertyID);
-        _setTokenURI(propertyID,tokenURI);
-       
+        safemint[msg.sender] = propertyID;
+        setTokenURI[propertyID]=tokenURI;
         tokenURIs[propertyID]=tokenURI;
         isMinted[propertyID]=true;
         ownedProperties[msg.sender].push(propertyID);
-        
+        ownerof[propertyID]=msg.sender;
         allowners[propertyID].push(msg.sender);
-
         AllProperties.push(propertyID);
 
         return propertyID;
     }
 
-
+    
     function List_Property(uint256 propertyID) external {
-        require(ownerOf(propertyID) == msg.sender, "Not the owner");
+
+        require(ownerof[propertyID] == msg.sender, "Not the owner");
         isListedArray.push(propertyID);
         isListed[propertyID]=true;
     }
@@ -59,8 +59,10 @@ contract Realty is ERC721URIStorage {
 
             return TotalTokenURIs;
     }
+    
 
-        function allListedProperties() public view returns (string[] memory) {
+
+    function allListedProperties() public view returns (string[] memory) {
             
             uint256 listedCount = isListedArray.length;
 
@@ -72,8 +74,22 @@ contract Realty is ERC721URIStorage {
             }
 
             return listedTokenURIs;
+    }
+
+    function mintedPropertiesByOwner(address _owner) public view returns (string[] memory) {
+        uint256[] memory properties = ownedProperties[_owner];
+        string[] memory mintedTokenURIs = new string[](properties.length);
+        uint256 mintedIndex = 0;
+
+        for (uint256 i = 0; i < properties.length; i++) {
+            if (isMinted[properties[i]] && !isListed[properties[i]]) {
+                mintedTokenURIs[mintedIndex] = tokenURIs[properties[i]];
+                mintedIndex++;
+            }
         }
 
+        return mintedTokenURIs;
+    }   
 
     function allPropertiesOwnedBy(address _owner) public view returns (string[] memory) {
         uint256[] memory properties = ownedProperties[_owner];
@@ -84,26 +100,35 @@ contract Realty is ERC721URIStorage {
         return ownedTokenURIs;
     }
     
-        function buyProperty(uint256 propertyID, uint256 price) external payable {
-            
-            require(isListed[propertyID], "Properties Not Listed");
+    function buyProperty(uint256 propertyID, uint256 price) external payable {
+            require(isListed[propertyID], "Property not listed");
             require(msg.value >= price, "Insufficient funds");
-            require(ownerOf(propertyID) != msg.sender, "Owner cannot buy their own property");
+            require(ownerof[propertyID] != msg.sender, "Owner cannot buy their own property");
 
-            address seller = ownerOf(propertyID);
-            
-            _transfer(seller, msg.sender, propertyID);
+            address seller = ownerof[propertyID];
 
-            payable(seller).transfer(price);
+            safemint[msg.sender] = propertyID; // Update safeMint mapping for new owner
+            delete safemint[seller]; // Remove property ID from old owner
 
+            payable(seller).transfer(price); // Transfer the price to the seller
+
+            // Transfer any excess funds back to the buyer
+            payable(msg.sender).transfer(msg.value - price);
+
+            // Transfer ownership of the property
+            ownerof[propertyID] = msg.sender;
+
+            // Add the property to the list of owned properties for the new owner
             ownedProperties[msg.sender].push(propertyID);
-                             
+
+            // Add the new owner to the list of all owners of the property
             allowners[propertyID].push(msg.sender);
 
-            isListed[propertyID]=false; 
-            
-            removeProperty(seller,propertyID);
+            // Mark the property as no longer listed
+            isListed[propertyID] = false;
 
+            // Remove the property from the seller's list of owned properties
+            removeProperty(seller, propertyID);
         }
 
         function removeProperty(address owner, uint256 propertyId) public {
@@ -116,5 +141,6 @@ contract Realty is ERC721URIStorage {
             }
         }
     }
+
 
 } 

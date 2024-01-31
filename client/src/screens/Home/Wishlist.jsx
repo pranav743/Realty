@@ -15,7 +15,7 @@ const Wishlist = ({ data, layout }) => {
       } p-4`}
     >
       {/* {JSON.stringify(data.data.properties)} */}
-      {data.data.properties.map((property, index) => {
+      {data.map((property, index) => {
         return (
           <span
             onClick={() => {
