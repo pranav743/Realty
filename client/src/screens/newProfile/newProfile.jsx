@@ -4,7 +4,14 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { bloodgroup, places } from "./data";
 import { url } from "../../Global/URL";
-import { Center, SimpleGrid, Box, VStack, Divider, Button } from "@chakra-ui/react";
+import {
+  Center,
+  SimpleGrid,
+  Box,
+  VStack,
+  Divider,
+  Button,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@chakra-ui/react";
 import {
@@ -20,21 +27,22 @@ const NewProfile = () => {
   const { colors } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
-  // const queryParams = new URLSearchParams(location.search);
-  // const encodedUserInfo = queryParams.get("userInfo");
-  // const userInfo = JSON.parse(decodeURIComponent(encodedUserInfo));
-  // const name = userInfo.name;
-  // const email = userInfo.email;
-  // const profilePicture = userInfo.profilePicture;
-  // const sub_id = userInfo.sub_id;
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const queryParams = new URLSearchParams(location.search);
+  const encodedUserInfo = queryParams.get("userInfo");
+  const userInfo = JSON.parse(decodeURIComponent(encodedUserInfo));
+  const name = userInfo.name;
+  const email = userInfo.email;
+  const profilePicture = userInfo.profilePicture;
+  const sub_id = userInfo.sub_id;
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
   const [address, setAddress] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
   const [idCardNumber, setIdCardNumber] = useState("");
+  const [birthDate, setBirthDate] = useState("");
 
   const details = {
     name: name,
@@ -45,8 +53,9 @@ const NewProfile = () => {
     city: city,
     bloodType: bloodGroup,
     idCardNumber: idCardNumber,
-    // profilePicture,
-    // sub_id,
+    dob: birthDate,
+    profilePicture,
+    sub_id,
   };
 
   const createUser = async () => {
@@ -100,11 +109,24 @@ const NewProfile = () => {
               </Box> */}
               <FormControl isRequired color="white">
                 <FormLabel>Name</FormLabel>
-                <Input mb={5} placeholder="Enter your name" />
+                <Input
+                  mb={5}
+                  placeholder="Enter your name"
+                  value={details.name}
+                />
                 <FormLabel>Mobile Number</FormLabel>
-                <Input mb={5} placeholder="Enter contact number" />
+                <Input
+                  mb={5}
+                  placeholder="Enter contact number"
+                  value={details.contact_no}
+                  onChange={(e) => setNumber(e.target.value)}
+                />
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" placeholder="Enter your Email ID" />
+                <Input
+                  type="email"
+                  placeholder="Enter your Email ID"
+                  value={details.email}
+                />
                 <FormHelperText mb={5}>
                   We'll never share your email.
                 </FormHelperText>
@@ -113,16 +135,18 @@ const NewProfile = () => {
                   placeholder="Select Date and Time"
                   size="md"
                   type="date"
-                  colorScheme="red"
+                  value={details.dob}
+                  onChange={(e) => e.target.value}
                 />
               </FormControl>
-              <Button bg={'brand.pink'} w={'100%'} mt={10}>Continue</Button>
+              <Button bg={"brand.pink"} w={"100%"} mt={10}>
+                Continue
+              </Button>
             </VStack>
           </Box>
         </Center>
       </Box>
     </SimpleGrid>
-  
   );
 };
 
