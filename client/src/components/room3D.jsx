@@ -10,7 +10,7 @@ function getRandomInteger(min, max) {
 
 const Room3D = () => {
   const { id } = useParams();
-  var randomInt = getRandomInteger(1, 2);
+  var randomInt = getRandomInteger(1, 3);
   const envMap = useEnvironment({
     files: `/Environments/room${randomInt}.hdr`,
   });

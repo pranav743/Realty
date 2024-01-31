@@ -2,14 +2,64 @@ import { VStack, Text, SimpleGrid, Box } from "@chakra-ui/layout";
 import { FormControl } from "@chakra-ui/form-control";
 import { FormLabel, Input, Textarea, Select, Button } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-
+// import { ethers } from "ethers";
+// import abi from "../Realty.json";
 import axios from "axios";
 import { places } from "../newProfile/data";
 import { url } from "../../Global/URL";
 import { getUserDetails } from "../../Global/authUtils";
 import { useNavigate } from "react-router-dom";
 
-const PropertyListing = () => {
+const PropertyMinting = () => {
+  //blockchain call starts
+
+  // const [signeer, setsigneer] = useState({
+  //   provider: null,
+  //   signer: null,
+  //   contract: null,
+  // });
+
+  // useEffect(() => {
+  //   const connectWallet = async () => {
+  //     const contractAddress = "0xc0be1A1d46A7740d9F31F9EFD19d5E45CDb0c2F6";
+  //     const contractAbi = abi.abi;
+  //     try {
+  //       const { ethereum } = window;
+  //       if (ethereum) {
+  //         const account = await ethereum.request({
+  //           method: "eth_requestAccounts",
+  //         });
+  //       } else {
+  //         console.log("no metamask");
+  //       }
+  //       const provider = new ethers.providers.Web3Provider(ethereum);
+  //       const signer = provider.getSigner();
+  //       const contract = new ethers.Contract(
+  //         contractAddress,
+  //         contractAbi,
+  //         signer
+  //       );
+  //       setsigneer({ provider, signer, contract });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   connectWallet();
+  // }, []);
+
+  // const { contract } = state;
+
+  // const MintProperty = async (tokenURI, propertyID) => {
+  //   try {
+  //     const MintedPropID = await contract.mintNFT(tokenURI, propertyID);
+  //     alert("PROPERTY MINTED", MintedPropID);
+  //   } catch (error) {
+  //     console.error("Error fetching batch details:", error);
+  //   }
+  // };
+
+  //blockchain call ends
+
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -23,11 +73,10 @@ const PropertyListing = () => {
   const [area, setArea] = useState("");
   const [image, setImage] = useState([]);
   const [propertyID, setPropertyID] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [user, setUser] = useState("");
   const [file, setFile] = useState();
-
-  const [fileArr, setFileArr] = useState([]);
 
   const getData = async () => {
     try {
@@ -53,22 +102,19 @@ const PropertyListing = () => {
     city: city,
     state: state,
     location: {
-      coordinates: [Number(longitude), Number(latitude)],
+      coordinates: [Number(latitude), Number(longitude)],
     },
     bedrooms: bedroom,
     bathrooms: bathroom,
     area: area,
-    image: fileArr,
+    image: image,
     user: user,
     propertyID: propertyID,
   };
 
   const handleImageChange = (e) => {
-    // const file = e.target.files[0];
-    // setFile(file);
-
-    // setFileArr([...fileArr, e.target.files[0]]);
     const file = e.target.files[0];
+    setFile(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -78,6 +124,7 @@ const PropertyListing = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitted(true);
     console.log(details);
     try {
       const res = await axios.post(url + "/mint", details);
@@ -85,23 +132,7 @@ const PropertyListing = () => {
     } catch (error) {
       console.log(error);
     }
-
-    // for (let i = 0; i < fileArr.length; i++) {
-    //   const reader = new FileReader();
-    //   reader.readAsDataURL(fileArr[i]);
-    //   reader.onloadend = () => {
-    //     fileArrEncoded.push(reader.result);
-    //   };
-    // }
-    // setFileArr(fileArrEncoded);
-
-    // try {
-    //   console.log(fileArr);
-    //   // const res = await axios.post(url + "/mint", details);
-    //   // console.log(res.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    setIsSubmitted(false);
   };
 
   return (
@@ -293,7 +324,7 @@ const PropertyListing = () => {
           </div>
         )}
 
-        <Button bg={"brand.pink"} w={"100%"} my={5} onClick={handleSubmit}>
+        <Button isLoading={isSubmitted} bg={"brand.pink"} w={"100%"} my={5} onClick={handleSubmit}>
           Mint Property
         </Button>
       </FormControl>
@@ -301,4 +332,4 @@ const PropertyListing = () => {
   );
 };
 
-export default PropertyListing;
+export default PropertyMinting;

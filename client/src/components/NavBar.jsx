@@ -43,7 +43,7 @@ const NavBar = () => {
       } h-[80px] text-white box-border p-2 px-8 bg-black flex justify-between items-center`}
     >
       <div className="left flex justify-start items-center">
-        <ul className="flex justify-start items-center gap-5">
+        <ul className="flex justify-start items-center gap-10">
           <Link to="/">
             <li className="text-2xl font-bold border-solid border-r-2 border-white pr-4">
               Real-T
@@ -51,6 +51,7 @@ const NavBar = () => {
           </Link>
           <li>Buy</li>
           <li>Rent</li>
+          {isLoggedIn && <li style={{cursor: 'pointer'}} onClick={()=> window.location.href = "/mint-property"}>List Property</li>}
         </ul>
       </div>
       <div className="middle relative">
@@ -95,6 +96,9 @@ const NavBar = () => {
                 <MenuDivider />
                 <Link to="/profile">
                   <MenuItem color={"black"}>Your Details</MenuItem>
+                </Link>
+                <Link to="/listed-properties">
+                  <MenuItem color={"black"}>My Properties</MenuItem>
                 </Link>
                 <MenuItem onClick={() => logout()} color={"black"}>
                   Logout
