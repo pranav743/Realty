@@ -11,6 +11,7 @@ import Wrapper from "./components/Wrapper";
 import RedirectionPage from "./Global/redirection";
 import NavBar from "./components/NavBar";
 import Property from "./screens/property/Property";
+import PropertyListing from "./screens/PropertyListing/PropertyListing";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/new-profile" exact element={<NewProfile />} />
           <Route path="/user-profile" exact element={<Profile />} />
           <Route path={"/upload"} exact element={<Upload />} />
+          <Route path={"/list-property"} exact element={<PropertyListing />} />
           <Route path={"/error"} exact element={<Error />} />
 
           <Route
