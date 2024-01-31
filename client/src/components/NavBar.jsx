@@ -97,6 +97,9 @@ const NavBar = () => {
                 <Link to="/profile">
                   <MenuItem color={"black"}>Your Details</MenuItem>
                 </Link>
+                <Link to="/listed-properties">
+                  <MenuItem color={"black"}>My Properties</MenuItem>
+                </Link>
                 <MenuItem onClick={() => logout()} color={"black"}>
                   Logout
                 </MenuItem>
