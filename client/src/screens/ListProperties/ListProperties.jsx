@@ -57,13 +57,21 @@ const ListProperties = () => {
           <div className="flex flex-wrap gap-10">
             {propertiesOwned.map((prop, index) => {
               return (
-                <LocationCards
-                  title={prop.title}
-                  price={prop.price}
-                  state={prop.state}
-                  image={prop.image}
-                  layout="grid"
-                />
+                <span
+                  onClick={() => {
+                    window.location.href = `/property/${prop._id}`;
+                  }}
+                >
+                  <LocationCards
+                    key={index}
+                    id={prop._id}
+                    title={prop.title}
+                    price={prop.price}
+                    state={prop.state}
+                    image={prop.image}
+                    layout="grid"
+                  />
+                </span>
               );
             })}
           </div>
