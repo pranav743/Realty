@@ -22,14 +22,8 @@ const propertySchema = new mongoose.Schema({
     required: true,
   },
   location: {
-    latitude: {
-      type: Number,
-      required: true,
-    },
-    longitude: {
-      type: Number,
-      required: true,
-    },
+    type: { type: String, default: "Point" },
+    coordinates: [Number],
   },
   bedrooms: {
     type: Number,
@@ -48,6 +42,8 @@ const propertySchema = new mongoose.Schema({
     default: true,
   },
 });
+
+propertySchema.index({ location: "2dsphere" });
 
 const Property = mongoose.model("Property", propertySchema);
 
