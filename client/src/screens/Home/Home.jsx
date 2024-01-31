@@ -31,50 +31,54 @@ const Home = () => {
     contract: null,
   });
 
-  useEffect(() => {
-    const connectWallet = async () => {
-      const contractAddress = "0xbB63f7054DA6eAeD619f5EaFb0A6d3d22837c9A2";
-      const contractAbi = abi.abi;
-      console.log(contractAbi);
-      try {
-        const { ethereum } = window;
-        if (ethereum) {
-          const account = await ethereum.request({method: "eth_requestAccounts",});
-        } else {
-          console.log("no metamask");
-        }
-
-        const provider = new ethers.providers.Web3Provider(ethereum);
-
-        console.log(provider);
-
-        const signer = provider.getSigner();
-
-        console.log("signer",signer);
-
-        const contract = new ethers.Contract(contractAddress,contractAbi,signer);
-        
-        console.log("contract",contract);
-
-        setst({ provider, signer, contract });
-      } catch (error) {
-        console.log(error);
+  const connectWallet = async () => {
+    const contractAddress = "0xbB63f7054DA6eAeD619f5EaFb0A6d3d22837c9A2";
+    const contractAbi = abi.abi;
+    console.log(contractAbi);
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const account = await ethereum.request({method: "eth_requestAccounts",});
+      } else {
+        console.log("no metamask");
       }
-    };
 
-    const Loaderdata = async()=>{
-        const { contract } = st;
-        console.log("contract",st);    
-        try {
-          const response = await contract.allProperties();
-          settokenURIs(response);
-          alert(tokenURIs);
-        } catch (error) {
-          console.error("Error fetching batch details:", error);
-        }
+      const provider = new ethers.providers.Web3Provider(ethereum);
+
+      console.log(provider);
+
+      const signer = provider.getSigner();
+
+      console.log("signer",signer);
+
+      const contract = new ethers.Contract(contractAddress,contractAbi,signer);
+      
+      console.log("contract",contract);
+
+      setst({ provider, signer, contract });
+      Loaderdata(contract);
+    } catch (error) {
+      console.log(error);
     }
-    connectWallet();
-    Loaderdata();
+  };
+
+  const Loaderdata = async(contract)=>{
+
+      console.log("contract",st);    
+      try {
+        const response = await contract.allProperties();
+        console.log("RESPONSE", response);
+        settokenURIs(response);
+        alert(tokenURIs);
+      } catch (error) {
+        console.error("Error fetching batch details:", error);
+      }
+  }
+
+  useEffect(() => {
+    
+    // connectWallet();
+    console.log("USEEFFECT FINISHED");
   }, []);
 
   

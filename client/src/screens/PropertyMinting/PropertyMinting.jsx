@@ -20,6 +20,21 @@ import { useNavigate } from "react-router-dom";
 import showToast from "../../Global/Toast";
 
 const PropertyMinting = () => {
+
+  const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [bedroom, setBedroom] = useState("");
+  const [bathroom, setBathroom] = useState("");
+  const [area, setArea] = useState("");
+  const [image, setImage] = useState([]);
+  const [propertyID, setPropertyID] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
   //blockchain call starts
 
   const [st, setst] = useState({
@@ -39,6 +54,7 @@ const PropertyMinting = () => {
           const account = await ethereum.request({
             method: "eth_requestAccounts",
           });
+          console.log("ACCOUNT: ",account[0]);
         } else {
           console.log("no metamask");
         }
@@ -68,35 +84,27 @@ const PropertyMinting = () => {
   }, []);
 
   const MintProperty = async () => {
+    setIsSubmitted(true);
     const { contract } = st;
     console.log("contract", st);
 
     //addthetoken uri and the propertyid
 
     try {
-      const MintedPropID = await contract.mintNFT("www.pranav.com", 58);
-      alert("PROPERTY MINTED", MintedPropID);
+      const MintedPropID = await contract.mintNFT(url+ `?propertyID=${propertyID}`,propertyID);
+      showToast(toast, 'success','success', `NFT Minted !`);
+      handleSubmit();
+      showToast(toast, 'success','success', "Property Listed !");
     } catch (error) {
       console.error("Error fetching batch details:", error);
     }
+    setIsSubmitted(false);
+
   };
 
   //blockchain call ends
 
-  const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [bedroom, setBedroom] = useState("");
-  const [bathroom, setBathroom] = useState("");
-  const [area, setArea] = useState("");
-  const [image, setImage] = useState([]);
-  const [propertyID, setPropertyID] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  
 
   const [user, setUser] = useState("");
   const [file, setFile] = useState();
@@ -147,8 +155,8 @@ const PropertyMinting = () => {
     };
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    // e.preventDefault();
     setIsSubmitted(true);
     console.log(details);
     try {
