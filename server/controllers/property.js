@@ -137,6 +137,29 @@ const getPropertiesByIds = async (req, res) => {
   }
 };
 
+const getPropertiesByID = async (req, res) => {
+  try {
+    const propertyIds = req.body.propertyIds;
+
+    // Check if propertyIds is provided
+    if (!propertyIds || !Array.isArray(propertyIds) || propertyIds.length === 0) {
+      return res.status(400).json({ success: false, msg: "Invalid or empty propertyIds array" });
+    }
+
+    // Convert propertyIds to Numbers
+    const numericPropertyIds = propertyIds.map(id => parseInt(id));
+
+    // Find properties with the provided IDs
+    const properties = await Property.find({ propertyID: { $in: numericPropertyIds } });
+
+    return res.json({ success: true, properties });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, err: "Error" });
+  }
+};
+
+
 
 const mintProperty = async (req, res) => {
   try {
@@ -187,5 +210,6 @@ module.exports = {
   getAllProperties,
   mintProperty,
   getUserProperties,
-  getPropertiesByIds
+  getPropertiesByIds,
+  getPropertiesByID
 };
