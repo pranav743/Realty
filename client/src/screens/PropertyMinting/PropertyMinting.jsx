@@ -54,6 +54,7 @@ const PropertyMinting = () => {
           const account = await ethereum.request({
             method: "eth_requestAccounts",
           });
+          console.log("ACCOUNT: ",account[0]);
         } else {
           console.log("no metamask");
         }
