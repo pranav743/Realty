@@ -43,7 +43,7 @@ const Home = () => {
     }
   };
   useEffect(() => {
-    // getData();
+    getData();
   }, []);
 
   if (isLoading) {
@@ -60,8 +60,8 @@ const Home = () => {
     <div>
       <Promotion />
       <HomeSubMenu />
-      <PropertyFilter />
-      <AllLocations />
+      <PropertyFilter setLayout={setLayout} />
+      <AllLocations data={data} layout={layout} />
     </div>
   );
 };

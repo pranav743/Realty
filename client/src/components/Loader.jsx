@@ -1,21 +1,23 @@
 import React from 'react';
-import { Hearts } from 'react-loader-spinner';
+import { MutatingDots } from 'react-loader-spinner';
 
 const Loader = () => {
   return (
-    <div style={{height: '100%', width: '100%', display:'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
-      <Hearts
-      height="80"
-      width="80"
-      color="red"
-      ariaLabel="hearts-loading"
-      wrapperStyle={{}}
-      wrapperClass=""
-      visible={true}
+    <div style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+      <MutatingDots
+        visible={true}
+        height="100"
+        width="100"
+        color="#4e7cff"
+        secondaryColor="#f65164"
+        radius="12.5"
+        ariaLabel="mutating-dots-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
       />
-      <p style={{marginTop: '10px'}}>Please Wait</p>
+      <p style={{ marginTop: "10px", color: "white" }}>Please Wait</p>
     </div>
-  )
-}
+  );
+};
 
 export default Loader;

@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   },
   dob: {
     type: Date,
-    required: false
+    required: false,
   },
   profilePicture: {
     type: String,
@@ -49,7 +49,8 @@ const userSchema = new mongoose.Schema({
     default: Date.now(),
   },
   propertiesOwned: {
-    type: [Property],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Property",
   },
 });
 

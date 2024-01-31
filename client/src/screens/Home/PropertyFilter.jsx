@@ -18,7 +18,7 @@ import {
   background,
 } from "@chakra-ui/react";
 
-const PropertyFilter = () => {
+const PropertyFilter = ({ setLayout }) => {
   const filterOptions = [
     "Price Low to High",
     "Price High to Low",
@@ -81,7 +81,10 @@ const PropertyFilter = () => {
           className={`p-2 cursor-pointer ${
             view === "list" ? "bg-gray-400 text-white" : "text-gray-400"
           } rounded-md`}
-          onClick={() => setView("list")}
+          onClick={() => {
+            setView("list");
+            setLayout("list");
+          }}
         >
           <FaList className={``} />
         </div>
@@ -89,7 +92,10 @@ const PropertyFilter = () => {
           className={`p-2 cursor-pointer ${
             view === "grid" ? "bg-gray-400 text-white" : "text-gray-400"
           } rounded-md`}
-          onClick={() => setView("grid")}
+          onClick={() => {
+            setView("grid");
+            setLayout("grid");
+          }}
         >
           <CiGrid41 className={``} />
         </div>

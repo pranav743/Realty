@@ -1,5 +1,9 @@
 const Property = require("../models/properties");
 
+const User = require("../models/users");
+
+const { cloudinary } = require("../utils/cloudinary");
+
 const deslugify = (slug) => {
   return slug.replace(/-/g, " ").replace(/(?:^|\s)\S/g, (a) => a.toUpperCase());
 };
@@ -7,18 +11,18 @@ const deslugify = (slug) => {
 const findNearestProperties = async (req, res) => {
   try {
     const { latitude, longitude } = req.body;
-
+    console.log(req.body);
     const listOfProperties = await Property.find({
       location: {
         $near: {
           $geometry: {
             type: "Point",
-            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+            coordinates: [parseFloat(latitude), parseFloat(longitude)],
           },
           $maxDistance: 10000,
         },
       },
-    }).limit(10);
+    }).limit(4);
 
     return res.status(200).json({ success: true, data: listOfProperties });
   } catch (error) {
@@ -90,7 +94,58 @@ const getAllProperties = async (req, res) => {
   }
 };
 
+const getImageLink = async (file) => {
+  try {
+    const resp = await cloudinary.uploader.upload(file, {
+      upload_preset: "tsec",
+    });
+    // console.log(resp);
+    return resp.url;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const addUserProperty = async (userID, propertyID) => {
+  try {
+    const user = await User.findById(userID);
+    user.propertiesOwned.push(propertyID);
+    await user.save();
+
+    console.log("User properties updated successfully");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const listProperty = async (req, res) => {
+  try {
+    const data = req.body;
+    const user = data.user;
+
+    const link = await getImageLink(data.image);
+    data.image = link;
+
+    const property = await Property(data);
+
+    const propertyResult = await property.save();
+    // console.log(propertyResult);
+
+    const propertyID = propertyResult._id;
+
+    await addUserProperty(user._id, propertyID);
+
+    return res
+      .status(200)
+      .json({ success: true, msg: "Property Listed SuccessFully" });
+  } catch (error) {
+    console.log(`${error.message} (error)`.red);
+    return res.status(400).json({ success: false, msg: error.message });
+  }
+};
+
 module.exports = {
   findNearestProperties,
   getAllProperties,
+  listProperty,
 };
