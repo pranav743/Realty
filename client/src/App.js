@@ -11,6 +11,7 @@ import Wrapper from "./components/Wrapper";
 import RedirectionPage from "./Global/redirection";
 import NavBar from "./components/NavBar";
 import Property from "./screens/property/Property";
+import Dashboard from "./screens/admin/dashboard";
 import PropertyListing from "./screens/PropertyListing/PropertyListing";
 
 function App() {
@@ -27,7 +28,9 @@ function App() {
           <Route path={"/upload"} exact element={<Upload />} />
           <Route path={"/list-property"} exact element={<PropertyListing />} />
           <Route path={"/error"} exact element={<Error />} />
+          <Route path={"/admin/dashboard"} exact element={<Dashboard/>} />
 
+        
           <Route
             path="/redirection/:accessToken"
             element={<RedirectionPage />}
