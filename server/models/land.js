@@ -31,14 +31,6 @@ const landSchema = new mongoose.Schema({
       required: true,
     },
   },
-  bedrooms: {
-    type: Number,
-    required: true,
-  },
-  bathrooms: {
-    type: Number,
-    required: true,
-  },
   area: {
     type: Number,
     required: true,
