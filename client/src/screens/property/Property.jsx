@@ -95,10 +95,13 @@ const Property = () => {
               minW={"300px"}
               w={"100%"}
               maxW={"500px"}
-              bg="brand.violet"
+              // bg="brand.violet"
               style={{ borderRadius: "20px", overflow: "hidden" }}
             >
-              <LoadScript googleMapsApiKey="AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU">
+              <LoadScript
+                googleMapsApiKey="AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU"
+                loadingElement={<Loader />}
+              >
                 <GoogleMap
                   mapContainerStyle={{
                     width: "100%",
