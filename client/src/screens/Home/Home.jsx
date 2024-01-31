@@ -6,6 +6,7 @@ import Promotion from "./Promotion";
 import HomeSubMenu from "./HomeSubMenu";
 import PropertyFilter from "./PropertyFilter";
 import AllLocations from "./AllLocations";
+import Wishlist from "./Wishlist";
 
 // Requesting
 import axios from "axios";
@@ -15,6 +16,7 @@ import { getUserDetails } from "../../Global/authUtils";
 import Loader from "../../components/Loader";
 
 const Home = () => {
+  const [wishListData,setWishListData] = useState()
   // const [blockdata,setblockdata]=useState();
 
   //BLOCKCHAIN CALL STARTS
@@ -72,7 +74,7 @@ const Home = () => {
       const temp = await axios
         .get(url + `/properties/all`)
         .then((response) => response.data.data);
-      console.log(temp);
+      // console.log(temp);
       return temp;
     },
   });
@@ -82,8 +84,12 @@ const Home = () => {
       const data = await getUserDetails();
       console.log(data);
       setUser(data);
+      const w = await axios.post(url+"/get-properties-by-ids", {propertyIds: data.wishList});
+      console.log(w);
+      setWishListData(w)
     } catch (error) {
-      navigate("/login");
+      console.log(error);
+      // navigate("/login");
     }
     if (!localStorage.getItem("RSaccessToken")) {
       navigate("/login");
@@ -106,6 +112,8 @@ const Home = () => {
       <PropertyFilter setLayout={setLayout} />
       {page === "cites" &&
         (isLoading ? <Loader /> : <AllLocations data={data} layout={layout} />)}
+        {page === "wishlist" &&
+        (isLoading ? <Loader /> : <Wishlist data={wishListData} layout={layout} />)}
     </div>
   );
 };
