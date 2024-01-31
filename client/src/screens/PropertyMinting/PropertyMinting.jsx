@@ -1,6 +1,13 @@
 import { VStack, Text, SimpleGrid, Box } from "@chakra-ui/layout";
 import { FormControl } from "@chakra-ui/form-control";
-import { FormLabel, Input, Textarea, Select, Button } from "@chakra-ui/react";
+import {
+  FormLabel,
+  Input,
+  Textarea,
+  Select,
+  Button,
+  useToast,
+} from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import abi from "../Realty.json";
@@ -9,6 +16,8 @@ import { places } from "../newProfile/data";
 import { url } from "../../Global/URL";
 import { getUserDetails } from "../../Global/authUtils";
 import { useNavigate } from "react-router-dom";
+
+import showToast from "../../Global/Toast";
 
 const PropertyMinting = () => {
   //blockchain call starts
@@ -88,6 +97,8 @@ const PropertyMinting = () => {
   const [user, setUser] = useState("");
   const [file, setFile] = useState();
 
+  const toast = useToast();
+
   const getData = async () => {
     try {
       const data = await getUserDetails();
@@ -139,8 +150,11 @@ const PropertyMinting = () => {
     try {
       const res = await axios.post(url + "/mint", details);
       console.log(res.data);
+      showToast(toast, "success", "success", "Property Successfully Minted");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      showToast(toast, "error", "error", error.response.data.msg);
+      // console.log(error);
     }
     setIsSubmitted(false);
   };

@@ -15,7 +15,7 @@ const Images = ({ images }) => {
           <div
             className={`${
               imageNumber === index
-                ? "fixed h-screen w-screen top-0 left-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)]"
+                ? "fixed h-screen w-screen top-0 left-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] z-10"
                 : ""
             }`}
             onClick={() => setImageNumber(null)}

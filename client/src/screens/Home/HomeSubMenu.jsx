@@ -2,7 +2,7 @@ import { useState } from "react";
 import React from "react";
 
 const HomeSubMenu = ({ setPage }) => {
-  const [tab, setTab] = useState("items");
+  const [tab, setTab] = useState("cites");
   return (
     <div className="bg-black flex items-center jutify-start p-4">
       <ul className="text-gray-400 flex justify-start text-xl font-bold gap-5">
@@ -19,14 +19,14 @@ const HomeSubMenu = ({ setPage }) => {
         </li>
         <li
           onClick={() => {
-            setTab("post");
-            setPage("post");
+            setTab("wishlist");
+            setPage("wishlist");
           }}
           className={`p-2 rounded-xl cursor-pointer ${
-            tab === "post" && "bg-gray-400 text-white"
+            tab === "wishlist" && "bg-gray-400 text-white"
           }`}
         >
-          Post Property
+          Wishlist
         </li>
         <li
           onClick={() => {

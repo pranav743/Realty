@@ -23,6 +23,9 @@ import LocationCards from "../Home/LocationCards";
 import NearbyAmenities from "./NearbyAmenities";
 import Images from "./Images";
 import { whiten } from "@chakra-ui/theme-tools";
+import { getUserDetails } from "../../Global/authUtils";
+
+
 
 const Property = () => {
   //BLOCKCHAIN CALL STARTS
@@ -92,6 +95,19 @@ const Property = () => {
     return `${r}, ${g}, ${b}`;
   };
 
+  const addToWishList = async () => {
+    try {
+        const current_user = await getUserDetails();
+        const res = await axios.post(url+'/add-to-wishlist', {user_id: current_user._id, property_id: id});
+        console.log(res) ;
+      showToast(toast, "success", 'success', "Property Added to WishList");
+
+    } catch (error) {
+      console.log(error);
+      showToast(toast, "error", 'error', "Something Went Wrong");
+    }
+  }
+
   //   fetching the data
   const { isError, isLoading, data } = useQuery({
     queryKey: ["/properties/all/id"],
@@ -113,7 +129,7 @@ const Property = () => {
           latitude: data[0].location.coordinates[0],
         })
         .then((response) => response.data);
-      console.log(response);
+      // console.log(response);
       setNearby(response);
     } catch (error) {
       console.log(error);
@@ -185,9 +201,7 @@ const Property = () => {
           >
             <VStack align={"left"}>
               <span onClick={() => (window.location.href = `/room/3D/1`)}>
-                <button className="text-sm text-white ml-4 border-2 border-solid border-white p-2 rounded-xl">
-                  View 3D Model
-                </button>
+                <Button border={'solid 1px #fff'} bg={'transparent'} color={'#fff'}>View in 3D</Button>
               </span>
               <Text
                 fontWeight={"bold"}
@@ -218,11 +232,14 @@ const Property = () => {
                 border={"solid 0.5px #fff"}
                 style={{ borderRadius: "20px" }}
               >
-                <Text mt={"5px"} fontSize={20} color={"#fff"}>
+                <Text mt={"5px"} fontSize={22} color={"#fff"}>
                   Current Price
                 </Text>
                 <Text mt={"5px"} fontSize={35} color={"brand.blue"}>
-                  {data[0].price} ETH
+                  {data[0].price} ETH 
+                </Text>
+                <Text mt={"5px"} fontSize={20} color={"font.300"}>
+                ₹ {Number(data[0].price) * 194000}
                 </Text>
               </Box>
               <SimpleGrid columns={[1, 2]} mt={30} height={"100%"} gap={5}>
@@ -238,6 +255,7 @@ const Property = () => {
                   color={"#fff"}
                   bg={"transparent"}
                   style={{ borderRadius: "15px" }}
+                  onClick={addToWishList}
                 >
                   Save for Later
                 </Button>
