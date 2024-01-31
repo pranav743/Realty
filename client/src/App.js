@@ -10,6 +10,7 @@ import Upload from "./screens/Upload/Upload";
 import Wrapper from "./components/Wrapper";
 import RedirectionPage from "./Global/redirection";
 import NavBar from "./components/NavBar";
+import Property from "./screens/property/Property";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path={"/login"} exact element={<Login />} />
           <Route path={"/"} exact element={<Home />} />
+          <Route path={"/property"} exact element={<Property />} />
           <Route path="/new-profile" exact element={<NewProfile />} />
           <Route path="/user-profile" exact element={<Profile />} />
           <Route path={"/upload"} exact element={<Upload />} />
