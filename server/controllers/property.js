@@ -121,7 +121,7 @@ const addUserProperty = async (userID, propertyID) => {
 const getPropertiesByIds = async (req, res) => {
   try {
     const propertyIds = req.body.propertyIds;
-
+    console.log(propertyIds);
     // Check if propertyIds is provided
     if (!propertyIds || !Array.isArray(propertyIds) || propertyIds.length === 0) {
       return res.status(400).json({ success: false, msg: "Invalid or empty propertyIds array" });

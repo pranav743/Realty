@@ -19,14 +19,14 @@ const HomeSubMenu = ({ setPage }) => {
         </li>
         <li
           onClick={() => {
-            setTab("post");
-            setPage("post");
+            setTab("wishlist");
+            setPage("wishlist");
           }}
           className={`p-2 rounded-xl cursor-pointer ${
-            tab === "post" && "bg-gray-400 text-white"
+            tab === "wishlist" && "bg-gray-400 text-white"
           }`}
         >
-          Post Property
+          Wishlist
         </li>
         <li
           onClick={() => {
