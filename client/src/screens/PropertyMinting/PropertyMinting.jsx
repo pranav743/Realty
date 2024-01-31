@@ -27,8 +27,6 @@ const PropertyListing = () => {
   const [user, setUser] = useState("");
   const [file, setFile] = useState();
 
-  const [fileArr, setFileArr] = useState([]);
-
   const getData = async () => {
     try {
       const data = await getUserDetails();
@@ -58,17 +56,14 @@ const PropertyListing = () => {
     bedrooms: bedroom,
     bathrooms: bathroom,
     area: area,
-    image: fileArr,
+    image: image,
     user: user,
     propertyID: propertyID,
   };
 
   const handleImageChange = (e) => {
-    // const file = e.target.files[0];
-    // setFile(file);
-
-    // setFileArr([...fileArr, e.target.files[0]]);
     const file = e.target.files[0];
+    setFile(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -85,23 +80,6 @@ const PropertyListing = () => {
     } catch (error) {
       console.log(error);
     }
-
-    // for (let i = 0; i < fileArr.length; i++) {
-    //   const reader = new FileReader();
-    //   reader.readAsDataURL(fileArr[i]);
-    //   reader.onloadend = () => {
-    //     fileArrEncoded.push(reader.result);
-    //   };
-    // }
-    // setFileArr(fileArrEncoded);
-
-    // try {
-    //   console.log(fileArr);
-    //   // const res = await axios.post(url + "/mint", details);
-    //   // console.log(res.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   return (
