@@ -62,8 +62,8 @@ const Property = () => {
     try {
       const response = await axios
         .post(url + `/find`, {
-          longitude: data[0].location.coordinates[0],
-          latitude: data[0].location.coordinates[1],
+          longitude: data[0].location.coordinates[1],
+          latitude: data[0].location.coordinates[0],
         })
         .then((response) => response.data);
       console.log(response);
@@ -216,6 +216,15 @@ const Property = () => {
             })
           ) : (
             <Loader />
+          )}
+          {/* {nearby && (
+            <h1 style={{ color: "#fff" }}> No properties avaliable Nearby</h1>
+          )} */}
+          {nearby && nearby.data.length == 0 && (
+            <h1 className="text-white margin-auto">
+              {" "}
+              No properties avaliable Nearby 😢
+            </h1>
           )}
         </div>
       </div>
