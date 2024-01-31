@@ -12,6 +12,7 @@ import RedirectionPage from "./Global/redirection";
 import NavBar from "./components/NavBar";
 import Property from "./screens/property/Property";
 import Dashboard from "./screens/admin/dashboard";
+import PropertyListing from "./screens/PropertyListing/PropertyListing";
 
 function App() {
   return (
@@ -21,10 +22,11 @@ function App() {
         <Routes>
           <Route path={"/login"} exact element={<Login />} />
           <Route path={"/"} exact element={<Home />} />
-          <Route path={"/property"} exact element={<Property />} />
+          <Route path={"/property/:id"} exact element={<Property />} />
           <Route path="/new-profile" exact element={<NewProfile />} />
           <Route path="/user-profile" exact element={<Profile />} />
           <Route path={"/upload"} exact element={<Upload />} />
+          <Route path={"/list-property"} exact element={<PropertyListing />} />
           <Route path={"/error"} exact element={<Error />} />
           <Route path={"/admin/dashboard"} exact element={<Dashboard/>} />
 

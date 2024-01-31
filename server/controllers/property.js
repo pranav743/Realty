@@ -1,5 +1,9 @@
 const Property = require("../models/properties");
 
+const User = require("../models/users");
+
+const { cloudinary } = require("../utils/cloudinary");
+
 const deslugify = (slug) => {
   return slug.replace(/-/g, " ").replace(/(?:^|\s)\S/g, (a) => a.toUpperCase());
 };
@@ -13,12 +17,12 @@ const findNearestProperties = async (req, res) => {
         $near: {
           $geometry: {
             type: "Point",
-            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+            coordinates: [parseFloat(latitude), parseFloat(longitude)],
           },
           $maxDistance: 10000,
         },
       },
-    }).limit(10);
+    }).limit(4);
 
     return res.status(200).json({ success: true, data: listOfProperties });
   } catch (error) {
@@ -90,46 +94,39 @@ const getAllProperties = async (req, res) => {
   }
 };
 
-const searchNearbyPlaces = async () => {
+const getImageLink = async (file) => {
   try {
-    const apiUrl = 'https://places.googleapis.com/v1/places:searchNearby';
-    const apiKey = 'AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU';
-
-    const requestData = {
-      includedTypes: ['airport','bus_stop', 'restaurant', 'doctor', 'hospital', 'school'],
-      maxResultCount: 10,
-      // rankPreference: "DISTANCE",
-      locationRestriction: {
-        circle: {
-          center: {
-            latitude: 19.0963747,
-            longitude: 72.9199405
-          },
-          radius: 500.0
-        }
-      }
-    };
-
-    const headers = {
-      'Content-Type': 'application/json',
-      'X-Goog-Api-Key': "AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU",
-      'X-Goog-FieldMask': 'places.displayName'
-    };
-
-    const response = await axios.post(apiUrl, requestData, { headers });
-
-    // Handle the response from the Google Places API
-    const places = response.data;
-    console.log(places);
-    return places;
+    const resp = await cloudinary.uploader.upload(file, {
+      upload_preset: "tsec",
+    });
+    console.log(resp);
+    return resp.url;
   } catch (error) {
-    console.error(`${error.message} (error)`);
-    throw error;
+    console.log(error);
+  }
+};
+
+const listProperty = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const link = await getImageLink(data.image);
+    data.image = link;
+
+    const property = await Property(data);
+
+    await property.save();
+    return res
+      .status(200)
+      .json({ success: true, msg: "Property Listed SuccessFully" });
+  } catch (error) {
+    console.log(`${error.message} (error)`.red);
+    return res.status(400).json({ success: false, msg: error.message });
   }
 };
 
 module.exports = {
   findNearestProperties,
   getAllProperties,
-  searchNearbyPlaces
+  listProperty,
 };
