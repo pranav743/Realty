@@ -70,7 +70,6 @@ const PropertyMinting = () => {
   //   console.log("contractaddress",contract);
   //   console.log("here is the signer",signeer)
 
-
   //   try {
   //     const MintedPropID = await contract.mintNFT(tokenURI, propertyID);
   //     alert("PROPERTY MINTED", MintedPropID);

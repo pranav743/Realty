@@ -1,49 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid, useSafeLayoutEffect } from "@chakra-ui/react";
+import { getUserDetails } from "../../Global/authUtils";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const getAmenities = async (latitude, longitude) => {
-    const apiUrl = "https://places.googleapis.com/v1/places:searchNearby";
-    const apiKey = "AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU";
+  const [user, setUser] = useState("");
+  const navigate = useNavigate();
 
-    const requestData = {
-      includedTypes: [
-        "airport",
-        "bus_stop",
-        "restaurant",
-        "gym",
-        "hospital",
-        "school",
-      ],
-      // maxResultCount: 6,
-      rankPreference: "DISTANCE",
-      locationRestriction: {
-        circle: {
-          center: {
-            latitude: latitude,
-            longitude: longitude,
-          },
-          radius: 500.0,
-        },
-      },
-    };
-
-    const headers = {
-      "Content-Type": "application/json",
-      "X-Goog-Api-Key": "AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU",
-      "X-Goog-FieldMask":
-        "places.displayName,places.primaryType,places.location",
-    };
-
-    const response = await axios.post(apiUrl, requestData, { headers });
-
-    // Handle the response from the Google Places API
-    const places = response.data;
-    console.log(places);
+  const getData = async () => {
+    try {
+      const data = await getUserDetails();
+      setUser(data);
+    } catch (error) {
+      navigate("/login");
+    }
+    if (!localStorage.getItem("RSaccessToken")) {
+      navigate("/login");
+    }
   };
+
   useEffect(() => {
-    // getData();
+    getData();
   }, []);
   return (
     <div>
