@@ -18,6 +18,7 @@ const Home = () => {
   const [user, setUser] = useState(false);
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [layout, setLayout] = useState("grid");
 
   const { isError, isLoading, data } = useQuery({
     queryKey: ["/properties/all"],
@@ -51,8 +52,8 @@ const Home = () => {
     <div>
       <Promotion />
       <HomeSubMenu />
-      <PropertyFilter />
-      <AllLocations data={data} />
+      <PropertyFilter setLayout={setLayout} />
+      <AllLocations data={data} layout={layout} />
     </div>
   );
 };
