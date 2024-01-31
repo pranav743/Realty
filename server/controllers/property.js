@@ -18,7 +18,7 @@ const findNearestProperties = async (req, res) => {
           $maxDistance: 10000,
         },
       },
-    }).limit(10);
+    }).limit(4);
 
     return res.status(200).json({ success: true, data: listOfProperties });
   } catch (error) {

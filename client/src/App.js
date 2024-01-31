@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path={"/login"} exact element={<Login />} />
           <Route path={"/"} exact element={<Home />} />
-          <Route path={"/property"} exact element={<Property />} />
+          <Route path={"/property/:id"} exact element={<Property />} />
           <Route path="/new-profile" exact element={<NewProfile />} />
           <Route path="/user-profile" exact element={<Profile />} />
           <Route path={"/upload"} exact element={<Upload />} />
