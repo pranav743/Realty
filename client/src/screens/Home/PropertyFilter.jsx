@@ -18,7 +18,7 @@ import {
   background,
 } from "@chakra-ui/react";
 
-const PropertyFilter = ({ setLayout }) => {
+const PropertyFilter = ({ setLayout, setSearchQuery, searchQuery }) => {
   const filterOptions = [
     "Price Low to High",
     "Price High to Low",
@@ -29,6 +29,10 @@ const PropertyFilter = ({ setLayout }) => {
   ];
   const [filter, setFilter] = useState("Price High to Low");
   const [view, setView] = useState("grid");
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
     <div className="p-4 text-white text-xl flex justify-between items-center sticky top-0 bg-black">
@@ -42,6 +46,8 @@ const PropertyFilter = ({ setLayout }) => {
             type="search"
             className=" p-2 rounded-xl w-[500px] bg-[transparent] border-2 border-solid border-white max-sm:w-[40px]"
             placeholder="Search"
+            value={searchQuery}
+            onChange={handleSearchChange}
           />
         </div>
         <div className="price-filter">

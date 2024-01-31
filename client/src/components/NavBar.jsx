@@ -51,17 +51,17 @@ const NavBar = () => {
           </Link>
           <li>Buy</li>
           <li>Rent</li>
-          {isLoggedIn && <li style={{cursor: 'pointer'}} onClick={()=> window.location.href = "/mint-property"}>List Property</li>}
+          {isLoggedIn && (
+            <li
+              style={{ cursor: "pointer" }}
+              onClick={() => (window.location.href = "/mint-property")}
+            >
+              List Property
+            </li>
+          )}
         </ul>
       </div>
-      <div className="middle relative">
-        <FaSearch className="absolute top-3 right-3" />
-        <input
-          type="search"
-          className=" p-2 rounded-xl w-[300px] bg-[transparent] border-2 border-solid border-white max-sm:w-[40px]"
-          placeholder="Search"
-        />
-      </div>
+
       <div className="right">
         <ul className="flex justify-start items-center gap-3">
           {!isLoggedIn ? (
