@@ -51,7 +51,9 @@ const PropertyMinting = () => {
       try {
         const { ethereum } = window;
         if (ethereum) {
-          const account = await ethereum.request({method: "eth_requestAccounts",});
+          const account = await ethereum.request({
+            method: "eth_requestAccounts",
+          });
         } else {
           console.log("no metamask");
         }
@@ -62,11 +64,15 @@ const PropertyMinting = () => {
 
         const signer = provider.getSigner();
 
-        console.log("signer",signer);
+        console.log("signer", signer);
 
-        const contract = new ethers.Contract(contractAddress,contractAbi,signer);
-        
-        console.log("contract",contract);
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractAbi,
+          signer
+        );
+
+        console.log("contract", contract);
 
         setst({ provider, signer, contract });
       } catch (error) {
@@ -76,15 +82,13 @@ const PropertyMinting = () => {
     connectWallet();
   }, []);
 
-  
   const MintProperty = async () => {
     setIsSubmitted(true);
     const { contract } = st;
-    console.log("contract",st);
-    
+    console.log("contract", st);
 
-    //addthetoken uri and the propertyid 
-    
+    //addthetoken uri and the propertyid
+
     try {
       const MintedPropID = await contract.mintNFT(url+ `?propertyID=${propertyID}`,propertyID);
       showToast(toast, 'success','success', `NFT Minted !`);
@@ -165,7 +169,7 @@ const PropertyMinting = () => {
     }
     setIsSubmitted(false);
   };
- 
+
   console.log(st);
   return (
     <VStack mx={200}>
@@ -356,7 +360,13 @@ const PropertyMinting = () => {
           </div>
         )}
 
-        <Button isLoading={isSubmitted} bg={"brand.pink"} w={"100%"} my={5} onClick={()=>MintProperty()}>
+        <Button
+          isLoading={isSubmitted}
+          bg={"brand.pink"}
+          w={"100%"}
+          my={5}
+          onClick={() => MintProperty()}
+        >
           Mint Property
         </Button>
       </FormControl>
