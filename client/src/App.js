@@ -9,10 +9,12 @@ import Profile from "./screens/Profile/Profile";
 import Upload from "./screens/Upload/Upload";
 import Wrapper from "./components/Wrapper";
 import RedirectionPage from "./Global/redirection";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
     <Router>
+      <NavBar />
       <Wrapper>
         <Routes>
           <Route path={"/login"} exact element={<Login />} />
