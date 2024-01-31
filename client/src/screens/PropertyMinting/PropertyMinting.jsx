@@ -44,6 +44,13 @@ const PropertyMinting = () => {
   });
 
   useEffect(() => {
+
+    window.ethereum.on('accountsChanged', async () => {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const account = ethers.utils.getAddress(accounts[0])
+      console.log(account);
+    })
+  
     const connectWallet = async () => {
       const contractAddress = "0x149D1B28ac0aD75149e3126B109Ee59E72bb7322";
       const contractAbi = abi.abi;
