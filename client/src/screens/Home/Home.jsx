@@ -17,6 +17,7 @@ import Loader from "../../components/Loader";
 const Home = () => {
   const [user, setUser] = useState(false);
   const [layout, setLayout] = useState("grid");
+  const [page, setPage] = useState("cites");
   const navigate = useNavigate();
 
   const { isError, isLoading, data } = useQuery({
@@ -56,9 +57,10 @@ const Home = () => {
   return (
     <div>
       <Promotion />
-      <HomeSubMenu />
+      <HomeSubMenu setPage={setPage} />
       <PropertyFilter setLayout={setLayout} />
-      <AllLocations data={data} layout={layout} />
+      {page === "cites" &&
+        (isLoading ? <Loader /> : <AllLocations data={data} layout={layout} />)}
     </div>
   );
 };

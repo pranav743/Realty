@@ -11,11 +11,6 @@ const Images = ({ images }) => {
     <div>
       <h1 className="text-3xl font-bold text-white mt-4 p-4">
         Property Images{" "}
-        <Link to="">
-          <button className="text-sm ml-4 border-2 border-solid border-white p-2 rounded-xl">
-            View 3D Model
-          </button>
-        </Link>
       </h1>
       <div className="images px-4 h-[220px]">
         {/* Use map function with the array */}

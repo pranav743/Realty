@@ -8,11 +8,11 @@ const HomeSubMenu = ({ setPage }) => {
       <ul className="text-gray-400 flex justify-start text-xl font-bold gap-5">
         <li
           onClick={() => {
-            setTab("items");
-            setPage("items");
+            setTab("cites");
+            setPage("cites");
           }}
           className={`p-2 rounded-xl cursor-pointer ${
-            tab === "items" && "bg-gray-400 text-white"
+            tab === "cites" && "bg-gray-400 text-white"
           }`}
         >
           Items

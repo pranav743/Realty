@@ -139,9 +139,14 @@ const Property = () => {
             style={{ borderRadius: "15px" }}
           >
             <VStack align={"left"}>
+              <span onClick={() => (window.location.href = `/room/3D/1`)}>
+                <button className="text-sm text-white ml-4 border-2 border-solid border-white p-2 rounded-xl">
+                  View 3D Model
+                </button>
+              </span>
               <Text
                 fontWeight={"bold"}
-                mt={"70px"}
+                mt={"10px"}
                 fontSize={28}
                 color={"#fff"}
               >
