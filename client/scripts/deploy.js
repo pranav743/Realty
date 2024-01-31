@@ -1,7 +1,7 @@
 const hre = require("hardhat");
 
 async function main() {
-  const Tracking = await hre.ethers.getContractFactory("Test");
+  const Tracking = await hre.ethers.getContractFactory("Realty");
   const contract = await Tracking.deploy();
 
   // Wait for the contract deployment to be completed

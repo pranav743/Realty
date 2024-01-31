@@ -16,8 +16,8 @@ import Loader from "../../components/Loader";
 
 const Home = () => {
   const [user, setUser] = useState(false);
+  const [layout, setLayout] = useState("grid");
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { isError, isLoading, data } = useQuery({
     queryKey: ["/properties/all"],
@@ -31,10 +31,16 @@ const Home = () => {
     },
   });
 
-  const getData = () => {
-    if (localStorage.getItem("RSaccessToken")) {
-      setIsLoggedIn(true);
-      return true;
+  const getData = async () => {
+    try {
+      const data = await getUserDetails();
+      console.log(data);
+      setUser(data);
+    } catch (error) {
+      navigate("/login");
+    }
+    if (!localStorage.getItem("RSaccessToken")) {
+      navigate("/login");
     }
   };
   useEffect(() => {
@@ -45,14 +51,14 @@ const Home = () => {
     return <Loader />;
   }
   if (isError) {
-    return <h1>Something Went Wrong :(</h1>;
+    return <h1>Something Wen't Wrong :(</h1>;
   }
   return (
     <div>
       <Promotion />
       <HomeSubMenu />
-      <PropertyFilter />
-      <AllLocations data={data} />
+      <PropertyFilter setLayout={setLayout} />
+      <AllLocations data={data} layout={layout} />
     </div>
   );
 };
