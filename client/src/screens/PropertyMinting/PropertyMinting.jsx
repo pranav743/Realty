@@ -21,63 +21,62 @@ import showToast from "../../Global/Toast";
 const PropertyMinting = () => {
   //blockchain call starts
 
-  const [signeer, setsigneer] = useState({
-    provider: null,
-    signer: null,
-    contract: null,
-  });
+  // const [signeer, setsigneer] = useState({
+  //   provider: null,
+  //   signer: null,
+  //   contract: null,
+  // });
 
-  useEffect(() => {
-    const connectWallet = async () => {
-      const contractAddress = "0xc0be1A1d46A7740d9F31F9EFD19d5E45CDb0c2F6";
-      const contractAbi = abi.abi;
-      console.log(contractAbi);
-      try {
-        const { ethereum } = window;
-        if (ethereum) {
-          const account = await ethereum.request({
-            method: "eth_requestAccounts",
-          });
-        } else {
-          console.log("no metamask");
-        }
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          contractAddress,
-          contractAbi,
-          signer
-        );
-        setsigneer({ provider, signer, contract });
-      } catch (error) {
-        console.log(error);
-      }
+  // useEffect(() => {
+  //   const connectWallet = async () => {
+  //     const contractAddress = "0xc0be1A1d46A7740d9F31F9EFD19d5E45CDb0c2F6";
+  //     const contractAbi = abi.abi;
+  //     console.log(contractAbi);
+  //     try {
+  //       const { ethereum } = window;
+  //       if (ethereum) {
+  //         const account = await ethereum.request({
+  //           method: "eth_requestAccounts",
+  //         });
+  //       } else {
+  //         console.log("no metamask");
+  //       }
+  //       const provider = new ethers.providers.Web3Provider(ethereum);
+  //       const signer = provider.getSigner();
+  //       const contract = new ethers.Contract(
+  //         contractAddress,
+  //         contractAbi,
+  //         signer
+  //       );
+  //       setsigneer({ provider, signer, contract });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
 
-      const { contract } = signeer;
+  //     const { contract } = signeer;
 
-      console.log("here is the signer",signeer)
-      console.log("contractaddress",contract);
+  //     console.log("here is the signer",signeer)
+  //     console.log("contractaddress",contract);
 
-    };
-    connectWallet();
-  }, [signeer]);
+  //   };
+  //   connectWallet();
+  // }, [signeer]);
 
-  const { contract } = signeer;
-  console.log("here is the signer",signeer)
-  console.log("contractaddress",contract);
+  // const { contract } = signeer;
+  // console.log("here is the signer",signeer)
+  // console.log("contractaddress",contract);
 
-  const MintProperty = async (tokenURI, propertyID) => {
-    console.log("contractaddress",contract);
-    console.log("here is the signer",signeer)
+  // const MintProperty = async (tokenURI, propertyID) => {
+  //   console.log("contractaddress",contract);
+  //   console.log("here is the signer",signeer)
 
-
-    try {
-      const MintedPropID = await contract.mintNFT(tokenURI, propertyID);
-      alert("PROPERTY MINTED", MintedPropID);
-    } catch (error) {
-      console.error("Error fetching batch details:", error);
-    }
-  };
+  //   try {
+  //     const MintedPropID = await contract.mintNFT(tokenURI, propertyID);
+  //     alert("PROPERTY MINTED", MintedPropID);
+  //   } catch (error) {
+  //     console.error("Error fetching batch details:", error);
+  //   }
+  // };
 
   //blockchain call ends
 
