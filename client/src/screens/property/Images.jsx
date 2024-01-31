@@ -9,16 +9,13 @@ const Images = ({ images }) => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-white mt-4 p-4">
-        Property Images{" "}
-      </h1>
-      <div className="images px-4 h-[220px]">
+      <div className="images px-8 h-[220px]">
         {/* Use map function with the array */}
         {imageArray.map((image, index) => (
           <div
             className={`${
               imageNumber === index
-                ? "fixed h-screen w-screen top-0 left-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)]"
+                ? "fixed h-screen w-screen top-0 left-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] z-10"
                 : ""
             }`}
             onClick={() => setImageNumber(null)}

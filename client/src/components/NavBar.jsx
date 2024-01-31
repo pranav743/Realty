@@ -40,7 +40,7 @@ const NavBar = () => {
         location.pathname === "/login" || location.pathname === "/new-profile"
           ? "hidden"
           : ""
-      } h-[80px] text-white box-border p-2 px-8 flex justify-between items-center`}
+      } h-[80px] text-white box-border p-2 px-8 bg-black flex justify-between items-center`}
     >
       <div className="left flex justify-start items-center">
         <ul className="flex justify-start items-center gap-10">

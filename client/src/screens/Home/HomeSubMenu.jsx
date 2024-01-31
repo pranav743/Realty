@@ -2,7 +2,7 @@ import { useState } from "react";
 import React from "react";
 
 const HomeSubMenu = ({ setPage }) => {
-  const [tab, setTab] = useState("items");
+  const [tab, setTab] = useState("cites");
   return (
     <div className="bg-black flex items-center jutify-start p-4">
       <ul className="text-gray-400 flex justify-start text-xl font-bold gap-5">

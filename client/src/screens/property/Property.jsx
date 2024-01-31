@@ -7,6 +7,7 @@ import {
   Divider,
   Text,
   Button,
+  AbsoluteCenter,
 } from "@chakra-ui/react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { url } from "../../Global/URL";
@@ -21,6 +22,7 @@ import Loader from "../../components/Loader";
 import LocationCards from "../Home/LocationCards";
 import NearbyAmenities from "./NearbyAmenities";
 import Images from "./Images";
+import { whiten } from "@chakra-ui/theme-tools";
 
 const Property = () => {
   //BLOCKCHAIN CALL STARTS
@@ -73,7 +75,7 @@ const Property = () => {
 
   //   setting the response for nearby properties
   const [nearby, setNearby] = useState();
-  console.log(nearby);
+  // console.log(nearby);
 
   //   reloading the page
   const [reload, setReload] = useState(false);
@@ -244,13 +246,51 @@ const Property = () => {
           </Box>
         </Box>
       </SimpleGrid>
+      <Box position="relative" padding="10">
+        <Divider />
+        <AbsoluteCenter
+          bg="dark.300"
+          color={"white"}
+          fontSize={"20px"}
+          px="4"
+          borderRadius={8}
+        >
+          Property Images
+        </AbsoluteCenter>
+      </Box>
       <Images images={data[0].image} />
-      <NearbyAmenities />
-      <div className="other-properties p-4 mt-4">
-        <h1 className="text-3xl font-bold text-white">
+      <Box position="relative" padding="10">
+        <Divider />
+        <AbsoluteCenter
+          bg="dark.300"
+          color={"white"}
+          fontSize={"20px"}
+          px="4"
+          borderRadius={8}
+        >
+          Nearby Amenities
+        </AbsoluteCenter>
+      </Box>
+      {data && (
+        <NearbyAmenities
+          latitude={data[0].location.coordinates[0]}
+          longitude={data[0].location.coordinates[1]}
+        />
+      )}
+      <Box position="relative" padding="10">
+        <Divider />
+        <AbsoluteCenter
+          bg="dark.300"
+          color={"white"}
+          fontSize={"20px"}
+          px="4"
+          borderRadius={8}
+        >
           Other Nearby Properties
-        </h1>
-        <div className="flex justify-start items-center gap-4 mt-4">
+        </AbsoluteCenter>
+      </Box>
+      <div className="other-properties p-4 px-8 mt-4">
+        <div className="flex justify-start items-center gap-4">
           {nearby ? (
             nearby.data.map((res, index) => {
               return (

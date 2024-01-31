@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 
 const AllLocations = ({ data, layout }) => {
   return (
-    <div className={`${layout === "grid" ? "flex gap-4 flex-wrap" : ""} p-4`}>
+    <div
+      className={`${
+        layout === "grid" ? "flex gap-4 flex-wrap justify-center" : ""
+      } p-4`}
+    >
       {data.map((location, index) => {
         return (
           <span
