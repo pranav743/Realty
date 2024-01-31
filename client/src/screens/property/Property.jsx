@@ -19,6 +19,7 @@ import Loader from "../../components/Loader";
 
 // importing other page components
 import LocationCards from "../Home/LocationCards";
+import NearbyAmenities from "./NearbyAmenities";
 
 const Property = () => {
   const { id } = useParams();
@@ -191,6 +192,7 @@ const Property = () => {
           </Box>
         </Box>
       </SimpleGrid>
+      <NearbyAmenities />
       <div className="other-properties p-4 mt-4">
         <h1 className="text-3xl font-bold text-white">
           Other Nearby Properties
@@ -210,6 +212,7 @@ const Property = () => {
                     title={res.title}
                     price={res.price}
                     state={res.state}
+                    image={res.image}
                   />
                 </span>
               );
