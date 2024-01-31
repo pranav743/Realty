@@ -66,10 +66,12 @@ const Home = () => {
 
   //BLOCKCHAIN CALL ENDS
   const [user, setUser] = useState(false);
+  const [layout, setLayout] = useState("grid");
+  const [page, setPage] = useState("cites");
   const navigate = useNavigate();
 
   const { isError, isLoading, data } = useQuery({
-    queryKey: ['/properties/all'],
+    queryKey: ["/properties/all"],
     retryDelay: 10000,
     queryFn: async () => {
       const temp = await axios
@@ -97,21 +99,18 @@ const Home = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <Loader/>
-    )
+    return <Loader />;
   }
   if (isError) {
-    return (
-      <h1>Something Wen't Wrong :(</h1>
-    )
+    return <h1>Something Wen't Wrong :(</h1>;
   }
   return (
     <div>
       <Promotion />
-      <HomeSubMenu />
+      <HomeSubMenu setPage={setPage} />
       <PropertyFilter setLayout={setLayout} />
-      <AllLocations data={data} layout={layout} />
+      {page === "cites" &&
+        (isLoading ? <Loader /> : <AllLocations data={data} layout={layout} />)}
     </div>
   );
 };

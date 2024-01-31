@@ -139,10 +139,13 @@ const Property = () => {
               minW={"300px"}
               w={"100%"}
               maxW={"500px"}
-              bg="brand.violet"
+              // bg="brand.violet"
               style={{ borderRadius: "20px", overflow: "hidden" }}
             >
-              <LoadScript googleMapsApiKey="AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU">
+              <LoadScript
+                googleMapsApiKey="AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU"
+                loadingElement={<Loader />}
+              >
                 <GoogleMap
                   mapContainerStyle={{
                     width: "100%",
@@ -180,9 +183,14 @@ const Property = () => {
             style={{ borderRadius: "15px" }}
           >
             <VStack align={"left"}>
+              <span onClick={() => (window.location.href = `/room/3D/1`)}>
+                <button className="text-sm text-white ml-4 border-2 border-solid border-white p-2 rounded-xl">
+                  View 3D Model
+                </button>
+              </span>
               <Text
                 fontWeight={"bold"}
-                mt={"70px"}
+                mt={"10px"}
                 fontSize={28}
                 color={"#fff"}
               >

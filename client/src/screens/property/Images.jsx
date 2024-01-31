@@ -1,5 +1,6 @@
 // import { useStatStyles } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Images = ({ images }) => {
   // Create an array with a single element
@@ -9,7 +10,7 @@ const Images = ({ images }) => {
   return (
     <div>
       <h1 className="text-3xl font-bold text-white mt-4 p-4">
-        Property Images
+        Property Images{" "}
       </h1>
       <div className="images px-4 h-[220px]">
         {/* Use map function with the array */}

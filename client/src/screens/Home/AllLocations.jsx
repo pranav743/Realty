@@ -7,7 +7,11 @@ const AllLocations = ({ data, layout }) => {
     <div className={`${layout === "grid" ? "flex gap-4 flex-wrap" : ""} p-4`}>
       {data.map((location, index) => {
         return (
-          <Link to={`/property/${location._id}`}>
+          <span
+            onClick={() => {
+              window.location.href = `/property/${location._id}`;
+            }}
+          >
             <LocationCards
               layout={layout}
               key={index}
@@ -17,7 +21,7 @@ const AllLocations = ({ data, layout }) => {
               state={location.state}
               image={location.image}
             />
-          </Link>
+          </span>
         );
       })}
     </div>
