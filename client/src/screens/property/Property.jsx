@@ -20,6 +20,7 @@ import Loader from "../../components/Loader";
 // importing other page components
 import LocationCards from "../Home/LocationCards";
 import NearbyAmenities from "./NearbyAmenities";
+import Images from "./Images";
 
 const Property = () => {
   const { id } = useParams();
@@ -94,10 +95,13 @@ const Property = () => {
               minW={"300px"}
               w={"100%"}
               maxW={"500px"}
-              bg="brand.violet"
+              // bg="brand.violet"
               style={{ borderRadius: "20px", overflow: "hidden" }}
             >
-              <LoadScript googleMapsApiKey="AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU">
+              <LoadScript
+                googleMapsApiKey="AIzaSyCBsEwnTS9s-IvZmvirO4t9OIT9VEs4UAU"
+                loadingElement={<Loader />}
+              >
                 <GoogleMap
                   mapContainerStyle={{
                     width: "100%",
@@ -192,6 +196,7 @@ const Property = () => {
           </Box>
         </Box>
       </SimpleGrid>
+      <Images images={data[0].image} />
       <NearbyAmenities />
       <div className="other-properties p-4 mt-4">
         <h1 className="text-3xl font-bold text-white">
@@ -208,6 +213,7 @@ const Property = () => {
                   }}
                 >
                   <LocationCards
+                    layout={"grid"}
                     key={index}
                     title={res.title}
                     price={res.price}

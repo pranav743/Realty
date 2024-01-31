@@ -13,6 +13,7 @@ import NavBar from "./components/NavBar";
 import Property from "./screens/property/Property";
 import Dashboard from "./screens/admin/dashboard";
 import PropertyMinting from "./screens/PropertyMinting/PropertyMinting";
+import Room3D from "./components/room3D";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path={"/mint-property"} exact element={<PropertyMinting />} />
           <Route path={"/error"} exact element={<Error />} />
           <Route path={"/admin/dashboard"} exact element={<Dashboard />} />
+          <Route path={"/room/3D/:id"} exact element={<Room3D />} />
 
           <Route
             path="/redirection/:accessToken"
