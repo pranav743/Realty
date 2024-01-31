@@ -53,6 +53,10 @@ const Dashboard = () => {
   const getData = async () => {
     try {
       const data = await getUserDetails();
+      if (data.role != "ADMIN"){
+        // navigate("/");
+        window.location.href = "/"
+      }
       setUser(data);
       getProperties(data.city);
     } catch (error) {
