@@ -102,7 +102,7 @@ const PropertyMinting = () => {
     city: city,
     state: state,
     location: {
-      coordinates: [Number(longitude), Number(latitude)],
+      coordinates: [Number(latitude), Number(longitude)],
     },
     bedrooms: bedroom,
     bathrooms: bathroom,
