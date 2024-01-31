@@ -12,7 +12,7 @@ import RedirectionPage from "./Global/redirection";
 import NavBar from "./components/NavBar";
 import Property from "./screens/property/Property";
 import Dashboard from "./screens/admin/dashboard";
-import PropertyListing from "./screens/PropertyListing/PropertyListing";
+import PropertyMinting from "./screens/PropertyMinting/PropertyMinting";
 
 function App() {
   return (
@@ -26,11 +26,10 @@ function App() {
           <Route path="/new-profile" exact element={<NewProfile />} />
           <Route path="/user-profile" exact element={<Profile />} />
           <Route path={"/upload"} exact element={<Upload />} />
-          <Route path={"/list-property"} exact element={<PropertyListing />} />
+          <Route path={"/mint-property"} exact element={<PropertyMinting />} />
           <Route path={"/error"} exact element={<Error />} />
-          <Route path={"/admin/dashboard"} exact element={<Dashboard/>} />
+          <Route path={"/admin/dashboard"} exact element={<Dashboard />} />
 
-        
           <Route
             path="/redirection/:accessToken"
             element={<RedirectionPage />}

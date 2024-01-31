@@ -74,7 +74,7 @@ const PropertyListing = () => {
     e.preventDefault();
     console.log(details);
     try {
-      const res = await axios.post(url + "/list", details);
+      const res = await axios.post(url + "/mint", details);
       console.log(res.data);
     } catch (error) {
       console.log(error);

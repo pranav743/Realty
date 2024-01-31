@@ -118,7 +118,7 @@ const addUserProperty = async (userID, propertyID) => {
   }
 };
 
-const listProperty = async (req, res) => {
+const mintProperty = async (req, res) => {
   try {
     const data = req.body;
     const user = data.user;
@@ -147,5 +147,5 @@ const listProperty = async (req, res) => {
 module.exports = {
   findNearestProperties,
   getAllProperties,
-  listProperty,
+  mintProperty,
 };
