@@ -14,7 +14,6 @@ router.post("/anyuser", controllerLogin.getUserWithAccessToken);
 router.post("/register-user", controllerLogin.registerUser);
 
 router.post("/upload", userController.uploadPhoto);
-router.post("/nearest-places", property.searchNearbyPlaces);
 router.post("/find", property.findNearestProperties);
 router.post("/list", property.listProperty);
 
