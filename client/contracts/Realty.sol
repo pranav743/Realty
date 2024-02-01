@@ -59,7 +59,10 @@ contract Realty{
 
             return TotalTokenURIs;
     }
-    
+
+    function pastOwners(uint256 propertyID) public view returns (address[] memory) {
+               return allowners[propertyID];
+    }
 
     function allListedProperties() public view returns (string[] memory) {
             
@@ -74,6 +77,8 @@ contract Realty{
 
             return listedTokenURIs;
     }
+    
+    
 
     function mintedPropertiesByOwner(address _owner) public view returns (string[] memory) {
         uint256[] memory properties = ownedProperties[_owner];
@@ -90,40 +95,21 @@ contract Realty{
         return mintedTokenURIs;
     }   
 
-    // function listedPropertiesByOwner() public view returns(string[] memory){
-    //      uint256[] memory properties = ownedProperties[_owner];
-    //     string[] memory mintedTokenURIs = new string[](properties.length);
-    //     uint256 mintedIndex = 0;
 
-    //     for (uint256 i = 0; i < properties.length; i++) {
-    //         if (isMinted[properties[i]] && !isListed[properties[i]]) {
-    //             mintedTokenURIs[mintedIndex] = tokenURIs[properties[i]];
-    //             mintedIndex++;
-    //         }
-    //     }
-
-    //     return mintedTokenURIs;
-    // }
 
     function allPropertiesOwnedBy(address _owner) public view returns (string[] memory) {
-        uint256[] memory properties = ownedProperties[_owner];
-        string[] memory ownedTokenURIs = new string[](properties.length);
-        for (uint256 i = 0; i < properties.length; i++) {
-            ownedTokenURIs[i] = tokenURIs[properties[i]];
+            uint256[] memory properties = ownedProperties[_owner];
+            string[] memory ownedTokenURIs = new string[](properties.length);
+            for (uint256 i = 0; i < properties.length; i++) {
+                ownedTokenURIs[i] = tokenURIs[properties[i]];
+            }
+            return ownedTokenURIs;
         }
-        return ownedTokenURIs;
-    }
     
-    // 0.2 *10
-    // 0.2/10
-    // 200
-// 0.12
-// 0.25
-// 0.1
 
     function buyProperty(uint256 propertyID, uint256 price) external payable {
             require(isListed[propertyID], "Property not listed");
-            require(msg.value >= price/100, "Insufficient funds");
+            require(msg.value >= price, "Insufficient funds");
             require(ownerof[propertyID] != msg.sender, "Owner cannot buy their own property");
 
             address seller = ownerof[propertyID];
@@ -131,10 +117,10 @@ contract Realty{
             safemint[msg.sender] = propertyID; // Update safeMint mapping for new owner
             delete safemint[seller]; // Remove property ID from old owner
 
-            payable(seller).transfer(price/100); // Transfer the price to the seller
+            payable(seller).transfer(price); // Transfer the price to the seller
 
             // Transfer any excess funds back to the buyer
-            payable(msg.sender).transfer(msg.value - (price/100));
+            payable(msg.sender).transfer(msg.value - (price));
 
             // Transfer ownership of the property
             ownerof[propertyID] = msg.sender;
@@ -151,6 +137,7 @@ contract Realty{
             // Remove the property from the seller's list of owned properties
             removeProperty(seller, propertyID);
         }
+
 
         function removeProperty(address owner, uint256 propertyId) public {
           uint256[] storage properties = ownedProperties[owner];

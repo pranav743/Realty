@@ -40,7 +40,7 @@ const Property = () => {
 
   useEffect(() => {
     const connectWallet = async () => {
-      const contractAddress = "0x149D1B28ac0aD75149e3126B109Ee59E72bb7322";
+      const contractAddress = "0x3E77Df0f2b481dFB2B10638BC136b1D1C29547CE";
       const contractAbi = abi.abi;
       try {
         const { ethereum } = window;
@@ -252,7 +252,7 @@ const Property = () => {
                   color={"#fff"}
                   bg={"brand.violet"}
                   style={{ borderRadius: "15px" }}
-                  onClick={()=>getProperty(Number(data[0].propertyID),Number(data[0].price)*100*1000000000000000000)}
+                  onClick={()=>getProperty(Number(data[0].propertyID),Number(ethers.utils.parseUnits(data[0].price, "ether")))}
                 >
                   Buy
                 </Button>
