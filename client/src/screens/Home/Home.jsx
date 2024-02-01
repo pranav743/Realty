@@ -32,7 +32,7 @@ const Home = () => {
   });
 
   const connectWallet = async () => {
-    const contractAddress = "0x3E77Df0f2b481dFB2B10638BC136b1D1C29547CE";
+    const contractAddress = "0x26377ca3adfe77b4c8BCe8E673eAB44cd8295877";
     const contractAbi = abi.abi;
     console.log(contractAbi);
     try {

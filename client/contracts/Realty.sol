@@ -109,35 +109,28 @@ contract Realty{
 
     function buyProperty(uint256 propertyID, uint256 price) external payable {
             require(isListed[propertyID], "Property not listed");
-            require(msg.value >= price, "Insufficient funds");
+            require(msg.value >= price/100, "Insufficient funds");
             require(ownerof[propertyID] != msg.sender, "Owner cannot buy their own property");
 
             address seller = ownerof[propertyID];
 
-            safemint[msg.sender] = propertyID; // Update safeMint mapping for new owner
-            delete safemint[seller]; // Remove property ID from old owner
+            safemint[msg.sender] = propertyID; 
+            delete safemint[seller]; 
 
-            payable(seller).transfer(price); // Transfer the price to the seller
+            payable(seller).transfer(price/100); 
 
-            // Transfer any excess funds back to the buyer
-            payable(msg.sender).transfer(msg.value - (price));
+            payable(msg.sender).transfer(msg.value - (price/100));
 
-            // Transfer ownership of the property
             ownerof[propertyID] = msg.sender;
 
-            // Add the property to the list of owned properties for the new owner
             ownedProperties[msg.sender].push(propertyID);
 
-            // Add the new owner to the list of all owners of the property
             allowners[propertyID].push(msg.sender);
 
-            // Mark the property as no longer listed
             isListed[propertyID] = false;
 
-            // Remove the property from the seller's list of owned properties
             removeProperty(seller, propertyID);
         }
-
 
         function removeProperty(address owner, uint256 propertyId) public {
           uint256[] storage properties = ownedProperties[owner];
