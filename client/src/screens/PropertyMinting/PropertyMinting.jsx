@@ -20,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 import showToast from "../../Global/Toast";
 
 const PropertyMinting = () => {
-
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -54,7 +53,7 @@ const PropertyMinting = () => {
           const account = await ethereum.request({
             method: "eth_requestAccounts",
           });
-          console.log("ACCOUNT: ",account[0]);
+          console.log("ACCOUNT: ", account[0]);
         } else {
           console.log("no metamask");
         }
@@ -91,20 +90,20 @@ const PropertyMinting = () => {
     //addthetoken uri and the propertyid
 
     try {
-      const MintedPropID = await contract.mintNFT(url+ `?propertyID=${propertyID}`,propertyID);
-      showToast(toast, 'success','success', `NFT Minted !`);
+      const MintedPropID = await contract.mintNFT(
+        url + `?propertyID=${propertyID}`,
+        propertyID
+      );
+      showToast(toast, "success", "success", `NFT Minted !`);
       handleSubmit();
-      showToast(toast, 'success','success', "Property Listed !");
+      showToast(toast, "success", "success", "Property Listed !");
     } catch (error) {
       console.error("Error fetching batch details:", error);
     }
     setIsSubmitted(false);
-
   };
 
   //blockchain call ends
-
-  
 
   const [user, setUser] = useState("");
   const [file, setFile] = useState();
