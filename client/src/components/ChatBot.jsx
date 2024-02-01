@@ -1,20 +1,31 @@
 /* global chrome*/
-import React, { useEffect, useRef, useState } from 'react';
-import { Box, InputGroup, Input, Button, InputRightElement, Textarea, Card, CardBody, Stack, Image, Text } from '@chakra-ui/react';
-import { Icon, Skeleton } from '@chakra-ui/react';
-import { IoMdSend } from 'react-icons/io';
-import AIImage from './AI.jpg';
-import USERIMAGE from './USER.jpg';
-import { DNA, Hourglass } from 'react-loader-spinner';
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Box,
+  InputGroup,
+  Input,
+  Button,
+  InputRightElement,
+  Textarea,
+  Card,
+  CardBody,
+  Stack,
+  Image,
+  Text,
+} from "@chakra-ui/react";
+import { Icon, Skeleton } from "@chakra-ui/react";
+import { IoMdSend } from "react-icons/io";
+import AIImage from "./AI.jpg";
+import USERIMAGE from "./USER.jpg";
+import { DNA, Hourglass } from "react-loader-spinner";
 import { TogetherAI } from "@langchain/community/llms/togetherai";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { HuggingFaceInferenceEmbeddings } from "langchain/embeddings/hf";
-import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-import { ConversationalRetrievalQAChain } from 'langchain/chains';
-import { useNavigate } from 'react-router-dom';
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { ConversationalRetrievalQAChain } from "langchain/chains";
+import { useNavigate } from "react-router-dom";
 
 function createArrayWithIds(n) {
-
   const resultArray = [];
 
   for (let i = 1; i <= n; i++) {
@@ -25,11 +36,10 @@ function createArrayWithIds(n) {
 }
 
 const WebChat = () => {
-
   const msgEnd = useRef(null);
   const [messages, setMessages] = useState([
     {
-      text: 'Hi ask me anything related to the website',
+      text: "Hi ask me anything related to the website",
       isBot: true,
     },
   ]);
@@ -37,7 +47,7 @@ const WebChat = () => {
   const handleNewChat = () => {
     setMessages([
       {
-        text: 'Hi, ask me anything related to the website',
+        text: "Hi, ask me anything related to the website",
         isBot: true,
       },
     ]);
@@ -49,21 +59,23 @@ const WebChat = () => {
   const [chain, setChain] = useState(false);
   const navigate = useNavigate();
   const model = new TogetherAI({
-        modelName: "NousResearch/Nous-Hermes-Llama2-13b",
-        apiKey: 'a8820b4b38ad46999e38b4c8d41f9e2c36bc6aeae0c5c623efa93960dbc2b85d',
-        temperature: 0.1,
-        maxTokens: 1024
-    });
-    
+    modelName: "NousResearch/Nous-Hermes-Llama2-13b",
+    apiKey: "a8820b4b38ad46999e38b4c8d41f9e2c36bc6aeae0c5c623efa93960dbc2b85d",
+    temperature: 0.1,
+    maxTokens: 1024,
+  });
 
   const createMemoryVectoreStore = async (textData) => {
     try {
       console.log("TextData : ", textData);
-      const textSplitter = new RecursiveCharacterTextSplitter({ chunkSize: 1200, chunkOverlap: 100 });
+      const textSplitter = new RecursiveCharacterTextSplitter({
+        chunkSize: 1200,
+        chunkOverlap: 100,
+      });
       const texts = await textSplitter.splitText(textData);
       console.log(texts);
       const embeddings = new HuggingFaceInferenceEmbeddings({
-        model: 'sentence-transformers/all-MiniLM-L6-v2',
+        model: "sentence-transformers/all-MiniLM-L6-v2",
       });
       const ids = createArrayWithIds(texts.length);
       const vectorStore = await MemoryVectorStore.fromTexts(
@@ -71,22 +83,25 @@ const WebChat = () => {
         ids,
         embeddings
       );
-      const chain = ConversationalRetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {returnSourceDocuments: false});
-      setChain(chain)
+      const chain = ConversationalRetrievalQAChain.fromLLM(
+        model,
+        vectorStore.asRetriever(),
+        { returnSourceDocuments: false }
+      );
+      setChain(chain);
       setMemoryStore(vectorStore);
-      console.log('Memory Store Created');
-
+      console.log("Memory Store Created");
     } catch (error) {
       console.log(error);
       navigate(`/`);
     }
-  }
+  };
 
   const handleScrape = async () => {
     const scrapedCode = await fetchData();
-      await createMemoryVectoreStore(scrapedCode);
-      setPageLoading(false);
-    
+    await createMemoryVectoreStore(scrapedCode);
+    setPageLoading(false);
+
     async function fetchData() {
       try {
         const cleanedContent = `// Acts Laws
@@ -125,15 +140,14 @@ const WebChat = () => {
         
         // What is stamp duty
         
-        Stamp duty is a type of tax levied on certain legal documents and transactions, typically involving the transfer of assets or property rights. The tax is imposed on the execution of documents, meaning that it is payable when legal documents are executed or signed. Stamp duty laws vary by jurisdiction, and the types of documents subject to stamp duty can differ accordingly`
+        Stamp duty is a type of tax levied on certain legal documents and transactions, typically involving the transfer of assets or property rights. The tax is imposed on the execution of documents, meaning that it is payable when legal documents are executed or signed. Stamp duty laws vary by jurisdiction, and the types of documents subject to stamp duty can differ accordingly`;
 
         return cleanedContent;
       } catch (error) {
-        navigate('/');
+        navigate("/");
         console.error("Error:", error);
       }
     }
-
   };
 
   useEffect(() => {
@@ -145,25 +159,20 @@ const WebChat = () => {
   }, [messages]);
 
   const handleSend = async () => {
-    
     const text = input;
-    setInput('');
-    setMessages([
-      ...messages,
-      { text, isBot: false }
-    ]);
+    setInput("");
+    setMessages([...messages, { text, isBot: false }]);
     setLoading(true);
     const res = await chain.call({
-        question: text ,
-        chat_history: ''
+      question: text,
+      chat_history: "",
     });
     console.log(res);
     setMessages((prevMessages) => [
       ...prevMessages,
-      { text: res.text, isBot: true }
+      { text: res.text, isBot: true },
     ]);
     setLoading((x) => false);
-
   };
 
   useEffect(() => {
@@ -172,7 +181,12 @@ const WebChat = () => {
 
   if (pageLoading) {
     return (
-      <Box height='80%' display={'flex'} alignItems={'center'} justifyContent={'center'}>
+      <Box
+        height="80%"
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
         {/* <p style={{color: '#fff'}}>Please Wait...</p> */}
         <Hourglass
           visible={true}
@@ -181,88 +195,89 @@ const WebChat = () => {
           ariaLabel="hourglass-loading"
           wrapperStyle={{}}
           wrapperClass=""
-          colors={['#306cce', '#72a1ed']}
+          colors={["#306cce", "#72a1ed"]}
         />
       </Box>
     );
   }
 
   return (
-    <Box height='80%'>
-      
+    <Box height="95%" maxW={"500px"} mt={4} ml={"auto"} mr={"auto"}>
       <Box
-        bg='#121b21'
-        marginBottom='1rem'
-        marginTop='1rem'
-        borderRadius='5px'
-        border='0.7px solid #6fa6cb'
-        padding='0.5rem'
-        maxHeight='75%'
-        overflowY='scroll'
-        overflowX='hidden'
-        height='90%'
+        bg="#121b21"
+        marginBottom="1rem"
+        marginTop="1rem"
+        borderRadius="5px"
+        border="0.7px solid #6fa6cb"
+        padding="0.5rem"
+        maxHeight="75%"
+        overflowY="scroll"
+        overflowX="hidden"
+        height="90%"
         css={{
-          '&::-webkit-scrollbar': {
-            width: '4px',
+          "&::-webkit-scrollbar": {
+            width: "4px",
           },
-          '&::-webkit-scrollbar-track': {
-            width: '6px',
+          "&::-webkit-scrollbar-track": {
+            width: "6px",
           },
-          '&::-webkit-scrollbar-thumb': {
-            background: 'white',
-            borderRadius: '24px',
+          "&::-webkit-scrollbar-thumb": {
+            background: "white",
+            borderRadius: "24px",
           },
         }}
       >
-        <Button onClick={()=> {
+        {/* <Button onClick={()=> {
         setPageLoading(true);
         setMemoryStore(false);
         handleScrape();
       }} 
-      width={'100%'} height={'30px'} colorScheme='teal'>Add Current Website</Button>
-
+      width={'100%'} height={'30px'} colorScheme='teal'>Add Current Website</Button> */}
 
         {messages.map((message, index) => {
           return (
             <Card
-              direction='row'
-              variant={message.isBot ? 'outline' : null}
-              bg=''
-              marginTop='1rem'
-              height='fit-content'
+              direction="row"
+              variant={message.isBot ? "outline" : null}
+              bg=""
+              marginTop="1rem"
+              height="fit-content"
               key={index}
-              style={{ wordWrap: 'break-word' }}
+              style={{ wordWrap: "break-word" }}
               css={
-                message.isBot ? {
-                  background: '#406176',
-                  boxShadow: '0 0 10px 0px #48abe0',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  border: '0.5px solid rgba(255, 255, 255, 0.18)',
-                } :
-                  {
-                    background: 'none'
-
-                  }
+                message.isBot
+                  ? {
+                      background: "#406176",
+                      boxShadow: "0 0 5px 0px #48abe0",
+                      backdropFilter: "blur(20px)",
+                      WebkitBackdropFilter: "blur(20px)",
+                      border: "0.5px solid rgba(255, 255, 255, 0.18)",
+                    }
+                  : {
+                      background: "none",
+                    }
               }
             >
               <Image
-                objectFit='cover'
-                width='30px'
-                height='30px'
-                margin='0.5rem'
+                objectFit="cover"
+                width="30px"
+                height="30px"
+                margin="0.5rem"
                 src={message.isBot ? AIImage : USERIMAGE}
-                alt='Caffe Latte'
-                borderRadius='8px'
-                bg='red'
+                alt="Caffe Latte"
+                borderRadius="8px"
+                bg="red"
               />
 
-              <CardBody p='0.5rem' style={{ overflowWrap: 'break-word', wordBreak: 'break-all' }}>
+              <CardBody
+                p="0.5rem"
+                style={{ overflowWrap: "break-word", wordBreak: "break-all" }}
+              >
                 <Text
-                  textAlign='left'
-                  fontFamily='Poppins'
-                  color={message.isBot ? 'white' : 'white'}
-                  fontWeight='600'
+                  textAlign="left"
+                  fontFamily="Poppins"
+                  color={message.isBot ? "white" : "white"}
+                  fontWeight="600"
                 >
                   {message.text}
                 </Text>
@@ -271,79 +286,85 @@ const WebChat = () => {
           );
         })}
 
-        {loading && <Card
-          direction='row'
-          overflow='hidden'
-          variant='outline'
-          bg='lightblue'
-          marginTop='1rem'
-          height='fit-content'
-          css={{
-            background: '#406176',
-            boxShadow: '0 0 20px 0px #48abe0',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.18)',
-          }
-          }
-        >
-          <Image
-            objectFit='cover'
-            width='30px'
-            height='30px'
-            margin='0.5rem'
-            src={AIImage}
-            alt='Caffe Latte'
-            borderRadius='8px'
-            bg='red'
-          />
+        {loading && (
+          <Card
+            direction="row"
+            overflow="hidden"
+            variant="outline"
+            bg="lightblue"
+            marginTop="1rem"
+            height="fit-content"
+            css={{
+              background: "#406176",
+              boxShadow: "0 0 20px 0px #48abe0",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.18)",
+            }}
+          >
+            <Image
+              objectFit="cover"
+              width="30px"
+              height="30px"
+              margin="0.5rem"
+              src={AIImage}
+              alt="Caffe Latte"
+              borderRadius="8px"
+              bg="red"
+            />
 
-          <CardBody p='0.5rem' >
-            <Text textAlign='left' fontFamily='Poppins' color={'black'} fontWeight='600'>
-              <DNA
-                visible={true}
-                height="50"
-                width="50"
-                ariaLabel="dna-loading"
-                wrapperStyle={{}}
-                wrapperClass="dna-wrapper"
-              />
-            </Text>
-          </CardBody>
-        </Card>}
-
+            <CardBody p="0.5rem">
+              <Text
+                textAlign="left"
+                fontFamily="Poppins"
+                color={"black"}
+                fontWeight="600"
+              >
+                <DNA
+                  visible={true}
+                  height="50"
+                  width="50"
+                  ariaLabel="dna-loading"
+                  wrapperStyle={{}}
+                  wrapperClass="dna-wrapper"
+                />
+              </Text>
+            </CardBody>
+          </Card>
+        )}
 
         <div ref={msgEnd} />
       </Box>
 
-      <Box width='100%' height='20%'>
+      <Box width="100%" height="20%">
         <InputGroup>
           <Textarea
-            pr='3.5rem'
-            type='text'
-            placeholder='Enter Message'
-            borderRadius='7px'
-            bg='#121b21'
-            color='white'
+            pr="3.5rem"
+            type="text"
+            placeholder="Enter Message"
+            borderRadius="7px"
+            bg="#121b21"
+            color="white"
             css={{
-              '&::-webkit-scrollbar': {
-                width: '4px',
+              "&::-webkit-scrollbar": {
+                width: "4px",
               },
-              '&::-webkit-scrollbar-track': {
-                width: '6px',
+              "&::-webkit-scrollbar-track": {
+                width: "6px",
               },
-              '&::-webkit-scrollbar-thumb': {
-                background: 'white',
-                borderRadius: '24px',
+              "&::-webkit-scrollbar-thumb": {
+                background: "white",
+                borderRadius: "24px",
               },
             }}
-
             value={input}
-            onChange={(e) => { setInput(e.target.value) }}
+            onChange={(e) => {
+              setInput(e.target.value);
+            }}
           />
-          <InputRightElement width='2.5rem' marginRight='1rem' height='100%'>
-            <Button h='1.75rem' size='sm' onClick={handleSend}>
-              <Icon as={IoMdSend} color='black' />
+          <InputRightElement width="2.5rem" marginRight="1rem" height="100%">
+            <Button h="1.75rem" size="sm" onClick={handleSend}>
+              <Icon as={IoMdSend} color="black" />
             </Button>
           </InputRightElement>
         </InputGroup>

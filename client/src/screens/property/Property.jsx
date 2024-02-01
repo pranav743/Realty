@@ -27,8 +27,6 @@ import Images from "./Images";
 import { whiten } from "@chakra-ui/theme-tools";
 import { getUserDetails } from "../../Global/authUtils";
 
-
-
 const Property = () => {
   //BLOCKCHAIN CALL STARTS
 
@@ -45,13 +43,19 @@ const Property = () => {
       try {
         const { ethereum } = window;
         if (ethereum) {
-          const account = await ethereum.request({ method: "eth_requestAccounts" });
+          const account = await ethereum.request({
+            method: "eth_requestAccounts",
+          });
         } else {
           console.log("no metamask");
         }
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractAbi,
+          signer
+        );
         setState({ provider, signer, contract });
       } catch (error) {
         console.log(error);
@@ -62,16 +66,16 @@ const Property = () => {
 
   const { contract } = state;
 
-  const getProperty = async (propertyID,price) => {
+  const getProperty = async (propertyID, price) => {
     try {
-      console.log("BUYING PROPERTY")
+      console.log("BUYING PROPERTY");
       console.log(price);
-      const BuyDetails = await contract.buyProperty(propertyID,price);
+      const BuyDetails = await contract.buyProperty(propertyID, price);
       alert("PROPERTY BOUGHT");
-      showToast(toast, 'Success', 'success', "Property Bought !");
+      showToast(toast, "Success", "success", "Property Bought !");
     } catch (error) {
       console.error("Error fetching batch details:", error.reason);
-      showToast(toast, 'Error', 'error', error.reason);
+      showToast(toast, "Error", "error", error.reason);
     }
   };
 
@@ -103,16 +107,18 @@ const Property = () => {
 
   const addToWishList = async () => {
     try {
-        const current_user = await getUserDetails();
-        const res = await axios.post(url+'/add-to-wishlist', {user_id: current_user._id, property_id: id});
-        console.log(res) ;
-      showToast(toast, "success", 'success', "Property Added to WishList");
-
+      const current_user = await getUserDetails();
+      const res = await axios.post(url + "/add-to-wishlist", {
+        user_id: current_user._id,
+        property_id: id,
+      });
+      console.log(res);
+      showToast(toast, "success", "success", "Property Added to WishList");
     } catch (error) {
       console.log(error);
-      showToast(toast, "error", 'error', "Something Went Wrong");
+      showToast(toast, "error", "error", "Something Went Wrong");
     }
-  }
+  };
 
   //   fetching the data
   const { isError, isLoading, data } = useQuery({
@@ -207,7 +213,13 @@ const Property = () => {
           >
             <VStack align={"left"}>
               <span onClick={() => (window.location.href = `/room/3D/1`)}>
-                <Button border={'solid 1px #fff'} bg={'transparent'} color={'#fff'}>View in 3D</Button>
+                <Button
+                  border={"solid 1px #fff"}
+                  bg={"transparent"}
+                  color={"#fff"}
+                >
+                  View in 3D
+                </Button>
               </span>
               <Text
                 fontWeight={"bold"}
@@ -219,7 +231,9 @@ const Property = () => {
               </Text>
               <Text color={"font.300"} fontSize={"18px"} w={"80%"}>
                 Owned by{" "}
-                <span style={{ color: colors.brand.pink }}>Pranav</span>
+                <span style={{ color: colors.brand.pink }}>
+                  0x22AXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX59F8f
+                </span>
               </Text>
 
               <Text
@@ -242,10 +256,10 @@ const Property = () => {
                   Current Price
                 </Text>
                 <Text mt={"5px"} fontSize={35} color={"brand.blue"}>
-                  {data[0].price} ETH 
+                  {data[0].price} ETH
                 </Text>
                 <Text mt={"5px"} fontSize={20} color={"font.300"}>
-                ₹ {Number(data[0].price) * 194000}
+                  ₹ {Number(data[0].price) * 194000}
                 </Text>
               </Box>
               <SimpleGrid columns={[1, 2]} mt={30} height={"100%"} gap={5}>
@@ -253,7 +267,12 @@ const Property = () => {
                   color={"#fff"}
                   bg={"brand.violet"}
                   style={{ borderRadius: "15px" }}
-                  onClick={()=>getProperty(Number(data[0].propertyID),Number(data[0].price)*100)}
+                  onClick={() =>
+                    getProperty(
+                      Number(data[0].propertyID),
+                      Number(data[0].price) * 100
+                    )
+                  }
                 >
                   Buy
                 </Button>
