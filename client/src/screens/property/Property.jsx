@@ -252,7 +252,7 @@ const Property = () => {
                   color={"#fff"}
                   bg={"brand.violet"}
                   style={{ borderRadius: "15px" }}
-                  onClick={()=>getProperty(Number(data[0].propertyID),Number(data[0].price)*100)}
+                  onClick={()=>getProperty(Number(data[0].propertyID),Number(data[0].price)*100*1000000000000000000)}
                 >
                   Buy
                 </Button>
