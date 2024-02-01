@@ -31,9 +31,11 @@ const ListProperties = () => {
   //blockchain call starts
 
   const [tokenURIs,settokenURIs]=useState();
+  const [tokenURIs2,settokenURIs2]=useState();
   const [account,setaccount]=useState();
   const [isSubmitted, setIsSubmitted] = useState();
   const [minted, setMinted] = useState([]);
+  const [Listed, setListed] = useState([]);
   const toast = useToast();
   //BLOCKCHAIN CALL STARTS
 
@@ -75,6 +77,7 @@ const ListProperties = () => {
 
       setst({ provider, signer, contract });
       mintedProperties(accounts[0], contract);
+      allPropertiesOwned(accounts[0],contract);
     } catch (error) {
       console.log(error);
     }
@@ -95,6 +98,22 @@ const ListProperties = () => {
         console.error("Error fetching batch details:", error);
       }
   }
+
+  const allPropertiesOwned = async(address, contract)=>{
+    
+    console.log("contract",st);    
+    try {
+      const response = await contract.allPropertiesOwnedBy(address);
+      console.log("RESPONSE", response);
+      settokenURIs2(response);
+      const array = propertyIDs(response);
+      const res = await axios.post(url + "/get-properties-by-productID", {propertyIds: array});
+      setListed(res.data.properties);
+      console.log("AllPropertiesOwned :", res);
+    } catch (error) {
+      console.error("Error fetching batch details:", error);
+    }
+}
 
   useEffect(() => {
     
@@ -168,7 +187,7 @@ const ListProperties = () => {
     <Tabs isFitted variant="enclosed" className="text-white m-4">
       <TabList mb="1em">
         <Tab>Minted Properties</Tab>
-        <Tab>Listed Properties</Tab>
+        <Tab>PastProperties Properties</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -202,8 +221,34 @@ const ListProperties = () => {
           </div>
         </TabPanel>
         <TabPanel>
-          <p>Listed Properties!</p>
-        </TabPanel>
+        <div className="flex flex-wrap gap-10">
+            {/* {minted && JSON.stringify(minted)} */}
+            {Listed.map((prop, index) => {
+              return (
+                <div>
+                <span
+                  onClick={() => {
+                    window.location.href = `/property/${prop._id}`;
+                  }}
+                >
+                  <LocationCards
+                    key={index}
+                    id={prop._id}
+                    title={prop.title}
+                    price={prop.price}
+                    state={prop.state}
+                    image={prop.image}
+                    layout="grid"
+                  />
+                </span>
+                <button className="bg-blue-400 p-2 mt-2 rounded-md text-white hover:bg-white hover:text-black w-full font-bold" 
+                onClick={()=>{
+                  showToast(toast, 'Info', 'info', "Listing Property...")
+                  ListProperty(prop.propertyID)}}>List Property</button>
+                </div>
+              );
+            })}
+          </div>        </TabPanel>
       </TabPanels>
     </Tabs>
   );

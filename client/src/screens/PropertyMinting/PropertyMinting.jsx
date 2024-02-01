@@ -98,7 +98,7 @@ const PropertyMinting = () => {
 
     try {
       const MintedPropID = await contract.mintNFT(
-        url + `?propertyID=${propertyID}`,
+        `url + ?propertyID=${propertyID}`,
         propertyID
       );
       showToast(toast, "success", "success", `NFT Minted !`);
