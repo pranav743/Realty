@@ -50,7 +50,9 @@ const NavBar = () => {
             </li>
           </Link>
           <li>Buy</li>
-          <li>Rent</li>
+          <Link to="/chatbot">
+            <li>Chat</li>
+          </Link>
           {isLoggedIn && (
             <li
               style={{ cursor: "pointer" }}

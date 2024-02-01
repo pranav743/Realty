@@ -16,6 +16,7 @@ import PropertyMinting from "./screens/PropertyMinting/PropertyMinting";
 import Room3D from "./components/room3D";
 import PropertyOwners from "./screens/PropertyOwners/PropertyOwners";
 import ListProperties from "./screens/ListProperties/ListProperties";
+import WebChat from "./components/ChatBot";
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path={"/listed-properties"} exact element={<ListProperties />} />
           <Route path={"/error"} exact element={<Error />} />
           <Route path={"/admin/dashboard"} exact element={<Dashboard />} />
+          <Route path={"/chatbot"} exact element={<WebChat />} />
+
           <Route
             path={"/property/owners/:id"}
             exact
