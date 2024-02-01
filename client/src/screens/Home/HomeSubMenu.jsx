@@ -15,7 +15,7 @@ const HomeSubMenu = ({ setPage }) => {
             tab === "cites" && "bg-gray-400 text-white"
           }`}
         >
-          Items
+          Cites
         </li>
         <li
           onClick={() => {
