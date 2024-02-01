@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, SimpleGrid, useSafeLayoutEffect } from "@chakra-ui/react";
+import { Box, SimpleGrid, useSafeLayoutEffect, Center } from "@chakra-ui/react";
 import { getUserDetails } from "../../Global/authUtils";
 import { Navigate, useNavigate } from "react-router-dom";
 import { url } from "../../Global/URL";
@@ -17,6 +17,7 @@ import {
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
+import PieCHart from "./PieChart";
 
 const Dashboard = () => {
   const [user, setUser] = useState("");
@@ -29,7 +30,6 @@ const Dashboard = () => {
       const resp = await axios.get(url + "/properties/all" + `?city=${city}`);
       setProperties(resp.data.data);
       const data = resp.data.data;
-      console.log(data);
       var arr = [];
       for (let i = 0; i < data.length; i++) {
         var obj = {
@@ -52,6 +52,10 @@ const Dashboard = () => {
   const getData = async () => {
     try {
       const data = await getUserDetails();
+      if (data.role != "ADMIN") {
+        // navigate("/");
+        window.location.href = "/";
+      }
       setUser(data);
       getProperties(data.city);
     } catch (error) {
@@ -94,12 +98,7 @@ const Dashboard = () => {
             {properties &&
               properties.map((prop, index) => {
                 return (
-                  <Tr
-                    className="cursor-pointer"
-                    onClick={() => {
-                      handleClick(prop.propertyID);
-                    }}
-                  >
+                  <Tr>
                     <Td>{prop.title}</Td>
                     <Td>{prop.city}</Td>
                     <Td>{prop.state}</Td>

@@ -69,7 +69,7 @@ const Home = () => {
         const response = await contract.allProperties();
         console.log("RESPONSE", response);
         settokenURIs(response);
-        alert(tokenURIs);
+        // alert(tokenURIs);
       } catch (error) {
         console.error("Error fetching batch details:", error);
       }
@@ -77,7 +77,7 @@ const Home = () => {
 
   useEffect(() => {
     
-    // connectWallet();
+    connectWallet();
     console.log("USEEFFECT FINISHED");
   }, []);
 

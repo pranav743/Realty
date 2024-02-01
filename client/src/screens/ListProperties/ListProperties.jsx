@@ -1,13 +1,131 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel, useToast } from "@chakra-ui/react";
 import { getUserDetails } from "../../Global/authUtils";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { url } from "../../Global/URL";
-
+import { ethers } from "ethers";
+import abi from "../Realty.json";
+import showToast from "../../Global/Toast";
 import LocationCards from "../Home/LocationCards";
 
+const propertyIDs = (urls) => {
+  const propertyIDArray = [];
+
+  urls.forEach((url) => {
+    const lastEqualIndex = url.lastIndexOf('=');
+    if (lastEqualIndex !== -1) {
+      const propertyID = url.slice(lastEqualIndex + 1);
+      propertyIDArray.push(propertyID);
+    }
+  });
+
+  return propertyIDArray;
+};
+
+
 const ListProperties = () => {
+
+   //BLOCKCHAIN CALL STARTS
+
+  //blockchain call starts
+
+  const [tokenURIs,settokenURIs]=useState();
+  const [account,setaccount]=useState();
+  const [isSubmitted, setIsSubmitted] = useState();
+  const [minted, setMinted] = useState([]);
+  const toast = useToast();
+  //BLOCKCHAIN CALL STARTS
+
+  //blockchain call starts
+
+  const [st, setst] = useState({
+    provider: null,
+    signer: null,
+    contract: null,
+  });
+
+  const connectWallet = async () => {
+    const contractAddress = "0x149D1B28ac0aD75149e3126B109Ee59E72bb7322";
+    const contractAbi = abi.abi;
+    console.log(contractAbi);
+    var accounts = null;
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        accounts = await ethereum.request({method: "eth_requestAccounts",});
+        console.log(accounts);
+        setaccount(accounts[0]);
+      } else {
+        console.log("No metamask");
+        alert("NO METAMASK !")
+      }
+
+      const provider = new ethers.providers.Web3Provider(ethereum);
+
+      console.log(provider);
+
+      const signer = provider.getSigner();
+
+      console.log("signer",signer);
+
+      const contract = new ethers.Contract(contractAddress,contractAbi,signer);
+      
+      console.log("contract",contract);
+
+      setst({ provider, signer, contract });
+      mintedProperties(accounts[0], contract);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const mintedProperties = async(address, contract)=>{
+    
+      console.log("contract",st);    
+      try {
+        const response = await contract.mintedPropertiesByOwner(address);
+        console.log("RESPONSE", response);
+        settokenURIs(response);
+        const array = propertyIDs(response);
+        const res = await axios.post(url + "/get-properties-by-productID", {propertyIds: array});
+        setMinted(res.data.properties);
+        console.log("Minted Properties :", res);
+      } catch (error) {
+        console.error("Error fetching batch details:", error);
+      }
+  }
+
+  useEffect(() => {
+    
+    connectWallet();
+    console.log("USEEFFECT FINISHED");
+  }, []);
+
+  const ListProperty = async (propertyID)=>{
+    
+      setIsSubmitted(true);
+
+      const { contract } = st;
+      console.log("contract", st);
+    
+      try {
+        const ListProp = await contract.List_Property(propertyID);
+        console.log(ListProp);
+        showToast(toast, 'success','success', `Property Listed !`);
+      } catch (error) {
+        console.error("Error fetching batch details:", error);
+      }
+      setIsSubmitted(false);
+  
+  };
+  
+
+
+  //blockchain call ends
+
+  //BLOCKCHAIN CALL ENDS
+
   const [user, setUser] = useState("");
   const [propertiesOwned, setPropertiesOwned] = useState([]);
 
@@ -55,8 +173,10 @@ const ListProperties = () => {
       <TabPanels>
         <TabPanel>
           <div className="flex flex-wrap gap-10">
-            {propertiesOwned.map((prop, index) => {
+            {/* {minted && JSON.stringify(minted)} */}
+            {minted.map((prop, index) => {
               return (
+                <div>
                 <span
                   onClick={() => {
                     window.location.href = `/property/${prop._id}`;
@@ -72,6 +192,11 @@ const ListProperties = () => {
                     layout="grid"
                   />
                 </span>
+                <button className="bg-blue-400 p-2 mt-2 rounded-md text-white hover:bg-white hover:text-black w-full font-bold" 
+                onClick={()=>{
+                  showToast(toast, 'Info', 'info', "Listing Property...")
+                  ListProperty(prop.propertyID)}}>List Property</button>
+                </div>
               );
             })}
           </div>

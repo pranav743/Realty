@@ -17,6 +17,8 @@ import { GoogleMap, LoadScript, MarkerF, Marker } from "@react-google-maps/api";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Loader from "../../components/Loader";
+import { ethers } from "ethers";
+import abi from "../Realty.json";
 
 // importing other page components
 import LocationCards from "../Home/LocationCards";
@@ -30,44 +32,47 @@ import { getUserDetails } from "../../Global/authUtils";
 const Property = () => {
   //BLOCKCHAIN CALL STARTS
 
-  // const [state, setState] = useState({
-  //   provider: null,
-  //   signer: null,
-  //   contract: null,
-  // });
+  const [state, setState] = useState({
+    provider: null,
+    signer: null,
+    contract: null,
+  });
 
-  // useEffect(() => {
-  //   const connectWallet = async () => {
-  //     const contractAddress = "0xc0be1A1d46A7740d9F31F9EFD19d5E45CDb0c2F6";
-  //     const contractAbi = abi.abi;
-  //     try {
-  //       const { ethereum } = window;
-  //       if (ethereum) {
-  //         const account = await ethereum.request({ method: "eth_requestAccounts" });
-  //       } else {
-  //         console.log("no metamask");
-  //       }
-  //       const provider = new ethers.providers.Web3Provider(ethereum);
-  //       const signer = provider.getSigner();
-  //       const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-  //       setState({ provider, signer, contract });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   connectWallet();
-  // }, []);
+  useEffect(() => {
+    const connectWallet = async () => {
+      const contractAddress = "0x149D1B28ac0aD75149e3126B109Ee59E72bb7322";
+      const contractAbi = abi.abi;
+      try {
+        const { ethereum } = window;
+        if (ethereum) {
+          const account = await ethereum.request({ method: "eth_requestAccounts" });
+        } else {
+          console.log("no metamask");
+        }
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+        setState({ provider, signer, contract });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    connectWallet();
+  }, []);
 
-  // const { contract } = state;
+  const { contract } = state;
 
-  // const buyProperty = async (tokenURI,propertyID) => {
-  //   try {
-  //     const batchDetails = await contract.mintNFT(tokenURI,propertyID);
-  //     alert("PROPERTY MINTED");
-  //   } catch (error) {
-  //     console.error("Error fetching batch details:", error);
-  //   }
-  // };
+  const getProperty = async (propertyID,price) => {
+    try {
+      console.log("BUYING PROPERTY")
+      const BuyDetails = await contract.buyProperty(propertyID,price);
+      alert("PROPERTY BOUGHT");
+      showToast(toast, 'Success', 'success', "Property Bought !");
+    } catch (error) {
+      console.error("Error fetching batch details:", error.reason);
+      showToast(toast, 'Error', 'error', error.reason);
+    }
+  };
 
   //BLOCKCHAIN CALL ENDS
 
@@ -247,6 +252,7 @@ const Property = () => {
                   color={"#fff"}
                   bg={"brand.violet"}
                   style={{ borderRadius: "15px" }}
+                  onClick={()=>getProperty(Number(data[0].propertyID),Number(data[0].price)*100*1000000000000000000)}
                 >
                   Buy
                 </Button>
