@@ -51,7 +51,7 @@ const PropertyMinting = () => {
     })
   
     const connectWallet = async () => {
-      const contractAddress = "0x149D1B28ac0aD75149e3126B109Ee59E72bb7322";
+      const contractAddress = "0x3E77Df0f2b481dFB2B10638BC136b1D1C29547CE";
       const contractAbi = abi.abi;
       console.log(contractAbi);
       try {
