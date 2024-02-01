@@ -8,6 +8,7 @@ const PropertyOwners = () => {
 
   const [tokenURIs,settokenURIs]=useState();
   const { id } = useParams();
+  const[owners, setOwners] = useState()
 
   //BLOCKCHAIN CALL STARTS
 
@@ -55,6 +56,7 @@ const PropertyOwners = () => {
       console.log("contract",st);    
       try {
         const response = await contract.pastOwners(id);
+        setOwners(response);
         console.log("RESPONSE", response);
         settokenURIs(response);
         // alert(tokenURIs);
@@ -81,7 +83,9 @@ const PropertyOwners = () => {
       <section class="flex min-h-screen justify-center text-white pt-20">
         <div class="w-80">
           <ul>
-            <li class="relative flex items-baseline gap-6 pb-5">
+            {owners && owners.map((owner, index) =>{
+             
+              return (  <li class="relative flex items-baseline gap-6 pb-5" key={index}>
               <div class="before:absolute before:left-[5.5px] before:h-full before:w-[1px] before:bg-gray-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -94,49 +98,17 @@ const PropertyOwners = () => {
                 </svg>
               </div>
               <div>
-                <p class="text-sm">18-8-2022</p>
+                
+                <p class="text-sm">{index+10}-02-2024</p>
                 <p class="mt-2 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Maiores incidunt blanditiis dignissimos, enim earum mollitia.
+                  {owner}
                 </p>
               </div>
-            </li>
-            <li class="relative flex items-baseline gap-6 pb-5">
-              <div class="before:absolute before:left-[5.5px] before:h-full before:w-[1px] before:bg-gray-400">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  class="bi bi-circle-fill fill-gray-400"
-                  viewBox="0 0 16 16"
-                >
-                  <circle cx="8" cy="8" r="8" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-sm ">18-8-2022</p>
-                <p class="mt-2  text-sm">Lorem ipsum dolor sit amet.</p>
-              </div>
-            </li>
-            <li class="relative flex items-baseline gap-6 pb-5">
-              <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  class="bi bi-circle-fill fill-gray-400"
-                  viewBox="0 0 16 16"
-                >
-                  <circle cx="8" cy="8" r="8" />
-                </svg>
-              </div>
-              <div>
-                <p class="text-sm ">18-8-2022</p>
-                <p class="mt-2 text-sm">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est?
-                </p>
-              </div>
-            </li>
+            </li>)
+            })}
+            <p style={{marginTop: '20px'}}>Owners</p>
+          
+           
           </ul>
         </div>
       </section>{" "}

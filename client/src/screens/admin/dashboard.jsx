@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, SimpleGrid, useSafeLayoutEffect, Center } from "@chakra-ui/react";
 import { getUserDetails } from "../../Global/authUtils";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { url } from "../../Global/URL";
 import ExportToExcelButton from "./Export";
 
@@ -30,8 +30,10 @@ const Dashboard = () => {
       const resp = await axios.get(url + "/properties/all" + `?city=${city}`);
       setProperties(resp.data.data);
       const data = resp.data.data;
-      var arr = [];
+      var arr = []
       for (let i = 0; i < data.length; i++) {
+
+
         var obj = {
           name: data[i].title,
           city: data[i].city,
@@ -39,10 +41,10 @@ const Dashboard = () => {
           area: data[i].area,
           price_ETH: data[i].price,
           price_RS: Number(data[i].price) * 194000,
-        };
-        arr.push(obj);
+        }
+        arr.push(obj)
       }
-      console.log(arr);
+      console.log(arr)
       setExcelData(arr);
     } catch (error) {
       console.log(error);
@@ -54,7 +56,7 @@ const Dashboard = () => {
       const data = await getUserDetails();
       if (data.role != "ADMIN") {
         // navigate("/");
-        window.location.href = "/";
+        window.location.href = "/"
       }
       setUser(data);
       getProperties(data.city);
@@ -65,6 +67,9 @@ const Dashboard = () => {
       navigate("/login");
     }
   };
+  const handleClick = (propertyId) => {
+    navigate(`/property/owners/${propertyId}`);
+  };
 
   useEffect(() => {
     // getProperties(user.city);
@@ -74,12 +79,23 @@ const Dashboard = () => {
     getData();
   }, []);
 
-  const handleClick = (propertyId) => {
-    navigate(`/property/owners/${propertyId}`);
-  };
-
   return (
     <>
+      <div>
+        <SimpleGrid columns={{ base: 1, md: 1, lg: 2 }} spacing={20} marginBottom={10}>
+
+          <Box p={4} shadow="md" borderRadius="md" bg={'dark.300'}>
+            <Center><PieCHart assigned={2} notAssigned={2}/></Center>
+            
+          </Box>
+          <Box p={4} shadow="md" borderRadius="md" bg={'dark.300'}>
+          <Center><PieCHart assigned={4} notAssigned={2}/></Center>
+
+
+          </Box>
+
+        </SimpleGrid>
+      </div>
       <ExportToExcelButton excelData={excelData} department={"Real-Estate"} />
       <TableContainer className="mx-10 text-white text-md">
         <Table variant="simple">
@@ -95,7 +111,7 @@ const Dashboard = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {properties &&
+          {properties &&
               properties.map((prop, index) => {
                 return (
                   <Tr
