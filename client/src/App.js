@@ -14,6 +14,7 @@ import Property from "./screens/property/Property";
 import Dashboard from "./screens/admin/dashboard";
 import PropertyMinting from "./screens/PropertyMinting/PropertyMinting";
 import Room3D from "./components/room3D";
+import PropertyOwners from "./screens/PropertyOwners/PropertyOwners";
 import ListProperties from "./screens/ListProperties/ListProperties";
 
 function App() {
@@ -32,6 +33,11 @@ function App() {
           <Route path={"/listed-properties"} exact element={<ListProperties />} />
           <Route path={"/error"} exact element={<Error />} />
           <Route path={"/admin/dashboard"} exact element={<Dashboard />} />
+          <Route
+            path={"/property/owners/:id"}
+            exact
+            element={<PropertyOwners />}
+          />
           <Route path={"/room/3D/:id"} exact element={<Room3D />} />
 
           <Route
