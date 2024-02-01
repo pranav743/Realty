@@ -40,7 +40,7 @@ const Property = () => {
 
   useEffect(() => {
     const connectWallet = async () => {
-      const contractAddress = "0x3E77Df0f2b481dFB2B10638BC136b1D1C29547CE";
+      const contractAddress = "0x26377ca3adfe77b4c8BCe8E673eAB44cd8295877";
       const contractAbi = abi.abi;
       try {
         const { ethereum } = window;
@@ -65,6 +65,7 @@ const Property = () => {
   const getProperty = async (propertyID,price) => {
     try {
       console.log("BUYING PROPERTY")
+      console.log(price);
       const BuyDetails = await contract.buyProperty(propertyID,price);
       alert("PROPERTY BOUGHT");
       showToast(toast, 'Success', 'success', "Property Bought !");
@@ -252,7 +253,7 @@ const Property = () => {
                   color={"#fff"}
                   bg={"brand.violet"}
                   style={{ borderRadius: "15px" }}
-                  onClick={()=>getProperty(Number(data[0].propertyID),Number(ethers.utils.parseUnits(data[0].price, "ether")))}
+                  onClick={()=>getProperty(Number(data[0].propertyID),Number(data[0].price)*100)}
                 >
                   Buy
                 </Button>
