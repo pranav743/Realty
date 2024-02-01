@@ -2,11 +2,12 @@ import React from "react";
 
 const Promotion = () => {
   return (
-    <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-[300px] relative box-border flex items-end justify-between">
-      <div className="left p-4 text-3xl text-white font-bold">
+    <div className="h-[375px] relative box-border flex items-end justify-between bg-[url('../public/images/city.jpg')] bg-cover bg-no-repeat overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+      <div className="left p-4 text-3xl text-white font-bold relative z-10">
         Properties Sahi <br /> Milegi Yahi
       </div>
-      <div className="right">
+      <div className="right relative z-10">
         <ul className="text-center text-md text-white flex justify-center items-center gap-5 p-4">
           <li>
             <span className="font-bold text-xl">1000</span>
@@ -14,17 +15,17 @@ const Promotion = () => {
             Total Volume
           </li>
           <li>
-            <span className="font-bold text-xl">1000</span>
+            <span className="font-bold text-xl">0.235</span>
             <br />
             Floor Price
           </li>
           <li>
-            <span className="font-bold text-xl">1000</span>
+            <span className="font-bold text-xl">500+</span>
             <br />
             Listed
           </li>
           <li>
-            <span className="font-bold text-xl">1000</span>
+            <span className="font-bold text-xl">5000+</span>
             <br />
             Unique User
           </li>

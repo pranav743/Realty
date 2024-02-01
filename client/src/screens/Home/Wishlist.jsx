@@ -2,7 +2,6 @@ import React from "react";
 
 // importing icons
 import { MdDelete } from "react-icons/md";
-import { Tooltip, HStack, VStack } from "@chakra-ui/react";
 
 // importing other components
 import LocationCards from "./LocationCards";
@@ -15,7 +14,7 @@ const Wishlist = ({ data, layout }) => {
       } p-4`}
     >
       {/* {JSON.stringify(data.data.properties)} */}
-      {data.map((property, index) => {
+      {data ? data.map((property, index) => {
         return (
           <span
             onClick={() => {
@@ -42,7 +41,7 @@ const Wishlist = ({ data, layout }) => {
             />
           </span>
         );
-      })}
+      }):<h1 className="texy-xl text-gray-400 font-bold">No properties added to wihlist</h1>}
     </div>
   );
 };

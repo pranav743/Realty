@@ -19,6 +19,8 @@ router.post("/find", property.findNearestProperties);
 router.post("/mint", property.mintProperty);
 router.post("/add-to-wishlist", userController.addToWishList);
 router.post("/get-properties-by-ids", property.getPropertiesByIds);
+router.post("/get-properties-by-productID", property.getPropertiesByID);
+
 
 
 

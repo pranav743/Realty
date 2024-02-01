@@ -7,6 +7,8 @@ import HomeSubMenu from "./HomeSubMenu";
 import PropertyFilter from "./PropertyFilter";
 import AllLocations from "./AllLocations";
 import Wishlist from "./Wishlist";
+import { ethers } from "ethers";
+import abi from "../Realty.json";
 
 // Requesting
 import axios from "axios";
@@ -17,51 +19,77 @@ import Loader from "../../components/Loader";
 
 const Home = () => {
   const [wishListData, setWishListData] = useState();
-  // const [blockdata,setblockdata]=useState();
+  const [tokenURIs,settokenURIs]=useState();
 
   //BLOCKCHAIN CALL STARTS
 
-  // const [state, setState] = useState({
-  //   provider: null,
-  //   signer: null,
-  //   contract: null,
-  // });
+  //blockchain call starts
 
-  // useEffect(() => {
-  //   const connectWallet = async () => {
-  //     const contractAddress = "0xc0be1A1d46A7740d9F31F9EFD19d5E45CDb0c2F6";
-  //     const contractAbi = abi.abi;
-  //     try {
-  //       const { ethereum } = window;
-  //       if (ethereum) {
-  //         const account = await ethereum.request({ method: "eth_requestAccounts" });
-  //       } else {
-  //         console.log("no metamask");
-  //       }
-  //       const provider = new ethers.providers.Web3Provider(ethereum);
-  //       const signer = provider.getSigner();
-  //       const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-  //       setState({ provider, signer, contract });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const [st, setst] = useState({
+    provider: null,
+    signer: null,
+    contract: null,
+  });
 
-  //   const getblockdata = async()=>{
-  //     try {
-  //       const Bdata = await contract.allListedProperties();
-  //       setblockdata(Bdata)
-  //       alert("DATA IS Coming");
-  //     } catch (error) {
-  //       console.error("Error fetching batch details:", error);
-  //     }
-  //   }
+  const connectWallet = async () => {
+    const contractAddress = "0x26377ca3adfe77b4c8BCe8E673eAB44cd8295877";
+    const contractAbi = abi.abi;
+    console.log(contractAbi);
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const account = await ethereum.request({method: "eth_requestAccounts",});
+      } else {
+        console.log("no metamask");
+      }
 
-  //   getblockdata();
-  //   connectWallet();
-  // }, []);
+      const provider = new ethers.providers.Web3Provider(ethereum);
+
+      console.log(provider);
+
+      const signer = provider.getSigner();
+
+      console.log("signer",signer);
+
+      const contract = new ethers.Contract(contractAddress,contractAbi,signer);
+      
+      console.log("contract",contract);
+
+      setst({ provider, signer, contract });
+      Loaderdata(contract);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const Loaderdata = async(contract)=>{
+
+      console.log("contract",st);    
+      try {
+        const response = await contract.allProperties();
+        console.log("RESPONSE", response);
+        settokenURIs(response);
+        // alert(tokenURIs);
+      } catch (error) {
+        console.error("Error fetching batch details:", error);
+      }
+  }
+
+  useEffect(() => {
+    
+    connectWallet();
+    console.log("USEEFFECT FINISHED");
+  }, []);
+
+  
+  // const MintProperty = async () => {
+
+  // };
+
+  //blockchain call ends
 
   //BLOCKCHAIN CALL ENDS
+
   const [user, setUser] = useState(false);
   const [layout, setLayout] = useState("grid");
   const [page, setPage] = useState("cites");

@@ -6,10 +6,10 @@ contract Realty{
     
     uint256 public tokenIdCounter = 1;
 
-    mapping(uint256 => string) public tokenURIs;             //mapping propertyid to tokenuri
-    mapping(uint256 => bool) public isListed;                // propertyid to true/false
-    mapping(address => uint256[]) public ownedProperties;   // address to property.id 
-    mapping(uint=>address[]) public allowners;             // past owners of the address
+    mapping(uint256 => string) public tokenURIs;               //mapping propertyid to tokenuri
+    mapping(uint256 => bool) public isListed;                 // propertyid to true/false
+    mapping(address => uint256[]) public ownedProperties;    // address to property.id 
+    mapping(uint256=>address[]) public allowners;              // past owners of the address
     mapping(uint256=>bool) public isMinted;                //is minted
     mapping(address=>uint256) public safemint;            //safemin (address to proid) 
     mapping(uint256=>string) public setTokenURI;          // propid to uri
@@ -44,7 +44,7 @@ contract Realty{
 
         require(ownerof[propertyID] == msg.sender, "Not the owner");
         isListedArray.push(propertyID);
-        isListed[propertyID]=true;
+        isListed[propertyID]=true; 
     }
     
     function allProperties() public view returns (string[] memory) {
@@ -59,8 +59,10 @@ contract Realty{
 
             return TotalTokenURIs;
     }
-    
 
+    function pastOwners(uint256 propertyID) public view returns (address[] memory) {
+               return allowners[propertyID];
+    }
 
     function allListedProperties() public view returns (string[] memory) {
             
@@ -75,6 +77,8 @@ contract Realty{
 
             return listedTokenURIs;
     }
+    
+    
 
     function mintedPropertiesByOwner(address _owner) public view returns (string[] memory) {
         uint256[] memory properties = ownedProperties[_owner];
@@ -91,43 +95,40 @@ contract Realty{
         return mintedTokenURIs;
     }   
 
+
+
     function allPropertiesOwnedBy(address _owner) public view returns (string[] memory) {
-        uint256[] memory properties = ownedProperties[_owner];
-        string[] memory ownedTokenURIs = new string[](properties.length);
-        for (uint256 i = 0; i < properties.length; i++) {
-            ownedTokenURIs[i] = tokenURIs[properties[i]];
+            uint256[] memory properties = ownedProperties[_owner];
+            string[] memory ownedTokenURIs = new string[](properties.length);
+            for (uint256 i = 0; i < properties.length; i++) {
+                ownedTokenURIs[i] = tokenURIs[properties[i]];
+            }
+            return ownedTokenURIs;
         }
-        return ownedTokenURIs;
-    }
     
+
     function buyProperty(uint256 propertyID, uint256 price) external payable {
             require(isListed[propertyID], "Property not listed");
-            require(msg.value >= price, "Insufficient funds");
+            require(msg.value >= price/100, "Insufficient funds");
             require(ownerof[propertyID] != msg.sender, "Owner cannot buy their own property");
 
             address seller = ownerof[propertyID];
 
-            safemint[msg.sender] = propertyID; // Update safeMint mapping for new owner
-            delete safemint[seller]; // Remove property ID from old owner
+            safemint[msg.sender] = propertyID; 
+            delete safemint[seller]; 
 
-            payable(seller).transfer(price); // Transfer the price to the seller
+            payable(seller).transfer(price/100); 
 
-            // Transfer any excess funds back to the buyer
-            payable(msg.sender).transfer(msg.value - price);
+            payable(msg.sender).transfer(msg.value - (price/100));
 
-            // Transfer ownership of the property
             ownerof[propertyID] = msg.sender;
 
-            // Add the property to the list of owned properties for the new owner
             ownedProperties[msg.sender].push(propertyID);
 
-            // Add the new owner to the list of all owners of the property
             allowners[propertyID].push(msg.sender);
 
-            // Mark the property as no longer listed
             isListed[propertyID] = false;
 
-            // Remove the property from the seller's list of owned properties
             removeProperty(seller, propertyID);
         }
 
@@ -140,6 +141,8 @@ contract Realty{
                  break;
             }
         }
+
+
     }
 
 

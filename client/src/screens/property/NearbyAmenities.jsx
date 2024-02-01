@@ -100,13 +100,11 @@ const NearbyAmenities = ({ latitude, longitude }) => {
           return (
             <div
               key={index}
-              className="h-[100px] min-w-fit rounded-xl p-4 text-center bg-black flex flex-col justify-between"
-              style={{
-                borderRadius: "15px",
-                boxShadow: `0 0px 5px rgba(${hexToRgb(
-                  colors.brand.cyan
-                )}, 0.3)`,
-              }}
+              style={{height: '200px', minWidth: '200px',maxWidth: '300px', display: 'flex', flexDirection: 'column', border: 'solid 0.5px #fff', padding: '15px', borderRadius: '15px', background: `${colors.brand.pink}`,background: 'rgba(255, 255, 255, 0.2)',
+              borderRadius: '16px',
+              boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+              backdropFilter: 'blur(5px)',
+              border: '1px solid rgba(255, 255, 255, 0.3)'}}
             >
               <h2 className="text-white text-xl font-bold">
                 {place.displayName.text}

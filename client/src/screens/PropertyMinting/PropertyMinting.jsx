@@ -20,65 +20,6 @@ import { useNavigate } from "react-router-dom";
 import showToast from "../../Global/Toast";
 
 const PropertyMinting = () => {
-  //blockchain call starts
-
-  const [st, setst] = useState({
-    provider: null,
-    signer: null,
-    contract: null,
-  });
-
-  useEffect(() => {
-    const connectWallet = async () => {
-      const contractAddress = "0xbB63f7054DA6eAeD619f5EaFb0A6d3d22837c9A2";
-      const contractAbi = abi.abi;
-      console.log(contractAbi);
-      try {
-        const { ethereum } = window;
-        if (ethereum) {
-          const account = await ethereum.request({method: "eth_requestAccounts",});
-        } else {
-          console.log("no metamask");
-        }
-
-        const provider = new ethers.providers.Web3Provider(ethereum);
-
-        console.log(provider);
-
-        const signer = provider.getSigner();
-
-        console.log("signer",signer);
-
-        const contract = new ethers.Contract(contractAddress,contractAbi,signer);
-        
-        console.log("contract",contract);
-
-        setst({ provider, signer, contract });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    connectWallet();
-  }, []);
-
-  
-  const MintProperty = async () => {
-    const { contract } = st;
-    console.log("contract",st);
-    
-
-    //addthetoken uri and the propertyid 
-    
-    try {
-      const MintedPropID = await contract.mintNFT("www.pranav.com",58);
-      alert("PROPERTY MINTED", MintedPropID);
-    } catch (error) {
-      console.error("Error fetching batch details:", error);
-    }
-  };
-
-  //blockchain call ends
-
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -93,6 +34,83 @@ const PropertyMinting = () => {
   const [image, setImage] = useState([]);
   const [propertyID, setPropertyID] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  //blockchain call starts
+
+  const [st, setst] = useState({
+    provider: null,
+    signer: null,
+    contract: null,
+  });
+
+  useEffect(() => {
+
+    window.ethereum.on('accountsChanged', async () => {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const account = ethers.utils.getAddress(accounts[0])
+      console.log(account);
+    })
+  
+    const connectWallet = async () => {
+      const contractAddress = "0x26377ca3adfe77b4c8BCe8E673eAB44cd8295877";
+      const contractAbi = abi.abi;
+      console.log(contractAbi);
+      try {
+        const { ethereum } = window;
+        if (ethereum) {
+          const account = await ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          console.log("ACCOUNT: ", account[0]);
+        } else {
+          console.log("no metamask");
+        }
+
+        const provider = new ethers.providers.Web3Provider(ethereum);
+
+        console.log(provider);
+
+        const signer = provider.getSigner();
+
+        console.log("signer", signer);
+
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractAbi,
+          signer
+        );
+
+        console.log("contract", contract);
+
+        setst({ provider, signer, contract });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    connectWallet();
+  }, []);
+
+  const MintProperty = async () => {
+    setIsSubmitted(true);
+    const { contract } = st;
+    console.log("contract", st);
+
+    //addthetoken uri and the propertyid
+
+    try {
+      const MintedPropID = await contract.mintNFT(
+        url + `?propertyID=${propertyID}`,
+        propertyID
+      );
+      showToast(toast, "success", "success", `NFT Minted !`);
+      handleSubmit();
+      showToast(toast, "success", "success", "Property Listed !");
+    } catch (error) {
+      console.error("Error fetching batch details:", error);
+    }
+    setIsSubmitted(false);
+  };
+
+  //blockchain call ends
 
   const [user, setUser] = useState("");
   const [file, setFile] = useState();
@@ -143,8 +161,8 @@ const PropertyMinting = () => {
     };
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    // e.preventDefault();
     setIsSubmitted(true);
     console.log(details);
     try {
@@ -158,7 +176,7 @@ const PropertyMinting = () => {
     }
     setIsSubmitted(false);
   };
- 
+
   console.log(st);
   return (
     <VStack mx={200}>
@@ -349,7 +367,13 @@ const PropertyMinting = () => {
           </div>
         )}
 
-        <Button isLoading={isSubmitted} bg={"brand.pink"} w={"100%"} my={5} onClick={()=>MintProperty()}>
+        <Button
+          isLoading={isSubmitted}
+          bg={"brand.pink"}
+          w={"100%"}
+          my={5}
+          onClick={() => MintProperty()}
+        >
           Mint Property
         </Button>
       </FormControl>

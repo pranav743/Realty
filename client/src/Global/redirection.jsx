@@ -15,14 +15,16 @@ const RedirectionPage = () => {
             const data = await axios.post(url + "/anyuser", {accessToken});
             const role = data.data.msg.role;
             console.log(role);
-            if (role === 'USER'){
-                navigate('/');
-            } else if( role === 'HOSPITAL'){
-                navigate('/hospital/home');
-            } else {
-                console.log("NO ROLE");
-                navigate('/login');
-            }      
+            navigate('/');
+
+            // if (role === 'USER'){
+            //     navigate('/');
+            // } else if( role === 'HOSPITAL'){
+            //     navigate('/hospital/home');
+            // } else {
+            //     console.log("NO ROLE");
+            //     navigate('/login');
+            // }      
         } catch (error) {
             console.log(error);
             localStorage.removeItem('RSaccessToken');

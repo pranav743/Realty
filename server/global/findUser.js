@@ -4,13 +4,14 @@ const User = require("../models/users");
 
 async function findUser(email) {
     var person = await User.findOne({ email }).exec();
-
+    console.log("PERSON",person);
+    const role = person.role;
     if (person) {
         try {
-            person._doc.role = "USER";
+            person._doc.role = role || "USER";
         } catch (error) {
         }
-        person = { ...person, role: 'USER' };
+        person = { ...person, role: role || "USER" };
         return person
     }
 
