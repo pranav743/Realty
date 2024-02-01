@@ -98,7 +98,12 @@ const Dashboard = () => {
             {properties &&
               properties.map((prop, index) => {
                 return (
-                  <Tr>
+                  <Tr
+                    className="cursor-pointer"
+                    onClick={() => {
+                      handleClick(prop.propertyID);
+                    }}
+                  >
                     <Td>{prop.title}</Td>
                     <Td>{prop.city}</Td>
                     <Td>{prop.state}</Td>
