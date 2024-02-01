@@ -2,7 +2,7 @@ import React from "react";
 
 const Promotion = () => {
   return (
-    <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-[300px] relative box-border flex items-end justify-between">
+    <div className=" from-purple-500 to-pink-500 h-[375px] relative box-border flex items-end justify-between bg-[url('../public/images/city.jpg')] bg-cover bg-no-repeat">
       <div className="left p-4 text-3xl text-white font-bold">
         Properties Sahi <br /> Milegi Yahi
       </div>
