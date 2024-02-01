@@ -3,10 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box, InputGroup, Input, Button, InputRightElement, Textarea, Card, CardBody, Stack, Image, Text } from '@chakra-ui/react';
 import { Icon, Skeleton } from '@chakra-ui/react';
 import { IoMdSend } from 'react-icons/io';
-import AIImage from '../../Assets/AI.jpg';
-import USERIMAGE from '../../Assets/USER.jpg';
+import AIImage from './AI.jpg';
+import USERIMAGE from './USER.jpg';
 import { DNA, Hourglass } from 'react-loader-spinner';
-import { CheerioWebBaseLoader } from "langchain/document_loaders/web/cheerio";
 import { TogetherAI } from "@langchain/community/llms/togetherai";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { HuggingFaceInferenceEmbeddings } from "langchain/embeddings/hf";
@@ -33,6 +32,13 @@ const WebChat = ({ messages, setMessages }) => {
   const [pageLoading, setPageLoading] = useState(true);
   const [memoryStore, setMemoryStore] = useState(false);
   const navigate = useNavigate();
+  const model = new TogetherAI({
+        modelName: "NousResearch/Nous-Hermes-Llama2-13b",
+        apiKey: 'e3862d30f948aa39a68d5cbbead33b2e9cb1501b1e1e980f207f7e92cb0bad44',
+        temperature: 0.1,
+        maxTokens: 1024
+    });
+    
 
   const createMemoryVectoreStore = async (textData) => {
     try {
@@ -54,7 +60,7 @@ const WebChat = ({ messages, setMessages }) => {
 
     } catch (error) {
       console.log(error);
-      navigate(`/error/try-again/chat-website-conversation`);
+      navigate(`/`);
     }
   }
 
@@ -69,21 +75,47 @@ const WebChat = ({ messages, setMessages }) => {
 
     async function fetchData(url) {
       try {
-        // Creating an instance of CheerioWebBaseLoader
-        const loader = new CheerioWebBaseLoader(url, {
-          selector:
-            "[class^=content], [class*= content], [class$=content] div, [class^=content], [class*= content], [class$=content] article, [class^=content], [class*= content], [class$=content] p",
-        });
+        const cleanedContent = `// Acts Laws
 
-        // Loading the document asynchronously
-        const docs = await loader.load();
-
-        // Replace multiple white spaces with a single space
-        const cleanedContent = docs[0]?.pageContent.replace(/\s+/g, " ").trim();
+        Real Estate (Regulation and Development) Act, 2016 (RERA): RERA is a landmark legislation aimed at regulating the real estate sector and protecting the interests of homebuyers. It mandates the registration of real estate projects and real estate agents, provides transparency in transactions, establishes a regulatory authority in each state, and defines the rights and obligations of buyers and developers.
+        
+        The Transfer of Property Act, 1882: This act governs the transfer of property in India and provides rules for the transfer of immovable property such as sale, mortgage, lease, and gift.
+        
+        The Registration Act, 1908: The Registration Act mandates the registration of various documents related to the transfer of property, including sale deeds, leases, and mortgages. Registration provides legal validity and authenticity to such documents.
+        
+        The Indian Stamp Act, 1899: This act governs the payment of stamp duty on various documents, including those related to property transactions. Stamp duty rates vary from state to state and are levied on the market value of the property.
+        
+        The Land Acquisition Act, 2013: This act governs the acquisition of land by the government for public purposes. It lays down procedures for land acquisition, determination of compensation, and rehabilitation and resettlement of affected persons.
+        
+        // Setup MetaMask
+        
+        Install MetaMask Extension: Add the MetaMask extension to your browser (Chrome, Firefox, Brave, or Edge).
+        
+        Create a Wallet: Follow the prompts to create a new wallet, including setting a password and securely storing your seed phrases.
+        
+        Access Your Wallet: After setup, access your wallet through the MetaMask extension.
+        
+        Customize Your Wallet: Add tokens and adjust settings as needed.
+        
+        Use for Transactions: Connect MetaMask to decentralized applications (DApps) to perform transactions on the Ethereum blockchain.
+        
+        Secure Your Wallet: Keep your password and seed phrases safe, consider enabling additional security features, and never share your credentials
+        
+        // What is Blockchain
+        
+        Blockchain is a decentralized, distributed ledger technology that records transactions across a network of computers in a way that ensures the integrity and security of the data exchanged
+        
+        // What is Metamask
+        
+        MetaMask is a cryptocurrency wallet and a gateway to decentralized applications (DApps) that run on the Ethereum blockchain. It primarily functions as a browser extension, allowing users to interact with Ethereum-based DApps directly from their web browsers.
+        
+        // What is stamp duty
+        
+        Stamp duty is a type of tax levied on certain legal documents and transactions, typically involving the transfer of assets or property rights. The tax is imposed on the execution of documents, meaning that it is payable when legal documents are executed or signed. Stamp duty laws vary by jurisdiction, and the types of documents subject to stamp duty can differ accordingly`
 
         return cleanedContent;
       } catch (error) {
-        navigate(`/error/try-again/chat-website-conversation`);
+        navigate('/');
         console.error("Error:", error);
       }
     }
@@ -98,6 +130,7 @@ const WebChat = ({ messages, setMessages }) => {
   }, [messages]);
 
   const handleSend = async () => {
+    
     const text = input;
     setInput('');
     setMessages([
@@ -105,11 +138,15 @@ const WebChat = ({ messages, setMessages }) => {
       { text, isBot: false }
     ]);
     setLoading(true);
-    const ans = await memoryStore.similaritySearch(text, 1);
-    console.log(ans);
+    const chain = ConversationalRetrievalQAChain.fromLLM(model, memoryStore.asRetriever(), {returnSourceDocuments: false});
+    const res = await chain.call({
+        question: text ,
+        chat_history: ''
+    });
+    console.log(res);
     setMessages((prevMessages) => [
       ...prevMessages,
-      { text: ans[0].pageContent, isBot: true }
+      { text: JSON.stringify("res"), isBot: true }
     ]);
     setLoading((x) => false);
 
