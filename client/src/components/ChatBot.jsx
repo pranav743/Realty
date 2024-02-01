@@ -24,17 +24,33 @@ function createArrayWithIds(n) {
   return resultArray;
 }
 
-const WebChat = ({ messages, setMessages }) => {
+const WebChat = () => {
 
   const msgEnd = useRef(null);
+  const [messages, setMessages] = useState([
+    {
+      text: 'Hi ask me anything related to the website',
+      isBot: true,
+    },
+  ]);
+
+  const handleNewChat = () => {
+    setMessages([
+      {
+        text: 'Hi, ask me anything related to the website',
+        isBot: true,
+      },
+    ]);
+  };
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
   const [pageLoading, setPageLoading] = useState(true);
   const [memoryStore, setMemoryStore] = useState(false);
+  const [chain, setChain] = useState(false);
   const navigate = useNavigate();
   const model = new TogetherAI({
         modelName: "NousResearch/Nous-Hermes-Llama2-13b",
-        apiKey: 'e3862d30f948aa39a68d5cbbead33b2e9cb1501b1e1e980f207f7e92cb0bad44',
+        apiKey: 'a8820b4b38ad46999e38b4c8d41f9e2c36bc6aeae0c5c623efa93960dbc2b85d',
         temperature: 0.1,
         maxTokens: 1024
     });
@@ -55,6 +71,8 @@ const WebChat = ({ messages, setMessages }) => {
         ids,
         embeddings
       );
+      const chain = ConversationalRetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {returnSourceDocuments: false});
+      setChain(chain)
       setMemoryStore(vectorStore);
       console.log('Memory Store Created');
 
@@ -64,16 +82,12 @@ const WebChat = ({ messages, setMessages }) => {
     }
   }
 
-  const handleScrape = () => {
-
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      const activeTabUrl = tabs[0].url;
-      const scrapedCode = await fetchData(activeTabUrl);
+  const handleScrape = async () => {
+    const scrapedCode = await fetchData();
       await createMemoryVectoreStore(scrapedCode);
       setPageLoading(false);
-    });
-
-    async function fetchData(url) {
+    
+    async function fetchData() {
       try {
         const cleanedContent = `// Acts Laws
 
@@ -119,6 +133,7 @@ const WebChat = ({ messages, setMessages }) => {
         console.error("Error:", error);
       }
     }
+
   };
 
   useEffect(() => {
@@ -138,7 +153,6 @@ const WebChat = ({ messages, setMessages }) => {
       { text, isBot: false }
     ]);
     setLoading(true);
-    const chain = ConversationalRetrievalQAChain.fromLLM(model, memoryStore.asRetriever(), {returnSourceDocuments: false});
     const res = await chain.call({
         question: text ,
         chat_history: ''
@@ -146,7 +160,7 @@ const WebChat = ({ messages, setMessages }) => {
     console.log(res);
     setMessages((prevMessages) => [
       ...prevMessages,
-      { text: JSON.stringify("res"), isBot: true }
+      { text: res.text, isBot: true }
     ]);
     setLoading((x) => false);
 
