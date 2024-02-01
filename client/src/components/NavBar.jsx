@@ -46,7 +46,7 @@ const NavBar = () => {
         <ul className="flex justify-start items-center gap-10">
           <Link to="/">
             <li className="text-2xl font-bold border-solid border-r-2 border-white pr-4">
-              Real-T
+              Real-Ty
             </li>
           </Link>
           <li>Buy</li>
